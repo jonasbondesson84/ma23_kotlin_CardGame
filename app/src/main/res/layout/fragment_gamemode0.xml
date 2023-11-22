@@ -61,7 +61,7 @@
             app:layout_constraintTop_toTopOf="@+id/imbLower" />
 
         <ProgressBar
-            android:id="@+id/pbTime"
+            android:id="@+id/pbTimeLeft"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:fontFamily="@font/zen_dots"
             android:text="Time left:"
             android:textSize="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/pbTime"
+            app:layout_constraintBottom_toTopOf="@+id/pbTimeLeft"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
@@ -104,7 +104,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pbTime"
+            app:layout_constraintTop_toBottomOf="@+id/pbTimeLeft"
             app:layout_constraintVertical_bias="0.162" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

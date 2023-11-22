@@ -1,12 +1,14 @@
 package com.example.cardgame
 
+import android.animation.Animator
+import android.animation.ObjectAnimator
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
@@ -14,7 +16,7 @@ import androidx.fragment.app.Fragment
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-private const val TIMER_SECONDS: Long = 10000
+private const val TIMER_SECONDS: Long = 30000
 
 /**
  * A simple [Fragment] subclass.
@@ -41,6 +43,7 @@ class GameMode0Fragment : Fragment() {
     lateinit var imCardTopLeft: ImageView
     lateinit var imCardBottomRight: ImageView
     lateinit var imCardCenter: ImageView
+    lateinit var pbTimeLeft: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +80,7 @@ class GameMode0Fragment : Fragment() {
         val btnHigher: ImageButton = view.findViewById(R.id.imbHigher)
         val btnLower: ImageButton = view.findViewById(R.id.imbLower)
         tvCurrentScore = view.findViewById(R.id.tvCurrentScore)
+        pbTimeLeft = view.findViewById(R.id.pbTimeLeft)
 
         btnHigher.setOnClickListener() {
             checkCardHigher()
@@ -112,19 +116,31 @@ class GameMode0Fragment : Fragment() {
     }
 
     fun startTimer() {
-        object : CountDownTimer(TIMER_SECONDS, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                //tvTimer.setText(getString(R.string.timeLeft, (millisUntilFinished / 1000).toString()))
+
+        val pbTimeLeftAnimator = ObjectAnimator.ofInt(pbTimeLeft,"progress",pbTimeLeft.max, 0)
+        pbTimeLeftAnimator.duration = TIMER_SECONDS
+        pbTimeLeftAnimator.start()
+
+
+        pbTimeLeftAnimator.addListener(object : Animator.AnimatorListener {
+
+            override fun onAnimationStart(animation: Animator) {
 
             }
 
-            override fun onFinish() {
-                //tvTimer.visibility = View.INVISIBLE
-                //When time stop, game stops
-          //      showGameDoneFragment(null)
+            override fun onAnimationEnd(animation: Animator) {
+                showGameDoneFragment(null)
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
 
             }
-        }.start()
+
+            override fun onAnimationRepeat(animation: Animator) {
+
+            }
+        })
+
     }
 
     fun showGameDoneFragment(view: View?) {
