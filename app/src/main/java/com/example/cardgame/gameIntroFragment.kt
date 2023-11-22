@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 
+
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -22,7 +23,10 @@ class gameIntroFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    val gameFragment = GameFragment()
+    val gameMode0Fragment = GameMode0Fragment()
+  //  lateinit var tvRules: TextView
+//    var gameLevels: List<Level>? = null
+//    var currentLevel: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +35,8 @@ class gameIntroFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onCreateView(
@@ -40,9 +46,21 @@ class gameIntroFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_game_intro, container, false)
         val btnNext: ImageButton = view.findViewById(R.id.imbStart)
+       // tvRules = view.findViewById(R.id.tvRules)
+//        val args = arguments
+//        gameLevels = args?.getParcelableArrayList<Level>("gameLevels")
+//
+//        gameLevels?.let {
+//            tvRules.text = gameLevels[currentLevel].rules
+//        }
+
 
         btnNext.setOnClickListener() {
-            showGameFragment(null)
+//            var bundle = Bundle()
+//            bundle.putParcelableArrayList("gameLevels", gameLevels as ArrayList<out Parcelable>?)
+//            bundle.putInt("currentLevel", currentLevel)
+//            gameMode0Fragment.arguments = bundle
+            showGameFragment(it)
 
         }
         return view
@@ -71,7 +89,7 @@ class gameIntroFragment : Fragment() {
 
     fun showGameFragment(view: View?) {
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fmGameScreen, gameFragment, "gameFragment")
+        transaction.replace(R.id.fmGameScreen, gameMode0Fragment, "gameFragment")
         transaction.commit()
 
     }

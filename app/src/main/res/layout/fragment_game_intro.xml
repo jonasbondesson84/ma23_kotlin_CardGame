@@ -19,10 +19,11 @@
             android:src="@drawable/buttontext_large_orange_round"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            />
 
         <TextView
-            android:id="@+id/tvLower"
+            android:id="@+id/tvStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/zen_dots"
@@ -47,7 +48,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvRules"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"

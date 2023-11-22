@@ -2,10 +2,11 @@ package com.example.cardgame
 
 class deckOfCard {
 
-    private val deckOfCard = mutableListOf<Card>()
+     val deckOfCard = mutableListOf<Card>()
 
     init {
         createDeck()
+        shuffleCards()
     }
 
 
@@ -44,5 +45,9 @@ class deckOfCard {
 
     fun shuffleCards() {
         deckOfCard.shuffle()
+    }
+
+    fun getNewCard(currentCardIndex: Int): Card {
+        return deckOfCard[currentCardIndex]
     }
 }
