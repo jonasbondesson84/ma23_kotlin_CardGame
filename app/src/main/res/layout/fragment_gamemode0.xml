@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageButton
-            android:id="@+id/imbStart"
+            android:id="@+id/imbLower"
             android:layout_width="160dp"
             android:layout_height="56dp"
             android:layout_marginStart="32dp"
@@ -55,10 +55,10 @@
             android:text="Lower"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imbStart"
-            app:layout_constraintEnd_toEndOf="@+id/imbStart"
-            app:layout_constraintStart_toStartOf="@+id/imbStart"
-            app:layout_constraintTop_toTopOf="@+id/imbStart" />
+            app:layout_constraintBottom_toBottomOf="@+id/imbLower"
+            app:layout_constraintEnd_toEndOf="@+id/imbLower"
+            app:layout_constraintStart_toStartOf="@+id/imbLower"
+            app:layout_constraintTop_toTopOf="@+id/imbLower" />
 
         <ProgressBar
             android:id="@+id/pbTime"
@@ -85,13 +85,14 @@
             android:id="@+id/tvCard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
             android:fontFamily="@font/zendots"
-            android:text="TextView"
-            android:textSize="44sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Next card is"
+            android:textSize="34sp"
+            app:layout_constraintBottom_toTopOf="@+id/imbHigher"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tvCurrentScore"
@@ -101,8 +102,83 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/tvCard"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pbTime" />
+            app:layout_constraintTop_toBottomOf="@+id/pbTime"
+            app:layout_constraintVertical_bias="0.162" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="160dp"
+            android:layout_height="242dp"
+            app:layout_constraintBottom_toTopOf="@+id/imbHigher"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/emptycard"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ImageView
+                android:id="@+id/imCardCenter"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/characters_0005"
+                app:layout_constraintBottom_toBottomOf="@+id/imCard"
+                app:layout_constraintEnd_toEndOf="@+id/imCard"
+                app:layout_constraintStart_toStartOf="@+id/imCard"
+                app:layout_constraintTop_toTopOf="@+id/imCard" />
+
+            <ImageView
+                android:id="@+id/imCardTopLeft"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/characters_0005"
+                app:layout_constraintStart_toStartOf="@+id/tvCardTopLeft"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardTopLeft" />
+
+            <TextView
+                android:id="@+id/tvCardTopLeft"
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/zen_dots"
+                android:text="TextView"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCardBottomRight"
+                android:layout_width="32dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/zen_dots"
+                android:rotationX="180"
+                android:text="TextView"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ImageView
+                android:id="@+id/imCardBottomRight"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:rotationX="180"
+                android:src="@drawable/characters_0005"
+                app:layout_constraintBottom_toTopOf="@+id/tvCardBottomRight"
+                app:layout_constraintEnd_toEndOf="@+id/tvCardBottomRight" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

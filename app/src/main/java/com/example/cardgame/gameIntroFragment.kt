@@ -45,7 +45,7 @@ class gameIntroFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_game_intro, container, false)
-        val btnNext: ImageButton = view.findViewById(R.id.imbStart)
+        val btnNext: ImageButton = view.findViewById(R.id.imbLower)
        // tvRules = view.findViewById(R.id.tvRules)
 //        val args = arguments
 //        gameLevels = args?.getParcelableArrayList<Level>("gameLevels")

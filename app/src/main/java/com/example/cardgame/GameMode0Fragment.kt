@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
@@ -28,13 +29,18 @@ class GameMode0Fragment : Fragment() {
     var gameMode: Int = 0
     var currentLevel: Int? = 0
     var deckOfCard = deckOfCard()
-    var currentCardIndex = 0
+    var currentCardIndex = 1
     var score = 0
     var currentCard = deckOfCard.getNewCard(0)
     var nextCard = deckOfCard.getNewCard(1)
 
     lateinit var tvCard: TextView
     lateinit var tvCurrentScore: TextView
+    lateinit var tvCardTopLeft: TextView
+    lateinit var tvCardBottomRight: TextView
+    lateinit var imCardTopLeft: ImageView
+    lateinit var imCardBottomRight: ImageView
+    lateinit var imCardCenter: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,10 +66,16 @@ class GameMode0Fragment : Fragment() {
 //            gameMode = gameLevels[0].gameMode
 //        }
         tvCard = view.findViewById(R.id.tvCard)
-        val cardText = "${currentCard.suite} ${currentCard.number}"
-        tvCard.text = cardText
+        tvCardTopLeft = view.findViewById(R.id.tvCardTopLeft)
+        tvCardBottomRight = view.findViewById(R.id.tvCardBottomRight)
+        imCardTopLeft = view.findViewById(R.id.imCardTopLeft)
+        imCardBottomRight = view.findViewById(R.id.imCardBottomRight)
+        imCardCenter = view.findViewById(R.id.imCardCenter)
+        showUICard()
+//        val cardText = "${currentCard.suite} ${currentCard.number}"
+//        tvCard.text = cardText
         val btnHigher: ImageButton = view.findViewById(R.id.imbHigher)
-        val btnLower: ImageButton = view.findViewById(R.id.imbStart)
+        val btnLower: ImageButton = view.findViewById(R.id.imbLower)
         tvCurrentScore = view.findViewById(R.id.tvCurrentScore)
 
         btnHigher.setOnClickListener() {
@@ -126,11 +138,13 @@ class GameMode0Fragment : Fragment() {
 
     fun showNextCard() {
         if (currentCardIndex < deckOfCard.getDeckSize()) {
-            currentCardIndex++
+
             currentCard = deckOfCard.getNewCard(currentCardIndex)
             nextCard = deckOfCard.getNewCard(currentCardIndex+1)
-            var cardText = " ${currentCard.suite} ${currentCard.number} "
-            tvCard.text = cardText
+            currentCardIndex++
+//            var cardText = " ${currentCard.suite} ${currentCard.number} "
+//            tvCard.text = cardText
+            showUICard()
 
 
         } else {
@@ -156,4 +170,45 @@ class GameMode0Fragment : Fragment() {
         showNextCard()
     }
 
+
+    fun showUICard() {
+        var imageID = 0
+        var numberSymbol = ""
+        when(currentCard.suite) {
+            "Hearts" -> {
+                 imageID = R.drawable.characters_0006
+            }
+            "Diamonds" -> {
+                imageID = R.drawable.characters_0001
+            }
+            "Clubs" -> {
+                imageID = R.drawable.characters_0003
+            } else -> {
+                imageID = R.drawable.characters_0005
+            }
+        }
+        when(currentCard.number) {
+            14 -> {
+                numberSymbol = "A"
+            }
+            13 -> {
+                numberSymbol = "K"
+            }
+            12 -> {
+                numberSymbol = "Q"
+            }
+            11 -> {
+                numberSymbol = "J"
+            }
+            else -> {
+                numberSymbol = currentCard.number.toString()
+            }
+        }
+        tvCardBottomRight.text = numberSymbol
+        tvCardTopLeft.text = numberSymbol
+        imCardTopLeft.setImageResource(imageID)
+        imCardBottomRight.setImageResource(imageID)
+        imCardCenter.setImageResource(imageID)
+
+    }
 }
