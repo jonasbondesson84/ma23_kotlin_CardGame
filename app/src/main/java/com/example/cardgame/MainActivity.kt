@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
         val btnPlay: ImageView = findViewById(R.id.imbPlay)
         val gameIntent = Intent(this, GameScreen::class.java)
 
+
         btnPlay.setOnClickListener() {
             startActivity(gameIntent)
         }
