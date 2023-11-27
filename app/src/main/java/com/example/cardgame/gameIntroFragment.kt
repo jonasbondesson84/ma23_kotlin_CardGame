@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 
@@ -24,9 +25,9 @@ class gameIntroFragment : Fragment() {
     private var param2: String? = null
 
     val gameMode0Fragment = GameMode0Fragment()
-  //  lateinit var tvRules: TextView
-//    var gameLevels: List<Level>? = null
-//    var currentLevel: Int = 0
+    val gameMode1Fragment = GameMode1Fragment()
+    lateinit var tvRules: TextView
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,20 +47,18 @@ class gameIntroFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_game_intro, container, false)
         val btnNext: ImageButton = view.findViewById(R.id.imbLower)
-       // tvRules = view.findViewById(R.id.tvRules)
-//        val args = arguments
-//        gameLevels = args?.getParcelableArrayList<Level>("gameLevels")
-//
-//        gameLevels?.let {
-//            tvRules.text = gameLevels[currentLevel].rules
-//        }
+        val gameLevels = GameEngine.gameLevels
+
+        val rules = gameLevels[GameEngine.currentLevel].rules
+
+        tvRules = view.findViewById(R.id.tvRules)
+        tvRules.text = rules
+
+
 
 
         btnNext.setOnClickListener() {
-//            var bundle = Bundle()
-//            bundle.putParcelableArrayList("gameLevels", gameLevels as ArrayList<out Parcelable>?)
-//            bundle.putInt("currentLevel", currentLevel)
-//            gameMode0Fragment.arguments = bundle
+
             showGameFragment(it)
 
         }
@@ -88,8 +87,9 @@ class gameIntroFragment : Fragment() {
 
 
     fun showGameFragment(view: View?) {
+
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fmGameScreen, gameMode0Fragment, "gameFragment")
+        transaction.replace(R.id.fmGameScreen, gameMode1Fragment, "gameFragment")
         transaction.commit()
 
     }
