@@ -6,7 +6,7 @@ class deckOfCard {
 
     init {
         createDeck()
-        shuffleCards()
+       // shuffleCards()
     }
 
 

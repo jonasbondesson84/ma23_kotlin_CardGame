@@ -27,9 +27,7 @@ class GameMode0Fragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    val gameDoneFragment = gameDoneFragment()
-    var gameMode: Int = 0
-    var currentLevel: Int? = 0
+    var gameDoneFragment = gameDoneFragment()
     var deckOfCard = deckOfCard()
     var currentCardIndex = 1
     var score = 0
@@ -61,19 +59,14 @@ class GameMode0Fragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_gamemode0, container, false)
-//        val args = arguments
-//        var gameLevels : List<Level>? = args?.getParcelableArrayList<Level>("gameLevels")
-//        //currentLevel = args?.getParcelable("currentLevel")
-//
-//        gameLevels?.let {
-//            gameMode = gameLevels[0].gameMode
-//        }
+
         tvCard = view.findViewById(R.id.tvCard)
         tvCardTopLeft = view.findViewById(R.id.tvCardTopLeft)
         tvCardBottomRight = view.findViewById(R.id.tvCardBottomRight)
         imCardTopLeft = view.findViewById(R.id.imCardTopLeft)
         imCardBottomRight = view.findViewById(R.id.imCardBottomRight)
         imCardCenter = view.findViewById(R.id.imCardCenter)
+
         showUICard()
 //        val cardText = "${currentCard.suite} ${currentCard.number}"
 //        tvCard.text = cardText
@@ -145,7 +138,7 @@ class GameMode0Fragment : Fragment() {
 
     fun showGameDoneFragment(view: View?) {
 
-        gameDoneFragment.arguments
+       // gameDoneFragment = gameDoneFragment().newInstance()
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fmGameScreen, gameDoneFragment, "gameDoneFragment")
         transaction.commit()
@@ -188,43 +181,12 @@ class GameMode0Fragment : Fragment() {
 
 
     fun showUICard() {
-        var imageID = 0
-        var numberSymbol = ""
-        when(currentCard.suite) {
-            "Hearts" -> {
-                 imageID = R.drawable.characters_0006
-            }
-            "Diamonds" -> {
-                imageID = R.drawable.characters_0001
-            }
-            "Clubs" -> {
-                imageID = R.drawable.characters_0003
-            } else -> {
-                imageID = R.drawable.characters_0005
-            }
-        }
-        when(currentCard.number) {
-            14 -> {
-                numberSymbol = "A"
-            }
-            13 -> {
-                numberSymbol = "K"
-            }
-            12 -> {
-                numberSymbol = "Q"
-            }
-            11 -> {
-                numberSymbol = "J"
-            }
-            else -> {
-                numberSymbol = currentCard.number.toString()
-            }
-        }
-        tvCardBottomRight.text = numberSymbol
-        tvCardTopLeft.text = numberSymbol
-        imCardTopLeft.setImageResource(imageID)
-        imCardBottomRight.setImageResource(imageID)
-        imCardCenter.setImageResource(imageID)
+
+        tvCardBottomRight.text = currentCard.showNumberOnCard(currentCard)
+        tvCardTopLeft.text = currentCard.showNumberOnCard(currentCard)
+        imCardTopLeft.setImageResource(currentCard.showSuiteOnCard(currentCard))
+        imCardBottomRight.setImageResource(currentCard.showSuiteOnCard(currentCard))
+        imCardCenter.setImageResource(currentCard.showSuiteOnCard(currentCard))
 
     }
 }
