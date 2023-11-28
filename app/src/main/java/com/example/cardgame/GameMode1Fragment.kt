@@ -63,7 +63,9 @@ class GameMode1Fragment : Fragment() {
     var waitForDrawCard = false
     var aiTurnAnswer = false
     var aiTurn = false
-  //  var timerClickCheck = false
+    var timerClickDeck = false
+    var timerClickHandPick = false
+    var timerClickHandAnswer = false
 
     var randomCardNumber = 0
 
@@ -131,18 +133,29 @@ class GameMode1Fragment : Fragment() {
         val imDeckOfCard = view.findViewById<ImageView>(R.id.imDeck)
 
         imDeckOfCard.setOnClickListener() {
-           // if(!timerClickCheck) {
+            if(!timerClickDeck) {
+                timerClickDeck = true
                 drawCardFromDeck(human.deck, human.deckMap, human)
-          //  }
+            }
         }
 
         adapterHuman?.onCardClick = {
 
-//            if(!timerClickCheck) {
-//                timerClickCheck = true
                 if (!waitForDrawCard && !aiTurnAnswer) {
                     var pickedCard = it
-                    humanTurn(pickedCard)
+                    if(!timerClickHandPick) {
+                        timerClickHandPick = true
+                        timerScope.launch {
+                            withContext(Dispatchers.Main) {
+                                showPlayerText()
+                                tvPlayerText.text = "I want all your ${pickedCard.number}s"
+                                delay(TIMER_TEXT)
+                                hidePlayerText()
+                                humanTurn(pickedCard)
+                            }
+                        }
+                    }
+
 
                 } else if (aiTurnAnswer) {
                     var pickedCardForAnswer = it
@@ -153,6 +166,17 @@ class GameMode1Fragment : Fragment() {
                             ai.deck,
                             ai.deckMap, human.deckMap, ai
                         )
+                        showPlayerText()
+                        timerScope.launch {
+                            withContext(Dispatchers.Main) {
+                                tvPlayerText.text = "Here you go!"
+                                delay(TIMER_TEXT)
+                                hidePlayerText()
+                                aiTurnAnswer = false
+                            }
+                        }
+                        tvPlayerText.text = "Here you go!"
+
                         aiTurnAnswer = false
 
                     }
@@ -250,6 +274,8 @@ class GameMode1Fragment : Fragment() {
                         aiTurnAnswer = false
                         tvAIText.text = " Your turn!"
                     }
+                    timerClickDeck= false
+
 
                 }
             }
@@ -275,6 +301,7 @@ class GameMode1Fragment : Fragment() {
                             tvAIText.text = "I got a pair!"
                             tvAINumberOfPairs.text = "Number of pairs: ${ai.numberOfPairs}"
                             delay(TIMER_TEXT)
+                            timerClickHandAnswer = false
                         }
                     }
 
@@ -286,6 +313,7 @@ class GameMode1Fragment : Fragment() {
                             tvPlayerNumberOfPairs.text = "Number of pairs: ${human.numberOfPairs}"
                             delay(TIMER_TEXT)
                             hidePlayerText()
+                            timerClickHandAnswer = false
                         }
                     }
 
@@ -393,7 +421,7 @@ class GameMode1Fragment : Fragment() {
                         withContext(Dispatchers.Main) {
                             delay(TIMER_TEXT)
                             tvAIText.text = "Your may go again."
-//                            timerClickCheck= false
+                            timerClickHandPick = false
                         }
 
                     }
@@ -401,7 +429,7 @@ class GameMode1Fragment : Fragment() {
                     tvAIText.text = "GO FISH"
                     waitForDrawCard = true
                     clDeck.visibility = View.VISIBLE
-//                    timerClickCheck = false
+                    timerClickHandPick = false
 
 
                 }
