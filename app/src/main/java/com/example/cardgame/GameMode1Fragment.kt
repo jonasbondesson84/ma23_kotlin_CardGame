@@ -43,21 +43,26 @@ class GameMode1Fragment : Fragment() {
     lateinit var tvAIText: TextView
     lateinit var clDeck: ConstraintLayout
     lateinit var imGoFishButton: ImageView
-    var AIdeckOfCard = mutableListOf<Card>()
-    var humandeckOfCard = mutableListOf<Card>()
+    lateinit var tvAINumberOfPairs: TextView
+    lateinit var tvPlayerNumberOfPairs: TextView
+   // var AIdeckOfCard = mutableListOf<Card>()
+  //  var humandeckOfCard = mutableListOf<Card>()
     var deckOfCard = deckOfCard().deckOfCard
-    var numbersOfPairs = 0
-    var AIDeckNumbersOnly = mutableMapOf<Int, Int>()
-    var humanDeckNumbersOnly = mutableMapOf<Int, Int>()
+   // var numbersOfPairs = 0
+   // var AIDeckNumbersOnly = mutableMapOf<Int, Int>()
+ //   var humanDeckNumbersOnly = mutableMapOf<Int, Int>()
     var card: Card? = null
-    val adapterHuman = view?.let { HandOfCardsAdapter(it.context, humandeckOfCard) }
+  //  val adapterHuman = view?.let { HandOfCardsAdapter(it.context, humandeckOfCard) }
     val timerScope = CoroutineScope(Dispatchers.Default)
     var waitForDrawCard = false
     var aiTurnAnswer = false
     var aiTurn = false
-    var timerClickCheck = false
+  //  var timerClickCheck = false
 
     var randomCardNumber = 0
+
+    val player = Player("human", mutableListOf(), mutableMapOf(), 0 ,0)
+    val ai = Player("computer", mutableListOf(), mutableMapOf(), 0, 0)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,13 +88,13 @@ class GameMode1Fragment : Fragment() {
         rvAICards = view.findViewById(R.id.rvAICards)
         rvAICards.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-        val adapterAI = HandOfCardsAdapter(view.context, AIdeckOfCard)
+        val adapterAI = HandOfCardsAdapter(view.context, ai.deck)
         rvAICards.adapter = adapterAI
 
         rvHumanCards = view.findViewById(R.id.rvHumanCards)
         rvHumanCards.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-        val adapterHuman = HandOfCardsAdapter(view.context, humandeckOfCard)
+        val adapterHuman = HandOfCardsAdapter(view.context, player.deck)
         rvHumanCards.adapter = adapterHuman
 
         imCardCenter = view.findViewById(R.id.imCardCenter2)
@@ -101,10 +106,13 @@ class GameMode1Fragment : Fragment() {
         tvAIText = view.findViewById(R.id.tvAIText)
         clDeck = view.findViewById(R.id.clDeck)
         imGoFishButton = view.findViewById(R.id.imGoFishButton)
+        tvAINumberOfPairs = view.findViewById(R.id.tvAInumberOfPairs)
+        tvPlayerNumberOfPairs = view.findViewById(R.id.tvPlayerNumberOfPairs)
 
         createHands()
         clDrawCard.visibility = View.INVISIBLE
         clDeck.visibility = View.INVISIBLE
+        imGoFishButton.visibility = View.INVISIBLE
         tvAIText.text = "Your turn!"
 
 
@@ -112,14 +120,14 @@ class GameMode1Fragment : Fragment() {
 
         imDeckOfCard.setOnClickListener() {
            // if(!timerClickCheck) {
-                drawCardFromDeck(humandeckOfCard, humanDeckNumbersOnly)
+                drawCardFromDeck(player.deck, player.deckMap, player)
           //  }
         }
 
         adapterHuman?.onCardClick = {
 
-            if(!timerClickCheck) {
-                timerClickCheck = true
+//            if(!timerClickCheck) {
+//                timerClickCheck = true
                 if (!waitForDrawCard && !aiTurnAnswer) {
                     var pickedCard = it
                     humanTurn(pickedCard)
@@ -129,21 +137,22 @@ class GameMode1Fragment : Fragment() {
                     if (pickedCardForAnswer.number == randomCardNumber) {
                         exchangeCards(
                             pickedCardForAnswer.number,
-                            humandeckOfCard,
-                            AIdeckOfCard,
-                            AIDeckNumbersOnly, humanDeckNumbersOnly
+                            player.deck,
+                            ai.deck,
+                            ai.deckMap, player.deckMap, ai
                         )
                         aiTurnAnswer = false
 
                     }
                 }
-            }
+//            }
         }
 
         imGoFishButton.setOnClickListener() {
 //            if(!timerClickCheck) {
                 if (aiTurn) {
-                    drawCardFromDeck(AIdeckOfCard, AIDeckNumbersOnly)
+                    drawCardFromDeck(ai.deck, ai.deckMap, ai)
+                    imGoFishButton.visibility = View.INVISIBLE
                 }
 //            }
         }
@@ -174,20 +183,20 @@ class GameMode1Fragment : Fragment() {
 
     fun createHands() {
         for (i in 0..4) {
-            AIdeckOfCard.add(deckOfCard.first())
-            recalculateMap( AIDeckNumbersOnly, AIdeckOfCard)
+            ai.deck.add(deckOfCard.first())
+            recalculateMap( ai.deckMap, ai.deck)
             deckOfCard.remove(deckOfCard.first())
-            humandeckOfCard.add(deckOfCard.first())
-            recalculateMap( humanDeckNumbersOnly, humandeckOfCard)
+            player.deck.add(deckOfCard.first())
+            recalculateMap( player.deckMap, player.deck)
             deckOfCard.remove(deckOfCard.first())
-            Log.d("!!!", humandeckOfCard.size.toString())
+          //  Log.d("!!!", player.deck.size.toString())
         }
-        sortHand(humandeckOfCard)
-        sortHand(AIdeckOfCard)
+        sortHand(player.deck)
+        sortHand(ai.deck)
         updateHandView()
     }
 
-    fun drawCardFromDeck(deck: MutableList<Card>, deckMap: MutableMap<Int, Int>) {
+    fun drawCardFromDeck(deck: MutableList<Card>, deckMap: MutableMap<Int, Int>, player: Player) {
         if (deckOfCard.size > 0) {
             var drawnCard = deckOfCard.first()
             deck.add(drawnCard)
@@ -203,7 +212,7 @@ class GameMode1Fragment : Fragment() {
             deckOfCard.remove(drawnCard)
             sortHand(deck)
 //            printMap()
-            checkForPairs(deckMap, deck)
+            checkForPairs(deckMap, deck, player)
 
             timerScope.launch {
                 withContext(Dispatchers.Main) {
@@ -230,13 +239,26 @@ class GameMode1Fragment : Fragment() {
         updateHandView()
     }
 
-    fun checkForPairs(deckMap: MutableMap<Int, Int>, deck: MutableList<Card>) {
+    fun checkForPairs(deckMap: MutableMap<Int, Int>, deck: MutableList<Card>, player: Player) {
 
         for ((key, value) in deckMap) {
             if (value == 4) {
-                numbersOfPairs++
+                player.numberOfPairs++
                 deckMap.remove(key)
                 removeCards(key, deck)
+                if(player == ai) {
+                    timerScope.launch {
+                        withContext(Dispatchers.Main) {
+                            tvAIText.text = "I got a pair!"
+                            tvPlayerNumberOfPairs.text = "Number of pairs: ${ai.numberOfPairs}"
+                            delay(1000L)
+                        }
+                    }
+
+                } else {
+                    tvPlayerNumberOfPairs.text = "Number of pairs: ${player.numberOfPairs}"
+                }
+                Log.d("!!!", player.name + player.numberOfPairs.toString())
                 break
             }
         }
@@ -253,13 +275,14 @@ class GameMode1Fragment : Fragment() {
         deckFrom: MutableList<Card>,
         deckTo: MutableList<Card>,
         deckMapTo: MutableMap<Int, Int>,
-        deckMapFrom: MutableMap<Int, Int>
+        deckMapFrom: MutableMap<Int, Int>,
+        player: Player
     ) {
         deckFrom.filter { it.number == cardValue }.forEach { deckTo.add(it) }
         removeCards(cardValue, deckFrom)
         recalculateMap(deckMapTo, deckTo)
         recalculateMap(deckMapFrom, deckFrom)
-        checkForPairs(deckMapTo, deckTo)
+        checkForPairs(deckMapTo, deckTo, player)
 
         if (aiTurn) {
             aiTurnSequence()
@@ -281,7 +304,7 @@ class GameMode1Fragment : Fragment() {
     }
 
     fun printMap() {
-        for (card in humanDeckNumbersOnly) {
+        for (card in player.deckMap) {
             Log.d("!!!", card.key.toString() + " " + card.value.toString())
         }
     }
@@ -307,36 +330,39 @@ class GameMode1Fragment : Fragment() {
             withContext(Dispatchers.Main) {
 
                 delay(1000L)
-                var randomCard = AIdeckOfCard.random()
+                var randomCard = ai.deck.random()
                 randomCardNumber = randomCard.number
                 var showCardSymbol = randomCard.showNumberOnCard(randomCard)
                 tvAIText.text = "Give me all your $showCardSymbol"
                 aiTurnAnswer = true
                 aiTurn = true
+                if( randomCard !in player.deck) {
+                    imGoFishButton.visibility = View.VISIBLE
+                }
             }
         }
     }
 
     fun humanTurn(card: Card) {
 
-        if (card !in AIdeckOfCard) {
+        if (card !in ai.deck) {
 //                Log.d("!!!", card?.number.toString())
             card?.let { safeCard ->
-                if (AIDeckNumbersOnly.containsKey(safeCard.number)) {
+                if (ai.deckMap.containsKey(safeCard.number)) {
                     var showCardSymbol = safeCard.showNumberOnCard(safeCard)
-                    Log.d("!!!", showCardSymbol)
+             //       Log.d("!!!", showCardSymbol)
                     tvAIText.text = "Here, have all my $showCardSymbol"
                     exchangeCards(
                         safeCard.number,
-                        AIdeckOfCard,
-                        humandeckOfCard,
-                        humanDeckNumbersOnly, AIDeckNumbersOnly
+                        ai.deck,
+                        player.deck,
+                        player.deckMap, ai.deckMap, player
                     )
                     timerScope.launch {
                         withContext(Dispatchers.Main) {
                             delay(1000L)
                             tvAIText.text = "Your may go again."
-                            timerClickCheck= false
+//                            timerClickCheck= false
                         }
 
                     }
@@ -344,17 +370,17 @@ class GameMode1Fragment : Fragment() {
                     tvAIText.text = "GO FISH"
                     waitForDrawCard = true
                     clDeck.visibility = View.VISIBLE
-                    timerClickCheck = false
+//                    timerClickCheck = false
 
                     //drawCardFromDeck(humandeckOfCard, humanDeckNumbersOnly)
                 }
 
             }
         }
-        sortHand(humandeckOfCard)
-        sortHand(AIdeckOfCard)
+        sortHand(player.deck)
+        sortHand(ai.deck)
         updateHandView()
-        timerClickCheck = false
+//        timerClickCheck = false
 
         //Select card
         //AI checks for card
