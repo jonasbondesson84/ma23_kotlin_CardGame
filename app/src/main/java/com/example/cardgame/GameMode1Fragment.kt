@@ -22,6 +22,7 @@ import kotlinx.coroutines.withContext
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private const val TIMER_TEXT = 1000L
 
 /**
  * A simple [Fragment] subclass.
@@ -45,6 +46,11 @@ class GameMode1Fragment : Fragment() {
     lateinit var imGoFishButton: ImageView
     lateinit var tvAINumberOfPairs: TextView
     lateinit var tvPlayerNumberOfPairs: TextView
+    lateinit var tvGoFishButton: TextView
+    lateinit var tvPlayerText: TextView
+    lateinit var imAIText: ImageView
+    lateinit var imPlayerText: ImageView
+    lateinit var imPLayerIcon: ImageView
    // var AIdeckOfCard = mutableListOf<Card>()
   //  var humandeckOfCard = mutableListOf<Card>()
     var deckOfCard = deckOfCard().deckOfCard
@@ -61,7 +67,7 @@ class GameMode1Fragment : Fragment() {
 
     var randomCardNumber = 0
 
-    val player = Player("human", mutableListOf(), mutableMapOf(), 0 ,0)
+    val human = Player("human", mutableListOf(), mutableMapOf(), 0 ,0)
     val ai = Player("computer", mutableListOf(), mutableMapOf(), 0, 0)
 
 
@@ -94,7 +100,7 @@ class GameMode1Fragment : Fragment() {
         rvHumanCards = view.findViewById(R.id.rvHumanCards)
         rvHumanCards.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-        val adapterHuman = HandOfCardsAdapter(view.context, player.deck)
+        val adapterHuman = HandOfCardsAdapter(view.context, human.deck)
         rvHumanCards.adapter = adapterHuman
 
         imCardCenter = view.findViewById(R.id.imCardCenter2)
@@ -108,19 +114,25 @@ class GameMode1Fragment : Fragment() {
         imGoFishButton = view.findViewById(R.id.imGoFishButton)
         tvAINumberOfPairs = view.findViewById(R.id.tvAInumberOfPairs)
         tvPlayerNumberOfPairs = view.findViewById(R.id.tvPlayerNumberOfPairs)
+        tvGoFishButton = view.findViewById(R.id.tvGoFishButton)
+        tvPlayerText = view.findViewById(R.id.tvPlayerText)
+        imAIText = view.findViewById(R.id.imAIText)
+        imPlayerText = view.findViewById(R.id.imPlayerText)
+        imPLayerIcon = view.findViewById(R.id.imPLayerIcon)
 
         createHands()
         clDrawCard.visibility = View.INVISIBLE
         clDeck.visibility = View.INVISIBLE
-        imGoFishButton.visibility = View.INVISIBLE
+        hideGoFishButton()
         tvAIText.text = "Your turn!"
+        hidePlayerText()
 
 
         val imDeckOfCard = view.findViewById<ImageView>(R.id.imDeck)
 
         imDeckOfCard.setOnClickListener() {
            // if(!timerClickCheck) {
-                drawCardFromDeck(player.deck, player.deckMap, player)
+                drawCardFromDeck(human.deck, human.deckMap, human)
           //  }
         }
 
@@ -137,9 +149,9 @@ class GameMode1Fragment : Fragment() {
                     if (pickedCardForAnswer.number == randomCardNumber) {
                         exchangeCards(
                             pickedCardForAnswer.number,
-                            player.deck,
+                            human.deck,
                             ai.deck,
-                            ai.deckMap, player.deckMap, ai
+                            ai.deckMap, human.deckMap, ai
                         )
                         aiTurnAnswer = false
 
@@ -151,8 +163,19 @@ class GameMode1Fragment : Fragment() {
         imGoFishButton.setOnClickListener() {
 //            if(!timerClickCheck) {
                 if (aiTurn) {
-                    drawCardFromDeck(ai.deck, ai.deckMap, ai)
-                    imGoFishButton.visibility = View.INVISIBLE
+                    showPlayerText()
+                    tvPlayerText.text = "GO FISH"
+                    tvAIText.text = "Darn' it!"
+                    timerScope.launch {
+                        withContext(Dispatchers.Main) {
+                            delay(TIMER_TEXT)
+                            drawCardFromDeck(ai.deck, ai.deckMap, ai)
+                            hidePlayerText()
+
+                        }
+                    }
+                    hideGoFishButton()
+
                 }
 //            }
         }
@@ -186,12 +209,11 @@ class GameMode1Fragment : Fragment() {
             ai.deck.add(deckOfCard.first())
             recalculateMap( ai.deckMap, ai.deck)
             deckOfCard.remove(deckOfCard.first())
-            player.deck.add(deckOfCard.first())
-            recalculateMap( player.deckMap, player.deck)
+            human.deck.add(deckOfCard.first())
+            recalculateMap( human.deckMap, human.deck)
             deckOfCard.remove(deckOfCard.first())
-          //  Log.d("!!!", player.deck.size.toString())
         }
-        sortHand(player.deck)
+        sortHand(human.deck)
         sortHand(ai.deck)
         updateHandView()
     }
@@ -211,12 +233,12 @@ class GameMode1Fragment : Fragment() {
 
             deckOfCard.remove(drawnCard)
             sortHand(deck)
-//            printMap()
+
             checkForPairs(deckMap, deck, player)
 
             timerScope.launch {
                 withContext(Dispatchers.Main) {
-                    delay(1000L)
+                    delay(TIMER_TEXT)
                     clDrawCard.visibility = View.INVISIBLE
                     clDeck.visibility = View.INVISIBLE
                     if (!aiTurn) {
@@ -228,7 +250,7 @@ class GameMode1Fragment : Fragment() {
                         aiTurnAnswer = false
                         tvAIText.text = " Your turn!"
                     }
-//                    timerClickCheck= false
+
                 }
             }
         }
@@ -244,19 +266,29 @@ class GameMode1Fragment : Fragment() {
         for ((key, value) in deckMap) {
             if (value == 4) {
                 player.numberOfPairs++
+                Log.d("!!!", player.name)
                 deckMap.remove(key)
-                removeCards(key, deck)
+                removeCards(key, deck, deckMap, player)
                 if(player == ai) {
                     timerScope.launch {
                         withContext(Dispatchers.Main) {
                             tvAIText.text = "I got a pair!"
-                            tvPlayerNumberOfPairs.text = "Number of pairs: ${ai.numberOfPairs}"
-                            delay(1000L)
+                            tvAINumberOfPairs.text = "Number of pairs: ${ai.numberOfPairs}"
+                            delay(TIMER_TEXT)
                         }
                     }
 
                 } else {
-                    tvPlayerNumberOfPairs.text = "Number of pairs: ${player.numberOfPairs}"
+                    timerScope.launch {
+                        withContext(Dispatchers.Main) {
+                            showPlayerText()
+                            tvPlayerText.text = "I've got a pair!"
+                            tvPlayerNumberOfPairs.text = "Number of pairs: ${human.numberOfPairs}"
+                            delay(TIMER_TEXT)
+                            hidePlayerText()
+                        }
+                    }
+
                 }
                 Log.d("!!!", player.name + player.numberOfPairs.toString())
                 break
@@ -264,8 +296,11 @@ class GameMode1Fragment : Fragment() {
         }
     }
 
-    fun removeCards(cardValue: Int, deck: MutableList<Card>) {
+    fun removeCards(cardValue: Int, deck: MutableList<Card>, deckMap: MutableMap<Int, Int>, player: Player) {
         deck.filter { it.number == cardValue }.forEach { deck.remove(it) }
+        if(deck.isEmpty()) {
+            drawCardFromDeck(deck, deckMap, player)
+        }
         updateHandView()
 
     }
@@ -279,7 +314,7 @@ class GameMode1Fragment : Fragment() {
         player: Player
     ) {
         deckFrom.filter { it.number == cardValue }.forEach { deckTo.add(it) }
-        removeCards(cardValue, deckFrom)
+        removeCards(cardValue, deckFrom, deckMapFrom, player)
         recalculateMap(deckMapTo, deckTo)
         recalculateMap(deckMapFrom, deckFrom)
         checkForPairs(deckMapTo, deckTo, player)
@@ -303,11 +338,7 @@ class GameMode1Fragment : Fragment() {
         }
     }
 
-    fun printMap() {
-        for (card in player.deckMap) {
-            Log.d("!!!", card.key.toString() + " " + card.value.toString())
-        }
-    }
+
 
     fun updateHandView() {
         //sortHand(deck)
@@ -319,7 +350,7 @@ class GameMode1Fragment : Fragment() {
         if(aiTurn ) {
             timerScope.launch {
                 withContext(Dispatchers.Main) {
-                    delay(1000L)
+                    delay(TIMER_TEXT)
                     tvAIText.text = "I may go again."
                 }
 
@@ -329,15 +360,15 @@ class GameMode1Fragment : Fragment() {
         timerScope.launch {
             withContext(Dispatchers.Main) {
 
-                delay(1000L)
+                delay(TIMER_TEXT)
                 var randomCard = ai.deck.random()
                 randomCardNumber = randomCard.number
                 var showCardSymbol = randomCard.showNumberOnCard(randomCard)
                 tvAIText.text = "Give me all your $showCardSymbol"
                 aiTurnAnswer = true
                 aiTurn = true
-                if( randomCard !in player.deck) {
-                    imGoFishButton.visibility = View.VISIBLE
+                if(human.deck.filter { it.number == randomCardNumber }.isEmpty()) {
+                    showGoFishButton()
                 }
             }
         }
@@ -355,12 +386,12 @@ class GameMode1Fragment : Fragment() {
                     exchangeCards(
                         safeCard.number,
                         ai.deck,
-                        player.deck,
-                        player.deckMap, ai.deckMap, player
+                        human.deck,
+                        human.deckMap, ai.deckMap, human
                     )
                     timerScope.launch {
                         withContext(Dispatchers.Main) {
-                            delay(1000L)
+                            delay(TIMER_TEXT)
                             tvAIText.text = "Your may go again."
 //                            timerClickCheck= false
                         }
@@ -372,19 +403,47 @@ class GameMode1Fragment : Fragment() {
                     clDeck.visibility = View.VISIBLE
 //                    timerClickCheck = false
 
-                    //drawCardFromDeck(humandeckOfCard, humanDeckNumbersOnly)
+
                 }
 
             }
         }
-        sortHand(player.deck)
+        sortHand(human.deck)
         sortHand(ai.deck)
         updateHandView()
-//        timerClickCheck = false
 
-        //Select card
-        //AI checks for card
-        //If has card - gives all of value
-        //If not has card - take from deck
+    }
+
+    fun hidePlayerText() {
+        imPlayerText.visibility = View.INVISIBLE
+        tvPlayerText.visibility = View.INVISIBLE
+    }
+
+    fun showPlayerText() {
+        imPlayerText.visibility = View.VISIBLE
+        tvPlayerText.visibility = View.VISIBLE
+    }
+
+    fun hideAIText() {
+        imAIText.visibility = View.INVISIBLE
+        tvAIText.visibility = View.INVISIBLE
+
+    }
+
+    fun showAIText() {
+        imAIText.visibility = View.VISIBLE
+        tvAIText.visibility = View.VISIBLE
+    }
+
+    fun hideGoFishButton() {
+        imGoFishButton.visibility = View.INVISIBLE
+        tvGoFishButton.visibility = View.VISIBLE
+        imPLayerIcon.visibility = View.VISIBLE
+    }
+
+    fun showGoFishButton() {
+        imGoFishButton.visibility = View.VISIBLE
+        tvGoFishButton.visibility = View.VISIBLE
+        imPLayerIcon.visibility = View.INVISIBLE
     }
 }
