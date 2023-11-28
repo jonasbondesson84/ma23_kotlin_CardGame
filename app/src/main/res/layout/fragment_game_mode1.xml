@@ -11,23 +11,13 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvAICards"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView15"
-            app:layout_constraintTop_toTopOf="@+id/imageView15"
-            tools:listitem="@layout/hand_card_item" />
-
-        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHumanCards"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             app:layout_constraintEnd_toEndOf="@+id/rvAICards"
-            app:layout_constraintStart_toEndOf="@+id/imageView18"
-            app:layout_constraintTop_toTopOf="@+id/imageView18"
+            app:layout_constraintStart_toEndOf="@+id/imGoFishButton"
+            app:layout_constraintTop_toTopOf="@+id/imGoFishButton"
             tools:listitem="@layout/hand_card_item" />
 
         <ImageView
@@ -52,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView15" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvAIText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -65,25 +55,114 @@
             app:layout_constraintStart_toStartOf="@+id/imageView16"
             app:layout_constraintTop_toTopOf="@+id/imageView16" />
 
-        <ImageView
-            android:id="@+id/imDeck"
-            android:layout_width="120dp"
-            android:layout_height="190dp"
-            android:src="@drawable/emptycard"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clDeck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imDeck"
+                android:layout_width="120dp"
+                android:layout_height="190dp"
+                android:src="@drawable/emptycard"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clDrawCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                app:layout_constraintStart_toEndOf="@id/imDeck"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imCardDrawn"
+                    android:layout_width="120dp"
+                    android:layout_height="190dp"
+                    android:src="@drawable/emptycard"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imCardCenter2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/characters_0005"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/imCardDrawn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imCardTopLeft2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/characters_0005"
+                    app:layout_constraintStart_toStartOf="@+id/tvCardTopLeft2"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCardTopLeft2" />
+
+                <TextView
+                    android:id="@+id/tvCardTopLeft2"
+                    android:layout_width="24dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/zen_dots"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    app:layout_constraintStart_toStartOf="@+id/imCardDrawn"
+                    app:layout_constraintTop_toTopOf="@+id/imCardDrawn" />
+
+                <TextView
+                    android:id="@+id/tvCardBottomRight2"
+                    android:layout_width="24dp"
+                    android:layout_height="16dp"
+                    android:fontFamily="@font/zen_dots"
+                    android:rotationX="180"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/imCardDrawn"
+                    app:layout_constraintEnd_toEndOf="@+id/imCardDrawn" />
+
+                <ImageView
+                    android:id="@+id/imCardBottomRight2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:rotationX="180"
+                    android:src="@drawable/characters_0005"
+                    app:layout_constraintBottom_toTopOf="@+id/tvCardBottomRight2"
+                    app:layout_constraintEnd_toEndOf="@+id/tvCardBottomRight2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
-            android:id="@+id/imageView18"
+            android:id="@+id/imGoFishButton"
             android:layout_width="120dp"
             android:layout_height="152dp"
             android:layout_marginStart="5dp"
             android:src="@drawable/iconbutton_large_orange_rounded"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="visible" />
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAICards"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView15"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/hand_card_item" />
 
         <TextView
             android:id="@+id/textView8"
@@ -94,9 +173,9 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView18"
-            app:layout_constraintEnd_toEndOf="@+id/imageView18"
-            app:layout_constraintStart_toStartOf="@+id/imageView18"
-            app:layout_constraintTop_toTopOf="@+id/imageView18" />
+            app:layout_constraintBottom_toBottomOf="@+id/imGoFishButton"
+            app:layout_constraintEnd_toEndOf="@+id/imGoFishButton"
+            app:layout_constraintStart_toStartOf="@+id/imGoFishButton"
+            app:layout_constraintTop_toTopOf="@+id/imGoFishButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

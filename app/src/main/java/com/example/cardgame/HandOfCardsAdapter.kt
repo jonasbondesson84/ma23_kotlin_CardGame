@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): RecyclerView.Adapter<HandOfCardsAdapter.ViewHolder>() {
 
     var layoutInflater = LayoutInflater.from(context)
-  //  var onCardClick: ((Card) -> Unit)? = null
+    var onCardClick: ((Card) -> Unit)? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvCardTopLeft = itemView.findViewById<TextView>(R.id.tvCardTopLeft)
@@ -44,9 +44,9 @@ class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): Rec
         holder.imCardTopLeft.setImageResource(card.showSuiteOnCard(card))
 
         holder.cardPosition = position
-//        holder.itemView.setOnClickListener() {
-//         //   onCardClick?.invoke(card)
-//        }
+        holder.itemView.setOnClickListener() {
+            onCardClick?.invoke(card)
+        }
 
 
     }
