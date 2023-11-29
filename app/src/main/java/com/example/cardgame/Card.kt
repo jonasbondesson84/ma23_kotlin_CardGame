@@ -25,10 +25,10 @@ class Card(var suite: String, var number: Int) {
             return imageID
         }
 
-    fun showNumberOnCard(card: Card): String {
+    fun showNumberOnCard(cardValue: Int): String {
 
             var numberSymbol = ""
-            when(card.number) {
+            when(cardValue) {
                 14 -> {
                     numberSymbol = "A"
                 }
@@ -42,7 +42,7 @@ class Card(var suite: String, var number: Int) {
                     numberSymbol = "J"
                 }
                 else -> {
-                    numberSymbol = card.number.toString()
+                    numberSymbol = cardValue.toString()
                 }
             }
             return numberSymbol

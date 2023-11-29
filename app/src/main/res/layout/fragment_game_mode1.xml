@@ -14,6 +14,7 @@
             android:id="@+id/rvHumanCards"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-25dp"
             android:scrollbars="vertical"
             app:layout_constraintEnd_toEndOf="@+id/rvAICards"
             app:layout_constraintStart_toEndOf="@+id/imGoFishButton"
@@ -68,7 +69,7 @@
                 android:id="@+id/imDeck"
                 android:layout_width="120dp"
                 android:layout_height="190dp"
-                android:src="@drawable/emptycard"
+                android:src="@drawable/emptycard_border"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +86,7 @@
                     android:id="@+id/imCardDrawn"
                     android:layout_width="120dp"
                     android:layout_height="190dp"
-                    android:src="@drawable/emptycard"
+                    android:src="@drawable/emptycard_border"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +165,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView15"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/hand_card_item" />
+            tools:listitem="@layout/sorted_cards_item" />
 
         <TextView
             android:id="@+id/tvGoFishButton"

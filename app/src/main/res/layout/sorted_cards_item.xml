@@ -7,22 +7,64 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="100dp"
-        android:layout_height="150dp"
+        android:layout_height="185dp"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/imCard3"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginBottom="-5dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/imCard2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imCard2"
+            app:srcCompat="@drawable/emptycard_top" />
+
+        <TextView
+            android:id="@+id/tvCardTopLeftCard3"
+            android:layout_width="24dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/zen_dots"
+            android:text="TextView"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imCard3" />
+
+        <ImageView
+            android:id="@+id/imCard2"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginBottom="-5dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/imCard1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imCard1"
+            app:srcCompat="@drawable/emptycard_top" />
+
+        <TextView
+            android:id="@+id/tvCardTopLeftCard2"
+            android:layout_width="24dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/zen_dots"
+            android:text="TextView"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imCard2" />
+
+        <ImageView
             android:id="@+id/imCard1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:src="@drawable/emptycard_border"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/imCardCenter"
@@ -47,24 +89,24 @@
             android:layout_width="24dp"
             android:layout_height="16dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:fontFamily="@font/zen_dots"
             android:text="TextView"
             android:textAlignment="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/imCard1" />
 
         <TextView
             android:id="@+id/tvCardBottomRight"
             android:layout_width="24dp"
             android:layout_height="16dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/zen_dots"
             android:rotationX="180"
             android:text="TextView"
             android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/imCard1"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
@@ -73,7 +115,9 @@
             android:layout_height="24dp"
             android:rotationX="180"
             android:src="@drawable/characters_0005"
+            app:layout_constraintBottom_toBottomOf="@+id/imCard1"
             app:layout_constraintBottom_toTopOf="@+id/tvCardBottomRight"
             app:layout_constraintEnd_toEndOf="@+id/tvCardBottomRight" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
