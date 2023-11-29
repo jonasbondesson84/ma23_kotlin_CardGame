@@ -182,8 +182,8 @@ class GameMode0Fragment : Fragment() {
 
     fun showUICard() {
 
-        tvCardBottomRight.text = currentCard.showNumberOnCard(currentCard)
-        tvCardTopLeft.text = currentCard.showNumberOnCard(currentCard)
+        tvCardBottomRight.text = currentCard.showNumberOnCard(currentCard.number)
+        tvCardTopLeft.text = currentCard.showNumberOnCard(currentCard.number)
         imCardTopLeft.setImageResource(currentCard.showSuiteOnCard(currentCard))
         imCardBottomRight.setImageResource(currentCard.showSuiteOnCard(currentCard))
         imCardCenter.setImageResource(currentCard.showSuiteOnCard(currentCard))

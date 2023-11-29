@@ -37,8 +37,8 @@ class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): Rec
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val card = handOfCards[position]
 
-        holder.tvCardTopLeft.text = card.showNumberOnCard(card)
-        holder.tvCardBottomRight.text = card.showNumberOnCard(card)
+        holder.tvCardTopLeft.text = card.showNumberOnCard(card.number)
+        holder.tvCardBottomRight.text = card.showNumberOnCard(card.number)
         holder.imCardCenter.setImageResource(card.showSuiteOnCard(card))
         holder.imCardBottomRight.setImageResource(card.showSuiteOnCard(card))
         holder.imCardTopLeft.setImageResource(card.showSuiteOnCard(card))

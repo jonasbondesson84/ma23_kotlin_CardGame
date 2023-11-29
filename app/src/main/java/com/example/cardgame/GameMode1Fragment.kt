@@ -17,6 +17,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.TreeMap
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,12 +52,9 @@ class GameMode1Fragment : Fragment() {
     lateinit var imAIText: ImageView
     lateinit var imPlayerText: ImageView
     lateinit var imPLayerIcon: ImageView
-   // var AIdeckOfCard = mutableListOf<Card>()
-  //  var humandeckOfCard = mutableListOf<Card>()
+
     var deckOfCard = deckOfCard().deckOfCard
-   // var numbersOfPairs = 0
-   // var AIDeckNumbersOnly = mutableMapOf<Int, Int>()
- //   var humanDeckNumbersOnly = mutableMapOf<Int, Int>()
+    var firstCard = deckOfCard.first()
     var card: Card? = null
   //  val adapterHuman = view?.let { HandOfCardsAdapter(it.context, humandeckOfCard) }
     val timerScope = CoroutineScope(Dispatchers.Default)
@@ -69,8 +67,8 @@ class GameMode1Fragment : Fragment() {
 
     var randomCardNumber = 0
 
-    val human = Player("human", mutableListOf(), mutableMapOf(), 0 ,0)
-    val ai = Player("computer", mutableListOf(), mutableMapOf(), 0, 0)
+    val human = Player("human", mutableListOf(), TreeMap(), 0 ,0)
+    val ai = Player("computer", mutableListOf(), TreeMap(), 0, 0)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,7 +100,7 @@ class GameMode1Fragment : Fragment() {
         rvHumanCards = view.findViewById(R.id.rvHumanCards)
         rvHumanCards.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-        val adapterHuman = HandOfCardsAdapter(view.context, human.deck)
+        val adapterHuman = HandOfCardSortedAdapter(view.context, human.deckMap, human.deck)
         rvHumanCards.adapter = adapterHuman
 
         imCardCenter = view.findViewById(R.id.imCardCenter2)
@@ -139,53 +137,52 @@ class GameMode1Fragment : Fragment() {
             }
         }
 
-        adapterHuman?.onCardClick = {
+        adapterHuman?.onCardClick = { cardValue, numberOfCards ->
 
                 if (!waitForDrawCard && !aiTurnAnswer) {
-                    var pickedCard = it
+
                     if(!timerClickHandPick) {
                         timerClickHandPick = true
                         timerScope.launch {
                             withContext(Dispatchers.Main) {
+                                hideAIText()
                                 showPlayerText()
-                                tvPlayerText.text = "I want all your ${pickedCard.number}s"
+                                tvPlayerText.text = "I want all your ${firstCard.showNumberOnCard(cardValue)}s"
                                 delay(TIMER_TEXT)
                                 hidePlayerText()
-                                humanTurn(pickedCard)
+                                humanTurn(cardValue)
                             }
                         }
                     }
 
 
                 } else if (aiTurnAnswer) {
-                    var pickedCardForAnswer = it
-                    if (pickedCardForAnswer.number == randomCardNumber) {
-                        exchangeCards(
-                            pickedCardForAnswer.number,
-                            human.deck,
-                            ai.deck,
-                            ai.deckMap, human.deckMap, ai
-                        )
-                        showPlayerText()
+                    //var pickedCardForAnswer = it
+                    if (cardValue == randomCardNumber) {
+
                         timerScope.launch {
                             withContext(Dispatchers.Main) {
+                                hideAIText()
+                                showPlayerText()
                                 tvPlayerText.text = "Here you go!"
                                 delay(TIMER_TEXT)
                                 hidePlayerText()
+                                showAIText()
+                                tvAIText.text = "Thank you"
+                                delay(TIMER_TEXT)
+                                //hideAIText()
                                 aiTurnAnswer = false
+                                exchangeCards(cardValue, human.deck, ai.deck, ai.deckMap, human.deckMap, ai)
                             }
                         }
-                        tvPlayerText.text = "Here you go!"
-
-                        aiTurnAnswer = false
 
                     }
                 }
-//            }
+
         }
 
         imGoFishButton.setOnClickListener() {
-//            if(!timerClickCheck) {
+
                 if (aiTurn) {
                     showPlayerText()
                     tvPlayerText.text = "GO FISH"
@@ -201,7 +198,7 @@ class GameMode1Fragment : Fragment() {
                     hideGoFishButton()
 
                 }
-//            }
+
         }
 
 
@@ -237,26 +234,26 @@ class GameMode1Fragment : Fragment() {
             recalculateMap( human.deckMap, human.deck)
             deckOfCard.remove(deckOfCard.first())
         }
-        sortHand(human.deck)
-        sortHand(ai.deck)
+        sortHand(human.deckMap)
+        sortHand(ai.deckMap)
         updateHandView()
     }
 
-    fun drawCardFromDeck(deck: MutableList<Card>, deckMap: MutableMap<Int, Int>, player: Player) {
+    fun drawCardFromDeck(deck: MutableList<Card>, deckMap: TreeMap<Int, Int>, player: Player) {
         if (deckOfCard.size > 0) {
             var drawnCard = deckOfCard.first()
             deck.add(drawnCard)
             recalculateMap(deckMap, deck)
             clDeck.visibility = View.VISIBLE
             clDrawCard.visibility = View.VISIBLE
-            tvCardBottomRight.text = drawnCard.showNumberOnCard(drawnCard)
-            tvCardTopLeft.text = drawnCard.showNumberOnCard(drawnCard)
+            tvCardBottomRight.text = drawnCard.showNumberOnCard(drawnCard.number)
+            tvCardTopLeft.text = drawnCard.showNumberOnCard(drawnCard.number)
             imCardCenter.setImageResource(drawnCard.showSuiteOnCard(drawnCard))
             imCardTopLeft.setImageResource(drawnCard.showSuiteOnCard(drawnCard))
             imCardBottomRight.setImageResource(drawnCard.showSuiteOnCard(drawnCard))
 
             deckOfCard.remove(drawnCard)
-            sortHand(deck)
+            sortHand(deckMap)
 
             checkForPairs(deckMap, deck, player)
 
@@ -282,12 +279,13 @@ class GameMode1Fragment : Fragment() {
         }
     }
 
-    fun sortHand(deck: MutableList<Card>) {
-        deck.sortBy { it.number }
+    fun sortHand(deckMap: TreeMap<Int, Int>) {
+        //deckMap.toSortedMap()
+
         updateHandView()
     }
 
-    fun checkForPairs(deckMap: MutableMap<Int, Int>, deck: MutableList<Card>, player: Player) {
+    fun checkForPairs(deckMap: TreeMap<Int, Int>, deck: MutableList<Card>, player: Player) {
 
         for ((key, value) in deckMap) {
             if (value == 4) {
@@ -324,7 +322,7 @@ class GameMode1Fragment : Fragment() {
         }
     }
 
-    fun removeCards(cardValue: Int, deck: MutableList<Card>, deckMap: MutableMap<Int, Int>, player: Player) {
+    fun removeCards(cardValue: Int, deck: MutableList<Card>, deckMap: TreeMap<Int, Int>, player: Player) {
         deck.filter { it.number == cardValue }.forEach { deck.remove(it) }
         if(deck.isEmpty()) {
             drawCardFromDeck(deck, deckMap, player)
@@ -337,8 +335,8 @@ class GameMode1Fragment : Fragment() {
         cardValue: Int,
         deckFrom: MutableList<Card>,
         deckTo: MutableList<Card>,
-        deckMapTo: MutableMap<Int, Int>,
-        deckMapFrom: MutableMap<Int, Int>,
+        deckMapTo: TreeMap<Int, Int>,
+        deckMapFrom: TreeMap<Int, Int>,
         player: Player
     ) {
         deckFrom.filter { it.number == cardValue }.forEach { deckTo.add(it) }
@@ -352,7 +350,7 @@ class GameMode1Fragment : Fragment() {
         }
     }
 
-    fun recalculateMap( deckMap: MutableMap<Int, Int>, deck: MutableList<Card>) {
+    fun recalculateMap( deckMap: TreeMap<Int, Int>, deck: MutableList<Card>) {
         deckMap.clear()
         for (card in deck) {
             if (deckMap.containsKey(card.number)) {
@@ -391,7 +389,7 @@ class GameMode1Fragment : Fragment() {
                 delay(TIMER_TEXT)
                 var randomCard = ai.deck.random()
                 randomCardNumber = randomCard.number
-                var showCardSymbol = randomCard.showNumberOnCard(randomCard)
+                var showCardSymbol = randomCard.showNumberOnCard(randomCardNumber)
                 tvAIText.text = "Give me all your $showCardSymbol"
                 aiTurnAnswer = true
                 aiTurn = true
@@ -402,17 +400,18 @@ class GameMode1Fragment : Fragment() {
         }
     }
 
-    fun humanTurn(card: Card) {
+    fun humanTurn(/*card: Card*/cardValue: Int) {
 
-        if (card !in ai.deck) {
+//        if (card !in ai.deck) {
 //                Log.d("!!!", card?.number.toString())
-            card?.let { safeCard ->
-                if (ai.deckMap.containsKey(safeCard.number)) {
-                    var showCardSymbol = safeCard.showNumberOnCard(safeCard)
+           cardValue?.let { safeCardValue ->
+                showAIText()
+                if (ai.deckMap.containsKey(safeCardValue)) {
+                    var showCardSymbol = firstCard.showNumberOnCard(safeCardValue)
              //       Log.d("!!!", showCardSymbol)
                     tvAIText.text = "Here, have all my $showCardSymbol"
                     exchangeCards(
-                        safeCard.number,
+                        safeCardValue,
                         ai.deck,
                         human.deck,
                         human.deckMap, ai.deckMap, human
@@ -435,9 +434,9 @@ class GameMode1Fragment : Fragment() {
                 }
 
             }
-        }
-        sortHand(human.deck)
-        sortHand(ai.deck)
+//        }
+        sortHand(human.deckMap)
+        sortHand(ai.deckMap)
         updateHandView()
 
     }
