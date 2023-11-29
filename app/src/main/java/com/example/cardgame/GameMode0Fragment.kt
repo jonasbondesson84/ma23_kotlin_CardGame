@@ -184,9 +184,9 @@ class GameMode0Fragment : Fragment() {
 
         tvCardBottomRight.text = currentCard.showNumberOnCard(currentCard.number)
         tvCardTopLeft.text = currentCard.showNumberOnCard(currentCard.number)
-        imCardTopLeft.setImageResource(currentCard.showSuiteOnCard(currentCard))
-        imCardBottomRight.setImageResource(currentCard.showSuiteOnCard(currentCard))
-        imCardCenter.setImageResource(currentCard.showSuiteOnCard(currentCard))
+        imCardTopLeft.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
+        imCardBottomRight.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
+        imCardCenter.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
 
     }
 }

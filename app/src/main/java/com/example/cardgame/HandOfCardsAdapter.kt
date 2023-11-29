@@ -39,9 +39,9 @@ class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): Rec
 
         holder.tvCardTopLeft.text = card.showNumberOnCard(card.number)
         holder.tvCardBottomRight.text = card.showNumberOnCard(card.number)
-        holder.imCardCenter.setImageResource(card.showSuiteOnCard(card))
-        holder.imCardBottomRight.setImageResource(card.showSuiteOnCard(card))
-        holder.imCardTopLeft.setImageResource(card.showSuiteOnCard(card))
+        holder.imCardCenter.setImageResource(card.showSuiteOnCard(card.suite))
+        holder.imCardBottomRight.setImageResource(card.showSuiteOnCard(card.suite))
+        holder.imCardTopLeft.setImageResource(card.showSuiteOnCard(card.suite))
 
         holder.cardPosition = position
         holder.itemView.setOnClickListener() {

@@ -261,9 +261,9 @@ class GameMode1Fragment : Fragment() {
             clDrawCard.visibility = View.VISIBLE
             tvCardBottomRight.text = drawnCard.showNumberOnCard(drawnCard.number)
             tvCardTopLeft.text = drawnCard.showNumberOnCard(drawnCard.number)
-            imCardCenter.setImageResource(drawnCard.showSuiteOnCard(drawnCard))
-            imCardTopLeft.setImageResource(drawnCard.showSuiteOnCard(drawnCard))
-            imCardBottomRight.setImageResource(drawnCard.showSuiteOnCard(drawnCard))
+            imCardCenter.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+            imCardTopLeft.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+            imCardBottomRight.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
 
             deckOfCard.remove(drawnCard)
             sortHand(deckMap)

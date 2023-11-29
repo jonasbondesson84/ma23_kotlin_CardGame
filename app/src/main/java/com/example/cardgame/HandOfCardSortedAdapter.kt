@@ -24,7 +24,6 @@ class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<
         var tvCard2Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard2)
         var imCard3 = itemView.findViewById<ImageView>(R.id.imCard3)
         var tvCard3Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard3)
-        var cardPosition = 0
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,52 +41,66 @@ class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<
         val cardMap = handOfCardsMap.entries.elementAt(position)
         val cardMapKey =  cardMap.key
         val cardMapValue =  cardMap.value
-
-        holder.cardPosition = position
+        var cardMapSuite = ""
+        for(card in handOfCards) {
+            if (card.number == cardMapKey) {
+                cardMapSuite = card.suite
+                break
+            }
+        }
+        
         holder.itemView.setOnClickListener() {
             onCardClick?.invoke(cardMapKey, cardMapValue)
         }
         when(cardMapValue ) {
             3 -> {
-                holder.tvCard3Text.visibility = View.VISIBLE
-                holder.imCard3.visibility = View.VISIBLE
-                holder.tvCard3Text.text= card.showNumberOnCard(cardMapKey)
-
-                holder.tvCard2Text.visibility = View.VISIBLE
-                holder.imCard2.visibility = View.VISIBLE
-                holder.tvCard2Text.text= card.showNumberOnCard(cardMapKey)
-
-                holder.tvCardTopLeft.text = card.showNumberOnCard(cardMapKey)
-                holder.tvCardBottomRight.text = card.showNumberOnCard(cardMapKey)
-                //holder.imCardCenter.setImageResource(card.showSuiteOnCard(card))
-                //holder.imCardBottomRight.setImageResource(card.showSuiteOnCard(card))
-                //holder.imCardTopLeft.setImageResource(card.showSuiteOnCard(card))
+                showCard3(holder, card, cardMapKey)
+                showCard2(holder, card, cardMapKey)
+                showCard1(holder, card, cardMapKey,cardMapSuite)
             }
             2 -> {
-                holder.tvCard3Text.visibility = View.INVISIBLE
-                holder.imCard3.visibility = View.INVISIBLE
-
-                holder.tvCard2Text.visibility = View.VISIBLE
-                holder.imCard2.visibility = View.VISIBLE
-                holder.tvCard2Text.text= card.showNumberOnCard(cardMapKey)
-
-                holder.tvCardTopLeft.text = card.showNumberOnCard(cardMapKey)
-                holder.tvCardBottomRight.text = card.showNumberOnCard(cardMapKey)
+                hideCard3(holder)
+                showCard2(holder,card,cardMapKey)
+                showCard1(holder,card,cardMapKey,cardMapSuite)
             }
             else -> {
-                holder.tvCard3Text.visibility = View.INVISIBLE
-                holder.imCard3.visibility = View.INVISIBLE
-
-                holder.tvCard2Text.visibility = View.INVISIBLE
-                holder.imCard2.visibility = View.INVISIBLE
-
-                holder.tvCardTopLeft.text = card.showNumberOnCard(cardMapKey)
-                holder.tvCardBottomRight.text = card.showNumberOnCard(cardMapKey)
+                hideCard3(holder)
+                hideCard2(holder)
+                showCard1(holder, card, cardMapKey, cardMapSuite)
             }
         }
 
 
 
 
+    }
+    fun showCard3(holder: ViewHolder, card: Card, cardMapKey: Int) {
+        holder.tvCard3Text.visibility = View.VISIBLE
+        holder.imCard3.visibility = View.VISIBLE
+        holder.tvCard3Text.text= card.showNumberOnCard(cardMapKey)
+    }
+
+    fun hideCard3(holder: ViewHolder) {
+        holder.tvCard3Text.visibility = View.INVISIBLE
+        holder.imCard3.visibility = View.INVISIBLE
+    }
+
+    fun showCard2(holder: ViewHolder, card: Card, cardMapKey: Int) {
+        holder.tvCard2Text.visibility = View.VISIBLE
+        holder.imCard2.visibility = View.VISIBLE
+        holder.tvCard2Text.text= card.showNumberOnCard(cardMapKey)
+    }
+
+    fun hideCard2(holder: ViewHolder) {
+        holder.tvCard2Text.visibility = View.INVISIBLE
+        holder.imCard2.visibility = View.INVISIBLE
+    }
+
+    fun showCard1(holder: ViewHolder, card: Card, cardMapKey: Int, cardMapSuite: String) {
+        holder.tvCardTopLeft.text = card.showNumberOnCard(cardMapKey)
+        holder.tvCardBottomRight.text = card.showNumberOnCard(cardMapKey)
+        holder.imCardCenter.setImageResource(card.showSuiteOnCard(cardMapSuite))
+        holder.imCardBottomRight.setImageResource(card.showSuiteOnCard(cardMapSuite))
+        holder.imCardTopLeft.setImageResource(card.showSuiteOnCard(cardMapSuite))
     }
 }
