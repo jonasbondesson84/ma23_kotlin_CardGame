@@ -11,6 +11,34 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAIPairs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/rvAICards"
+            app:layout_constraintTop_toBottomOf="@+id/imAIICon"
+            tools:listitem="@layout/pair_item" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHumanPairs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/rvHumanCards"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/pair_item">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <ImageView
+            android:id="@+id/imPlayerText"
+            android:layout_width="210dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="32dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/textbox_blank_side"
+            app:layout_constraintBottom_toTopOf="@+id/imGoFishButton"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHumanCards"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -22,7 +50,7 @@
             tools:listitem="@layout/hand_card_item" />
 
         <ImageView
-            android:id="@+id/imageView15"
+            android:id="@+id/imAIICon"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginStart="10dp"
@@ -40,7 +68,7 @@
             android:scaleType="fitXY"
             android:src="@drawable/textbox_blank_side"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView15" />
+            app:layout_constraintTop_toBottomOf="@+id/imAIICon" />
 
         <TextView
             android:id="@+id/tvAIText"
@@ -72,7 +100,8 @@
                 android:src="@drawable/emptycard_border"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/card_backside" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clDrawCard"
@@ -163,7 +192,7 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView15"
+            app:layout_constraintStart_toEndOf="@+id/imAIICon"
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/sorted_cards_item" />
 
@@ -180,35 +209,6 @@
             app:layout_constraintEnd_toEndOf="@+id/imGoFishButton"
             app:layout_constraintStart_toStartOf="@+id/imGoFishButton"
             app:layout_constraintTop_toTopOf="@+id/imGoFishButton" />
-
-        <TextView
-            android:id="@+id/tvAInumberOfPairs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:text="Number of pairs: "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imAIText" />
-
-        <TextView
-            android:id="@+id/tvPlayerNumberOfPairs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginBottom="12dp"
-            android:text="Number of pairs:"
-            app:layout_constraintBottom_toTopOf="@+id/imGoFishButton"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageView
-            android:id="@+id/imPlayerText"
-            android:layout_width="210dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="32dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/textbox_blank_side"
-            app:layout_constraintBottom_toTopOf="@+id/imGoFishButton"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tvPlayerText"
@@ -230,5 +230,6 @@
             android:src="@drawable/characters_0001"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

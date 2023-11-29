@@ -45,13 +45,15 @@ class GameMode1Fragment : Fragment() {
     lateinit var tvAIText: TextView
     lateinit var clDeck: ConstraintLayout
     lateinit var imGoFishButton: ImageView
-    lateinit var tvAINumberOfPairs: TextView
-    lateinit var tvPlayerNumberOfPairs: TextView
     lateinit var tvGoFishButton: TextView
     lateinit var tvPlayerText: TextView
     lateinit var imAIText: ImageView
     lateinit var imPlayerText: ImageView
     lateinit var imPLayerIcon: ImageView
+    lateinit var rvHumanPairs: RecyclerView
+    lateinit var rvAIPairs: RecyclerView
+    lateinit var adapterHumanPairs: PairsAdapter
+    lateinit var adapterAIPairs: PairsAdapter
 
     var deckOfCard = deckOfCard().deckOfCard
     var firstCard = deckOfCard.first()
@@ -103,6 +105,16 @@ class GameMode1Fragment : Fragment() {
         val adapterHuman = HandOfCardSortedAdapter(view.context, human.deckMap, human.deck)
         rvHumanCards.adapter = adapterHuman
 
+        rvHumanPairs = view.findViewById(R.id.rvHumanPairs)
+        rvHumanPairs.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+        adapterHumanPairs = PairsAdapter(view.context, human.numberOfPairs)
+        rvHumanPairs.adapter = adapterHumanPairs
+
+        rvAIPairs = view.findViewById(R.id.rvAIPairs)
+        rvAIPairs.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
+        adapterAIPairs = PairsAdapter(view.context, ai.numberOfPairs)
+        rvAIPairs.adapter = adapterAIPairs
+
         imCardCenter = view.findViewById(R.id.imCardCenter2)
         imCardBottomRight = view.findViewById(R.id.imCardBottomRight2)
         imCardTopLeft = view.findViewById(R.id.imCardTopLeft2)
@@ -112,8 +124,6 @@ class GameMode1Fragment : Fragment() {
         tvAIText = view.findViewById(R.id.tvAIText)
         clDeck = view.findViewById(R.id.clDeck)
         imGoFishButton = view.findViewById(R.id.imGoFishButton)
-        tvAINumberOfPairs = view.findViewById(R.id.tvAInumberOfPairs)
-        tvPlayerNumberOfPairs = view.findViewById(R.id.tvPlayerNumberOfPairs)
         tvGoFishButton = view.findViewById(R.id.tvGoFishButton)
         tvPlayerText = view.findViewById(R.id.tvPlayerText)
         imAIText = view.findViewById(R.id.imAIText)
@@ -126,6 +136,9 @@ class GameMode1Fragment : Fragment() {
         hideGoFishButton()
         tvAIText.text = "Your turn!"
         hidePlayerText()
+        adapterAIPairs.updateNumberOfPairs(4)
+        adapterHumanPairs.updateNumberOfPairs(2)
+
 
 
         val imDeckOfCard = view.findViewById<ImageView>(R.id.imDeck)
@@ -296,10 +309,11 @@ class GameMode1Fragment : Fragment() {
                 if(player == ai) {
                     timerScope.launch {
                         withContext(Dispatchers.Main) {
-                            tvAIText.text = "I got a pair!"
-                            tvAINumberOfPairs.text = "Number of pairs: ${ai.numberOfPairs}"
+                            tvAIText.text = "I've got a pair!"
+
                             delay(TIMER_TEXT)
                             timerClickHandAnswer = false
+                            adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
                         }
                     }
 
@@ -308,10 +322,12 @@ class GameMode1Fragment : Fragment() {
                         withContext(Dispatchers.Main) {
                             showPlayerText()
                             tvPlayerText.text = "I've got a pair!"
-                            tvPlayerNumberOfPairs.text = "Number of pairs: ${human.numberOfPairs}"
+
                             delay(TIMER_TEXT)
                             hidePlayerText()
                             timerClickHandAnswer = false
+                            adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
+
                         }
                     }
 
