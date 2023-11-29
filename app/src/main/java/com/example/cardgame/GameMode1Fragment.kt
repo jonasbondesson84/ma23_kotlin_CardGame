@@ -23,7 +23,8 @@ import java.util.TreeMap
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-private const val TIMER_TEXT = 1000L
+private const val TIMER_TEXT = 2000L
+private const val TIMER_ACTION = 1000L
 
 /**
  * A simple [Fragment] subclass.
@@ -136,8 +137,6 @@ class GameMode1Fragment : Fragment() {
         hideGoFishButton()
         tvAIText.text = "Your turn!"
         hidePlayerText()
-        adapterAIPairs.updateNumberOfPairs(4)
-        adapterHumanPairs.updateNumberOfPairs(2)
 
 
 
@@ -152,43 +151,46 @@ class GameMode1Fragment : Fragment() {
 
         adapterHuman?.onCardClick = { cardValue, numberOfCards ->
 
-                if (!waitForDrawCard && !aiTurnAnswer) {
+                if (!waitForDrawCard && !aiTurnAnswer) { //checks what action it is you should take
 
-                    if(!timerClickHandPick) {
-                        timerClickHandPick = true
-                        timerScope.launch {
-                            withContext(Dispatchers.Main) {
-                                hideAIText()
-                                showPlayerText()
-                                tvPlayerText.text = "I want all your ${firstCard.showNumberOnCard(cardValue)}s"
-                                delay(TIMER_TEXT)
-                                hidePlayerText()
-                                humanTurn(cardValue)
-                            }
-                        }
+                    if (!timerClickHandPick) {
+                        timerClickHandPick = true  //Makes sure you cant click twice
+                        askAIForCard(cardValue)
                     }
 
 
                 } else if (aiTurnAnswer) {
-                    //var pickedCardForAnswer = it
-                    if (cardValue == randomCardNumber) {
+                    if(!timerClickHandAnswer) {
+                        timerClickHandAnswer = true
+                        //var pickedCardForAnswer = it
+                        if (cardValue == randomCardNumber) {
 
-                        timerScope.launch {
-                            withContext(Dispatchers.Main) {
-                                hideAIText()
-                                showPlayerText()
-                                tvPlayerText.text = "Here you go!"
-                                delay(TIMER_TEXT)
-                                hidePlayerText()
-                                showAIText()
-                                tvAIText.text = "Thank you"
-                                delay(TIMER_TEXT)
-                                //hideAIText()
-                                aiTurnAnswer = false
-                                exchangeCards(cardValue, human.deck, ai.deck, ai.deckMap, human.deckMap, ai)
+                            timerScope.launch {
+                                withContext(Dispatchers.Main) {
+                                    hideAIText()
+                                    showPlayerText()
+                                    tvPlayerText.text = "Here you go!"
+                                    exchangeCards(
+                                        cardValue,
+                                        human.deck,
+                                        ai.deck,
+                                        ai.deckMap,
+                                        human.deckMap,
+                                        ai
+                                    )
+                                    delay(TIMER_TEXT)
+                                    hidePlayerText()
+                                    showAIText()
+                                    tvAIText.text = "Thank you"
+                                    delay(TIMER_TEXT)
+                                    //hideAIText()
+                                    aiTurnAnswer = false
+
+
+                                }
                             }
-                        }
 
+                        }
                     }
                 }
 
@@ -197,19 +199,17 @@ class GameMode1Fragment : Fragment() {
         imGoFishButton.setOnClickListener() {
 
                 if (aiTurn) {
-                    showPlayerText()
-                    tvPlayerText.text = "GO FISH"
-                    tvAIText.text = "Darn' it!"
                     timerScope.launch {
                         withContext(Dispatchers.Main) {
+                            showPlayerText()
+                            tvPlayerText.text = "GO FISH"
+                            tvAIText.text = "Darn' it!"
                             delay(TIMER_TEXT)
                             drawCardFromDeck(ai.deck, ai.deckMap, ai)
                             hidePlayerText()
-
                         }
                     }
                     hideGoFishButton()
-
                 }
 
         }
@@ -272,17 +272,19 @@ class GameMode1Fragment : Fragment() {
 
             timerScope.launch {
                 withContext(Dispatchers.Main) {
-                    delay(TIMER_TEXT)
+                    delay(TIMER_ACTION)
                     clDrawCard.visibility = View.INVISIBLE
                     clDeck.visibility = View.INVISIBLE
                     if (!aiTurn) {
                         waitForDrawCard = false
                         tvAIText.text = "My turn!"
+                        delay(TIMER_TEXT)
                         aiTurnSequence()
                     } else {
                         aiTurn = false
                         aiTurnAnswer = false
                         tvAIText.text = " Your turn!"
+                        delay(TIMER_TEXT)
                     }
                     timerClickDeck= false
 
@@ -306,35 +308,28 @@ class GameMode1Fragment : Fragment() {
                 Log.d("!!!", player.name)
                 deckMap.remove(key)
                 removeCards(key, deck, deckMap, player)
-                if(player == ai) {
                     timerScope.launch {
                         withContext(Dispatchers.Main) {
-                            tvAIText.text = "I've got a pair!"
+                            if (player == ai) {
+                                tvAIText.text = "I've got a pair!"
 
-                            delay(TIMER_TEXT)
-                            timerClickHandAnswer = false
-                            adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
+                                delay(TIMER_TEXT)
+                                timerClickHandAnswer = false
+                                adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
+                            }
+                            else {showPlayerText()
+                                tvPlayerText.text = "I've got a pair!"
+
+                                delay(TIMER_TEXT)
+                                hidePlayerText()
+                                timerClickHandAnswer = false
+                                adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
+                            }
                         }
                     }
-
-                } else {
-                    timerScope.launch {
-                        withContext(Dispatchers.Main) {
-                            showPlayerText()
-                            tvPlayerText.text = "I've got a pair!"
-
-                            delay(TIMER_TEXT)
-                            hidePlayerText()
-                            timerClickHandAnswer = false
-                            adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
-
-                        }
-                    }
-
-                }
-                Log.d("!!!", player.name + player.numberOfPairs.toString())
                 break
             }
+            timerClickHandAnswer = false
         }
     }
 
@@ -392,8 +387,8 @@ class GameMode1Fragment : Fragment() {
         if(aiTurn ) {
             timerScope.launch {
                 withContext(Dispatchers.Main) {
-                    delay(TIMER_TEXT)
                     tvAIText.text = "I may go again."
+                    delay(TIMER_TEXT)
                 }
 
             }
@@ -402,11 +397,11 @@ class GameMode1Fragment : Fragment() {
         timerScope.launch {
             withContext(Dispatchers.Main) {
 
-                delay(TIMER_TEXT)
                 var randomCard = ai.deck.random()
                 randomCardNumber = randomCard.number
                 var showCardSymbol = randomCard.showNumberOnCard(randomCardNumber)
                 tvAIText.text = "Give me all your $showCardSymbol"
+                delay(TIMER_TEXT)
                 aiTurnAnswer = true
                 aiTurn = true
                 if(human.deck.filter { it.number == randomCardNumber }.isEmpty()) {
@@ -425,7 +420,7 @@ class GameMode1Fragment : Fragment() {
                 if (ai.deckMap.containsKey(safeCardValue)) {
                     var showCardSymbol = firstCard.showNumberOnCard(safeCardValue)
              //       Log.d("!!!", showCardSymbol)
-                    tvAIText.text = "Here, have all my $showCardSymbol"
+                    tvAIText.text = "Here you go."
                     exchangeCards(
                         safeCardValue,
                         ai.deck,
@@ -434,8 +429,8 @@ class GameMode1Fragment : Fragment() {
                     )
                     timerScope.launch {
                         withContext(Dispatchers.Main) {
-                            delay(TIMER_TEXT)
                             tvAIText.text = "Your may go again."
+                            //delay(TIMER_TEXT)
                             timerClickHandPick = false
                         }
 
@@ -455,6 +450,20 @@ class GameMode1Fragment : Fragment() {
         sortHand(ai.deckMap)
         updateHandView()
 
+    }
+
+    fun askAIForCard(cardValue: Int) {
+        timerScope.launch {
+            withContext(Dispatchers.Main) {
+                hideAIText()
+                showPlayerText()
+                tvPlayerText.text =
+                    "I want all your ${firstCard.showNumberOnCard(cardValue)}s"
+                delay(TIMER_TEXT)
+                hidePlayerText()
+                humanTurn(cardValue)
+            }
+        }
     }
 
     fun hidePlayerText() {
