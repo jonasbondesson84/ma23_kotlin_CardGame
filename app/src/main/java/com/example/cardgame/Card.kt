@@ -3,9 +3,9 @@ package com.example.cardgame
 class Card(var suite: String, var number: Int) {
 
 
-    fun showSuiteOnCard(card: Card): Int {
+    fun showSuiteOnCard(cardSuite: String): Int {
         var imageID = 0
-        when(card.suite) {
+        when(cardSuite) {
             "Hearts" -> {
                 imageID = R.drawable.characters_0006
             }
@@ -18,9 +18,11 @@ class Card(var suite: String, var number: Int) {
                 imageID = R.drawable.characters_0003
             }
 
-            else -> {
+            "Spades" -> {
                 imageID = R.drawable.characters_0005
             }
+            else ->
+                imageID = R.drawable.box_orange_rounded
         }
             return imageID
         }
