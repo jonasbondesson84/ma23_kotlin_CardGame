@@ -27,7 +27,14 @@
             tools:listitem="@layout/pair_item">
 
         </androidx.recyclerview.widget.RecyclerView>
-
+        <ImageView
+            android:id="@+id/imDeck"
+            android:layout_width="120dp"
+            android:layout_height="190dp"
+            android:src="@drawable/backside_pile"
+            app:layout_constraintBottom_toBottomOf="@id/clDeck"
+            app:layout_constraintStart_toStartOf="@id/clDeck"
+            app:layout_constraintTop_toTopOf="@id/clDeck" />
         <ImageView
             android:id="@+id/imPlayerText"
             android:layout_width="210dp"
@@ -94,21 +101,22 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imDeck"
+                android:id="@+id/imDeckShown"
                 android:layout_width="120dp"
                 android:layout_height="190dp"
-                android:src="@drawable/emptycard_border"
+                android:src="@drawable/backside_pile"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/card_backside" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clDrawCard"
+                android:id="@+id/clCardPile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                app:layout_constraintStart_toEndOf="@id/imDeck"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                app:layout_constraintStart_toEndOf="@id/imDeckShown"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView

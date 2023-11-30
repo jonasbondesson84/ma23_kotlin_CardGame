@@ -19,6 +19,7 @@ class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): Rec
         var imCardCenter = itemView.findViewById<ImageView>(R.id.imCardCenter)
         var imCardTopLeft = itemView.findViewById<ImageView>(R.id.imCardTopLeft)
         var imCardBottomRight = itemView.findViewById<ImageView>(R.id.imCardBottomRight)
+        var imCard = itemView.findViewById<ImageView>(R.id.imCard1)
         var cardPosition = 0
 
 
@@ -36,7 +37,7 @@ class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val card = handOfCards[position]
-
+        hideAISymbolsOnCards(holder)
         holder.tvCardTopLeft.text = card.showNumberOnCard(card.number)
         holder.tvCardBottomRight.text = card.showNumberOnCard(card.number)
         holder.imCardCenter.setImageResource(card.showSuiteOnCard(card.suite))
@@ -49,5 +50,14 @@ class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): Rec
         }
 
 
+    }
+
+    fun hideAISymbolsOnCards(holder: ViewHolder) {
+        holder.imCardCenter.visibility = View.INVISIBLE
+        holder.imCardTopLeft.visibility = View.INVISIBLE
+        holder.imCardBottomRight.visibility = View.INVISIBLE
+        holder.tvCardTopLeft.visibility = View.INVISIBLE
+        holder.tvCardBottomRight.visibility = View.INVISIBLE
+        holder.imCard.setImageResource(R.drawable.card_backside)
     }
 }

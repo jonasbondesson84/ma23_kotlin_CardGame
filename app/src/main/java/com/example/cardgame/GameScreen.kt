@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 class GameScreen : AppCompatActivity() {
 
     val gameIntroFragment = gameIntroFragment()
+    val gameFragment = GameMode2Fragment()
 
 
 
@@ -23,7 +24,7 @@ class GameScreen : AppCompatActivity() {
 
     fun showIntroFragment(view: View?) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fmGameScreen, gameIntroFragment, "gameIntroFragment")
+        transaction.replace(R.id.fmGameScreen, gameFragment, "gameIntroFragment")
         transaction.commit()
 
     }

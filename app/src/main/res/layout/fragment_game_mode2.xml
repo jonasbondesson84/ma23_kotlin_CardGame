@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameMode2Fragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imDeckGAMEMODE2"
+            android:layout_width="120dp"
+            android:layout_height="190dp"
+            android:src="@drawable/backside_pile"
+            app:layout_constraintBottom_toBottomOf="@id/clDeckGAMEMODE2"
+            app:layout_constraintStart_toStartOf="@id/clDeckGAMEMODE2"
+            app:layout_constraintTop_toTopOf="@id/clDeckGAMEMODE2" />
+
+        <ImageView
+            android:id="@+id/imPlayerTextGAMEMODE2"
+            android:layout_width="210dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="32dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/textbox_blank_side"
+            app:layout_constraintBottom_toTopOf="@+id/imPLayerIconGAMEMODE2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHumanCardsGAMEMODE2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="555dp"
+            tools:listitem="@layout/hand_card_item" />
+
+        <ImageView
+            android:id="@+id/imAIIConGAMEMODE2"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/characters_0005"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imAITextGAMEMODE2"
+            android:layout_width="210dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="32dp"
+            android:rotationX="180"
+            android:scaleType="fitXY"
+            android:src="@drawable/textbox_blank_side"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imAIIConGAMEMODE2" />
+
+        <TextView
+            android:id="@+id/tvAITextGAMEMODE2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/zen_dots"
+            android:text="GO FISH!"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imAITextGAMEMODE2"
+            app:layout_constraintEnd_toEndOf="@+id/imAITextGAMEMODE2"
+            app:layout_constraintStart_toStartOf="@+id/imAITextGAMEMODE2"
+            app:layout_constraintTop_toTopOf="@+id/imAITextGAMEMODE2" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clDeckGAMEMODE2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imDeckShownGAMEMODE2"
+                android:layout_width="120dp"
+                android:layout_height="190dp"
+                android:src="@drawable/backside_pile"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clCardPileGAMEMODE2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                app:layout_constraintStart_toEndOf="@id/imDeckShownGAMEMODE2"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imCardPileGAMEMODE2"
+                    android:layout_width="120dp"
+                    android:layout_height="190dp"
+                    android:src="@drawable/emptycard_border"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imCardCenterGAMEMODE2"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/characters_0005"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/imCardPileGAMEMODE2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imCardTopLeftGAMEMODE2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/characters_0005"
+                    app:layout_constraintStart_toStartOf="@+id/tvCardTopLeftGAMEMODE2"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCardTopLeftGAMEMODE2" />
+
+                <TextView
+                    android:id="@+id/tvCardTopLeftGAMEMODE2"
+                    android:layout_width="24dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/zen_dots"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    app:layout_constraintStart_toStartOf="@+id/imCardPileGAMEMODE2"
+                    app:layout_constraintTop_toTopOf="@+id/imCardPileGAMEMODE2" />
+
+                <TextView
+                    android:id="@+id/tvCardBottomRightGAMEMODE2"
+                    android:layout_width="24dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="15dp"
+                    android:fontFamily="@font/zen_dots"
+                    android:rotationX="180"
+                    android:text="TextView"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="@+id/imCardPileGAMEMODE2"
+                    app:layout_constraintEnd_toEndOf="@+id/imCardPileGAMEMODE2" />
+
+                <ImageView
+                    android:id="@+id/imCardBottomRightGAMEMODE2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:rotationX="180"
+                    android:src="@drawable/characters_0005"
+                    app:layout_constraintBottom_toTopOf="@+id/tvCardBottomRightGAMEMODE2"
+                    app:layout_constraintEnd_toEndOf="@+id/tvCardBottomRightGAMEMODE2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clCardDrawnGAMEMODE2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clDeckGAMEMODE2"
+            app:layout_constraintBottom_toTopOf="@id/rvHumanCardsGAMEMODE2"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+            <ImageView
+                android:id="@+id/imCardDrawnGAMEMODE2"
+                android:layout_width="120dp"
+                android:layout_height="190dp"
+                android:src="@drawable/emptycard_border"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imCardDrawnCenterGAMEMODE2"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/characters_0005"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/imCardDrawnGAMEMODE2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imCardDrawnTopLeftGAMEMODE2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/characters_0005"
+                app:layout_constraintStart_toStartOf="@+id/tvCardDrawnTopLeftGAMEMODE2"
+                app:layout_constraintTop_toBottomOf="@+id/tvCardDrawnTopLeftGAMEMODE2" />
+
+            <TextView
+                android:id="@+id/tvCardDrawnTopLeftGAMEMODE2"
+                android:layout_width="24dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/zen_dots"
+                android:text="TextView"
+                android:textAlignment="center"
+                app:layout_constraintStart_toStartOf="@+id/imCardDrawnGAMEMODE2"
+                app:layout_constraintTop_toTopOf="@+id/imCardDrawnGAMEMODE2" />
+
+            <TextView
+                android:id="@+id/tvCardDrawnBottomRightGAMEMODE2"
+                android:layout_width="24dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@font/zen_dots"
+                android:rotationX="180"
+                android:text="TextView"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@+id/imCardDrawnGAMEMODE2"
+                app:layout_constraintEnd_toEndOf="@+id/imCardDrawnGAMEMODE2" />
+
+            <ImageView
+                android:id="@+id/imCardDrawnBottomRightGAMEMODE2"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:rotationX="180"
+                android:src="@drawable/characters_0005"
+                app:layout_constraintBottom_toTopOf="@+id/tvCardDrawnBottomRightGAMEMODE2"
+                app:layout_constraintEnd_toEndOf="@+id/tvCardDrawnBottomRightGAMEMODE2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAICardsGAMEMODE2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imAIIConGAMEMODE2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/sorted_cards_item" />
+
+        <TextView
+            android:id="@+id/tvPlayerTextGAMEMODE2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/zen_dots"
+            android:text="GO FISH"
+            android:textSize="24sp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imPlayerTextGAMEMODE2"
+            app:layout_constraintEnd_toEndOf="@+id/imPlayerTextGAMEMODE2"
+            app:layout_constraintStart_toStartOf="@+id/imPlayerTextGAMEMODE2"
+            app:layout_constraintTop_toTopOf="@+id/imPlayerTextGAMEMODE2" />
+
+        <ImageView
+            android:id="@+id/imPLayerIconGAMEMODE2"
+            android:layout_width="120dp"
+            android:layout_height="160dp"
+            android:src="@drawable/characters_0001"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
