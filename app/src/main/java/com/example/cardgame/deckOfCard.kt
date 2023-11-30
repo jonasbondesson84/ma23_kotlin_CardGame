@@ -33,7 +33,7 @@ class deckOfCard {
     }
 
     fun createCards(suite: String) {
-        for (i in 2 .. 14) {
+        for (i in 2 .. 5) {
             deckOfCard.add(Card(suite, i))
         }
     }
