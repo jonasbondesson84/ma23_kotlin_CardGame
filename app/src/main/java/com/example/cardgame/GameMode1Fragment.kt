@@ -95,7 +95,7 @@ class GameMode1Fragment : Fragment() {
         rvAICards = view.findViewById(R.id.rvAICards)
         rvAICards.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-        val adapterAI = HandOfCardsAdapter(view.context, ai.deck)
+        val adapterAI = HandOfCardsAdapter(view.context, ai)
         rvAICards.adapter = adapterAI
 
         rvHumanCards = view.findViewById(R.id.rvHumanCards)
