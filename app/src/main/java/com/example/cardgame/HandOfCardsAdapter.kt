@@ -8,10 +8,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): RecyclerView.Adapter<HandOfCardsAdapter.ViewHolder>() {
+class HandOfCardsAdapter(val context: Context, val player: Player /*val handOfCards: List<Card>*/): RecyclerView.Adapter<HandOfCardsAdapter.ViewHolder>() {
 
     var layoutInflater = LayoutInflater.from(context)
-    var onCardClick: ((Card) -> Unit)? = null
+    var onCardClick: ((Card, Int) -> Unit)? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvCardTopLeft = itemView.findViewById<TextView>(R.id.tvCardTopLeft)
@@ -32,12 +32,14 @@ class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): Rec
     }
 
     override fun getItemCount(): Int {
-        return handOfCards.size
+        return player.deck.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val card = handOfCards[position]
-        hideAISymbolsOnCards(holder)
+        val card = player.deck[position]
+        if(player.name == "Computer") {
+            hideAISymbolsOnCards(holder)
+        }
         holder.tvCardTopLeft.text = card.showNumberOnCard(card.number)
         holder.tvCardBottomRight.text = card.showNumberOnCard(card.number)
         holder.imCardCenter.setImageResource(card.showSuiteOnCard(card.suite))
@@ -46,7 +48,7 @@ class HandOfCardsAdapter(val context: Context, val handOfCards: List<Card>): Rec
 
         holder.cardPosition = position
         holder.itemView.setOnClickListener() {
-            onCardClick?.invoke(card)
+            onCardClick?.invoke(card, position)
         }
 
 

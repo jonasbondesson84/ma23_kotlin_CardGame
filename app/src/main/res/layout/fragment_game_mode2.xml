@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/zen_dots"
-            android:text="GO FISH!"
+            android:text="Crazy 8!"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@+id/imAITextGAMEMODE2"
@@ -115,7 +115,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imCardCenterGAMEMODE2"
+                    android:id="@+id/imCardPileCenterGAMEMODE2"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/characters_0005"
@@ -125,15 +125,15 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imCardTopLeftGAMEMODE2"
+                    android:id="@+id/imCardPileTopLeftGAMEMODE2"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/characters_0005"
-                    app:layout_constraintStart_toStartOf="@+id/tvCardTopLeftGAMEMODE2"
-                    app:layout_constraintTop_toBottomOf="@+id/tvCardTopLeftGAMEMODE2" />
+                    app:layout_constraintStart_toStartOf="@+id/tvCardPileTopLeftGAMEMODE2"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCardPileTopLeftGAMEMODE2" />
 
                 <TextView
-                    android:id="@+id/tvCardTopLeftGAMEMODE2"
+                    android:id="@+id/tvCardPileTopLeftGAMEMODE2"
                     android:layout_width="24dp"
                     android:layout_height="16dp"
                     android:layout_marginStart="5dp"
@@ -145,7 +145,7 @@
                     app:layout_constraintTop_toTopOf="@+id/imCardPileGAMEMODE2" />
 
                 <TextView
-                    android:id="@+id/tvCardBottomRightGAMEMODE2"
+                    android:id="@+id/tvCardPileBottomRightGAMEMODE2"
                     android:layout_width="24dp"
                     android:layout_height="16dp"
                     android:layout_marginEnd="5dp"
@@ -158,13 +158,13 @@
                     app:layout_constraintEnd_toEndOf="@+id/imCardPileGAMEMODE2" />
 
                 <ImageView
-                    android:id="@+id/imCardBottomRightGAMEMODE2"
+                    android:id="@+id/imCardPileBottomRightGAMEMODE2"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:rotationX="180"
                     android:src="@drawable/characters_0005"
-                    app:layout_constraintBottom_toTopOf="@+id/tvCardBottomRightGAMEMODE2"
-                    app:layout_constraintEnd_toEndOf="@+id/tvCardBottomRightGAMEMODE2" />
+                    app:layout_constraintBottom_toTopOf="@+id/tvCardPileBottomRightGAMEMODE2"
+                    app:layout_constraintEnd_toEndOf="@+id/tvCardPileBottomRightGAMEMODE2" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -276,6 +276,51 @@
             android:src="@drawable/characters_0001"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSuites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/imPlayerTextGAMEMODE2"
+            app:layout_constraintEnd_toEndOf="@+id/rvHumanCardsGAMEMODE2"
+            app:layout_constraintStart_toStartOf="@+id/rvHumanCardsGAMEMODE2"
+            app:layout_constraintTop_toBottomOf="@+id/clDeckGAMEMODE2">
+
+            <ImageView
+                android:id="@+id/imSuiteSpadesGAMEMODE2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/characters_0005"
+                app:layout_constraintStart_toEndOf="@+id/imSuiteHeartGAMEMODE2"
+                app:layout_constraintTop_toTopOf="@+id/imSuiteHeartGAMEMODE2" />
+
+            <ImageView
+                android:id="@+id/imSuiteHeartGAMEMODE2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/characters_0006"
+                app:layout_constraintStart_toEndOf="@+id/imSuiteClubsGAMEMODE2"
+                app:layout_constraintTop_toTopOf="@+id/imSuiteClubsGAMEMODE2" />
+
+            <ImageView
+                android:id="@+id/imSuiteDiamondGAMEMODE2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/characters_0001"
+                app:layout_constraintStart_toEndOf="@+id/imSuiteSpadesGAMEMODE2"
+                app:layout_constraintTop_toTopOf="@+id/imSuiteSpadesGAMEMODE2" />
+
+            <ImageView
+                android:id="@+id/imSuiteClubsGAMEMODE2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/characters_0003"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
