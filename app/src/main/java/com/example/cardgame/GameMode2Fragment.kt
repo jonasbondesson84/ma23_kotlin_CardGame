@@ -49,6 +49,8 @@ class GameMode2Fragment : Fragment() {
     private lateinit var imDiamonds: ImageView
     private lateinit var imClubs: ImageView
     private lateinit var imSpades: ImageView
+    private lateinit var imPassIcon: ImageView
+    private lateinit var tvPassText: TextView
 
     private var deckOfCard = deckOfCard().deckOfCard
     private var pileDeck = mutableListOf<Card>()
@@ -91,6 +93,8 @@ class GameMode2Fragment : Fragment() {
         imDiamonds = view.findViewById(R.id.imSuiteDiamondGAMEMODE2)
         imClubs = view.findViewById(R.id.imSuiteClubsGAMEMODE2)
         imSpades = view.findViewById(R.id.imSuiteSpadesGAMEMODE2)
+        tvPassText = view.findViewById(R.id.tvPass)
+        imPassIcon = view.findViewById(R.id.imPassIcon)
 
         rvHumanCards.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
@@ -111,6 +115,7 @@ class GameMode2Fragment : Fragment() {
         sortHand(human)
         sortHand(ai)
         hideSuitesList()
+        hidePassIcon()
         var currentCard: Card = pileDeck.last()
         var currentCardPosition = pileDeck.size-1
 
@@ -139,24 +144,39 @@ class GameMode2Fragment : Fragment() {
         }
 
         imHearts.setOnClickListener() {
-            updatePileCard(currentCard, "Hearts")
+
             removeCardFromHand(currentCard, human, currentCardPosition)
+            currentCard.suite = "Hearts"
+            //updatePileCard(currentCard, "Hearts")
+            addCardToPile(currentCard, human)
             aiTurnSequence()
         }
         imDiamonds.setOnClickListener() {
-            updatePileCard(currentCard, "Diamonds")
+
             removeCardFromHand(currentCard, human, currentCardPosition)
+            currentCard.suite = "Diamonds"
+            //updatePileCard(currentCard, "Diamonds")
+            addCardToPile(currentCard, human)
             aiTurnSequence()
         }
         imClubs.setOnClickListener() {
-            updatePileCard(currentCard, "Clubs")
             removeCardFromHand(currentCard, human, currentCardPosition)
+            currentCard.suite = "Clubs"
+            //updatePileCard(currentCard, "Clubs")
+            addCardToPile(currentCard, human)
             aiTurnSequence()
         }
         imSpades.setOnClickListener() {
-            updatePileCard(currentCard, "Spades")
+
             removeCardFromHand(currentCard, human, currentCardPosition)
+            currentCard.suite = "Spades"
+//            updatePileCard(updatedCard, "Spades")
+            addCardToPile(currentCard,human)
             aiTurnSequence()
+        }
+
+        imPassIcon.setOnClickListener() {
+            passTo(ai)
         }
 
 
@@ -185,6 +205,8 @@ class GameMode2Fragment : Fragment() {
         tvCardPileTopLeft.text = card.showNumberOnCard(card.number)
         tvCardPileBottomRight.text = card.showNumberOnCard(card.number)
         hideSuitesList()
+        Log.d("!!!", "Top of pile: " + card.suite + card.number.toString())
+        Log.d("!!!", "Last of pileDeck: " + pileDeck.last().suite + pileDeck.last().number.toString())
 
     }
 
@@ -204,8 +226,8 @@ class GameMode2Fragment : Fragment() {
 
             }
         }
-        aiTurn = false
         drawCardFromDeck(ai)
+        aiTurnSequence()
     }
 
     fun drawCardFromDeck(player: Player) {
@@ -213,15 +235,35 @@ class GameMode2Fragment : Fragment() {
             player.deck.add(deckOfCard.first())
             deckOfCard.remove(deckOfCard.first())
             sortHand(player)
-
+        } else if(aiTurn) {
+            passTo(human)
+        } else {
+            showPassIcon()
         }
+    }
 
+    fun gameDone() {
+        countScore(ai)
+        countScore(human)
+    }
+
+    fun countScore(player: Player) {
+        var countScore = 0
+        for (card in player.deck) {
+            countScore += card.number
+        }
+        player.score = countScore
+        Log.d("!!!", "Playerscore: " +player.score.toString())
     }
 
     fun removeCardFromHand(card: Card, player: Player, position: Int) {
         player.deck.remove(card)
-        //adapterHumanCards.notifyItemRemoved(position)
-        updateHandView()
+        if(player.deck.isEmpty()) {
+            gameDone()
+        }else {
+            //adapterHumanCards.notifyItemRemoved(position)
+            updateHandView()
+        }
     }
 
     fun addCardToPile(card: Card, player: Player) {
@@ -247,6 +289,25 @@ class GameMode2Fragment : Fragment() {
         Log.d("!!!", "--------------")
     }
 
+    fun passTo(player: Player){
+        if (player == ai) {
+            aiTurn = true
+            aiTurnSequence()
+        } else {
+            aiTurn = false
+
+        }
+    }
+
+    fun showPassIcon() {
+        tvPassText.visibility = View.VISIBLE
+        imPassIcon.visibility = View.VISIBLE
+    }
+
+    fun hidePassIcon() {
+        tvPassText.visibility = View.INVISIBLE
+        imPassIcon.visibility = View.INVISIBLE
+    }
     fun showSuitesList() {
         clSuites.visibility = View.VISIBLE
     }
