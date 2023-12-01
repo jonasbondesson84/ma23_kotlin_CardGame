@@ -27,21 +27,22 @@ class GameMode0Fragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    var gameDoneFragment = gameDoneFragment()
-    var deckOfCard = deckOfCard()
-    var currentCardIndex = 1
-    var score = 0
-    var currentCard = deckOfCard.getNewCard(0)
-    var nextCard = deckOfCard.getNewCard(1)
+//    private var gameDoneFragment = gameDoneFragment()
+    private var deckOfCard = deckOfCard()
+    private var currentCardIndex = 1
+    private var score = 0
+    private var currentCard = deckOfCard.getNewCard(0)
+    private var nextCard = deckOfCard.getNewCard(1)
+    //var gameLevels = GameEngine.gameLevels
 
-    lateinit var tvCard: TextView
-    lateinit var tvCurrentScore: TextView
-    lateinit var tvCardTopLeft: TextView
-    lateinit var tvCardBottomRight: TextView
-    lateinit var imCardTopLeft: ImageView
-    lateinit var imCardBottomRight: ImageView
-    lateinit var imCardCenter: ImageView
-    lateinit var pbTimeLeft: ProgressBar
+    private lateinit var tvCard: TextView
+    private lateinit var tvCurrentScore: TextView
+    private lateinit var tvCardTopLeft: TextView
+    private lateinit var tvCardBottomRight: TextView
+    private lateinit var imCardTopLeft: ImageView
+    private lateinit var imCardBottomRight: ImageView
+    private lateinit var imCardCenter: ImageView
+    private lateinit var pbTimeLeft: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,7 +123,7 @@ class GameMode0Fragment : Fragment() {
             }
 
             override fun onAnimationEnd(animation: Animator) {
-                showGameDoneFragment(null)
+                gameDone()
             }
 
             override fun onAnimationCancel(animation: Animator) {
@@ -135,13 +136,18 @@ class GameMode0Fragment : Fragment() {
         })
 
     }
+    fun gameDone() {
+        showGameDoneFragment(null)
+        GameEngine.gameLevels[GameEngine.currentLevel].score = score * 100
+    }
 
     fun showGameDoneFragment(view: View?) {
 
-       // gameDoneFragment = gameDoneFragment().newInstance()
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fmGameScreen, gameDoneFragment, "gameDoneFragment")
-        transaction.commit()
+        (activity as? GameScreen)?.switchFragment(null, gameDoneFragment())
+        //gameDoneFragment = gameDoneFragment().newInstance()
+//        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.fmGameScreen, gameDoneFragment, "gameDoneFragment")
+//        transaction.commit()
 
     }
 

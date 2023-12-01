@@ -24,8 +24,9 @@ class gameIntroFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    val gameMode0Fragment = GameMode0Fragment()
-    val gameMode1Fragment = GameMode1Fragment()
+//    private val gameMode0Fragment = GameMode0Fragment()
+//    private val gameMode1Fragment = GameMode1Fragment()
+//    private val gameMode2Fragment = GameMode2Fragment()
     lateinit var tvRules: TextView
 
 
@@ -58,8 +59,18 @@ class gameIntroFragment : Fragment() {
 
 
         btnNext.setOnClickListener() {
+            when(gameLevels[GameEngine.currentLevel].gameMode) {
+                0 -> {
+                    (activity as? GameScreen)?.switchFragment(view, GameMode0Fragment())
+                }
 
-            showGameFragment(it)
+                1 -> {
+                    (activity as? GameScreen)?.switchFragment(view, GameMode1Fragment())
+                }
+                else -> {
+                    (activity as? GameScreen)?.switchFragment(view, GameMode2Fragment())
+                }
+            }
 
         }
         return view
@@ -86,10 +97,10 @@ class gameIntroFragment : Fragment() {
     }
 
 
-    fun showGameFragment(view: View?) {
+    fun showGameFragment(view: View?, gameMode: Fragment) {
 
         val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fmGameScreen, gameMode1Fragment, "gameFragment")
+        transaction.replace(R.id.fmGameScreen, gameMode, "gameFragment")
         transaction.commit()
 
     }
