@@ -1,9 +1,12 @@
 package com.example.cardgame
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +24,9 @@ class gameDoneFragment : Fragment() {
     private var param1: Int? = null
     private var param2: String? = null
 
+    private lateinit var tvScore: TextView
+   // private val gameIntroFragment = gameIntroFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -36,6 +42,29 @@ class gameDoneFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_game_done, container, false)
 
+        tvScore = view.findViewById(R.id.tvScoreDone)
+
+        var levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
+
+        tvScore.text = levelScore.toString()
+        var imNextGame = view.findViewById<ImageView>(R.id.imNextGame)
+        var tvNextGame = view.findViewById<TextView>(R.id.tvNextGame)
+        var imReplayGame = view.findViewById<ImageView>(R.id.imReplayGame)
+
+        Log.d("!!!", "levelScore $levelScore ScoreNeeded: " +GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded.toString())
+        if(levelScore < GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
+            tvNextGame.visibility = View.INVISIBLE
+            imNextGame.visibility = View.INVISIBLE
+        }
+
+        imNextGame.setOnClickListener() {
+            GameEngine.currentLevel++
+            goToNextGame(null)
+        }
+
+        imReplayGame.setOnClickListener() {
+            goToNextGame(null)
+        }
 
 
 
@@ -61,4 +90,13 @@ class gameDoneFragment : Fragment() {
                 }
             }
     }
+
+    fun goToNextGame(view: View?) {
+        (activity as? GameScreen)?.switchFragment(null, gameIntroFragment())
+
+//        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.fmGameScreen, gameIntroFragment, "gameIntoFragment")
+//        transaction.commit()
+    }
+
 }
