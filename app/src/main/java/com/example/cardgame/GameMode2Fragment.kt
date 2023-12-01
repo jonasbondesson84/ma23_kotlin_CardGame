@@ -114,6 +114,7 @@ class GameMode2Fragment : Fragment() {
         hideCardDrawn()
         sortHand(human)
         sortHand(ai)
+        printHand()
         hideSuitesList()
         hidePassIcon()
         var currentCard: Card = pileDeck.last()
@@ -127,6 +128,7 @@ class GameMode2Fragment : Fragment() {
 
         adapterHumanCards?.onCardClick = { card, position ->
             if(!aiTurn) {
+                hidePassIcon()
                 if (card.number == CRAZY_EIGHT) {
                     aiTurn = true
                     currentCard = card
@@ -217,8 +219,14 @@ class GameMode2Fragment : Fragment() {
     }
 
     fun aiTurnSequence() {
+        var crazyEight: Card? = null
+
         for ( card in ai.deck) {
-            if (card.suite == selectedSuite || card.number == pileDeck.last().number) {
+            if (card.suite == selectedSuite || card.number == pileDeck.last().number ) {
+                if(card.number == CRAZY_EIGHT) {
+                    crazyEight = card
+                    break
+                }
                 addCardToPile(card, ai)
                 removeCardFromHand(card, ai, 0)
                 aiTurn = false
@@ -226,8 +234,31 @@ class GameMode2Fragment : Fragment() {
 
             }
         }
+        if (crazyEight != null) {
+            removeCardFromHand(crazyEight, ai, 0)
+            countSuits(ai)?.let {
+                crazyEight.suite = it
+            }
+            addCardToPile(crazyEight, ai)
+            aiTurn = false
+            return
+        }
         drawCardFromDeck(ai)
-        aiTurnSequence()
+        if(aiTurn) {
+            aiTurnSequence()
+        }
+    }
+
+    fun countSuits(player: Player): String? {
+        var deckMap = mutableMapOf<String, Int>()
+        for (card in player.deck) {
+            val countSuite = deckMap.getOrDefault(card.suite, 0)
+            deckMap[card.suite] = countSuite
+
+        }
+        var highestNumberOfSuite = deckMap.maxByOrNull { it.value }?.key
+        Log.d("!!!", "highestnumberofsuite: " + highestNumberOfSuite)
+        return highestNumberOfSuite
     }
 
     fun drawCardFromDeck(player: Player) {
@@ -260,10 +291,10 @@ class GameMode2Fragment : Fragment() {
         player.deck.remove(card)
         if(player.deck.isEmpty()) {
             gameDone()
-        }else {
+        }
             //adapterHumanCards.notifyItemRemoved(position)
             updateHandView()
-        }
+
     }
 
     fun addCardToPile(card: Card, player: Player) {
