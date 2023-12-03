@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swReset"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/etvName"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:fontFamily="@font/zen_dots"
+            android:hint="Name"
+            android:inputType="text"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imChosenIcon"
+            android:layout_width="100sp"
+            android:layout_height="100sp"
+            android:src="@drawable/characters_0007"
+            app:layout_constraintStart_toStartOf="@+id/tvIcon"
+            app:layout_constraintTop_toBottomOf="@+id/tvIcon" />
+
+        <TextView
+            android:id="@+id/tvIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/zen_dots"
+            android:text="Icon"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/etvName"
+            app:layout_constraintTop_toBottomOf="@+id/etvName" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvIconSelecter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/imChosenIcon"
+            app:layout_constraintTop_toBottomOf="@+id/imChosenIcon" />
+
+        <TextView
+            android:id="@+id/tvLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/zen_dots"
+            android:text="Language"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/rvIconSelecter"
+            app:layout_constraintTop_toBottomOf="@+id/rvIconSelecter" />
+
+        <ImageView
+            android:id="@+id/imBritish"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/flag_brittish2"
+            app:layout_constraintStart_toStartOf="@+id/tvLanguage"
+            app:layout_constraintTop_toBottomOf="@+id/tvLanguage" />
+
+        <ImageView
+            android:id="@+id/imSwedish"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="13dp"
+            android:src="@drawable/flag_swedish2"
+            app:layout_constraintStart_toEndOf="@+id/imBritish"
+            app:layout_constraintTop_toTopOf="@+id/imBritish" />
+
+        <ImageView
+            android:id="@+id/imSave"
+            android:layout_width="180dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/buttontext_large_orange_round"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/imCancel"
+            android:layout_width="180dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/buttontext_large_orange_round"
+            app:layout_constraintBottom_toBottomOf="@+id/imSave"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tvSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/zen_dots"
+            android:text="Save"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imSave"
+            app:layout_constraintEnd_toEndOf="@+id/imSave"
+            app:layout_constraintStart_toStartOf="@+id/imSave"
+            app:layout_constraintTop_toTopOf="@+id/imSave" />
+
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/zen_dots"
+            android:text="Cancel"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imCancel"
+            app:layout_constraintEnd_toEndOf="@+id/imCancel"
+            app:layout_constraintStart_toStartOf="@+id/imCancel"
+            app:layout_constraintTop_toTopOf="@+id/imCancel" />
+
+        <Switch
+            android:id="@+id/swResetData"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:fontFamily="@font/zen_dots"
+            android:text="Reset game progress"
+            android:textOn="YES"
+            app:layout_constraintBottom_toTopOf="@+id/imSave"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
