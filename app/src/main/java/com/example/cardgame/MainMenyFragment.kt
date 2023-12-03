@@ -44,12 +44,16 @@ class MainMenyFragment : Fragment() {
         val imSettings = view.findViewById<ImageView>(R.id.imSettings)
         val imProgress = view.findViewById<ImageView>(R.id.imProgress)
 
-        (activity as MainActivity).loadSavedSettings()
+        //(activity as MainActivity).loadSavedSettings()
 
         imPlay.setOnClickListener() {
             val gameIntent = Intent(view.context, GameScreen::class.java)
             startActivity(gameIntent)
 
+        }
+
+        imProgress.setOnClickListener {
+            (activity as MainActivity).switchFragment(view, ProgressFragment())
         }
 
         imSettings.setOnClickListener() {

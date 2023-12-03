@@ -1,14 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProgressFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/imProgressBG"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/box_orange_rounded"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="100dp"
+            />
+
+        <ImageView
+            android:id="@+id/imOkPathScreen"
+            android:layout_width="180dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/buttontext_large_orange_round"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvOkProgressScreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/zen_dots"
+            android:text="OK"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imOkPathScreen"
+            app:layout_constraintEnd_toEndOf="@+id/imOkPathScreen"
+            app:layout_constraintStart_toStartOf="@+id/imOkPathScreen"
+            app:layout_constraintTop_toTopOf="@+id/imOkPathScreen" />
+
+        <ImageView
+            android:id="@+id/imPath"
+            android:layout_width="364dp"
+            android:layout_height="394dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/progress_path__1_"
+            app:layout_constraintBottom_toBottomOf="@+id/imProgressBG"
+            app:layout_constraintEnd_toEndOf="@+id/imProgressBG"
+            app:layout_constraintStart_toStartOf="@+id/imProgressBG"
+            app:layout_constraintTop_toTopOf="@+id/imProgressBG" />
+
+        <ImageView
+            android:id="@+id/imStart"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="60dp"
+            android:src="@drawable/flag"
+            app:layout_constraintBottom_toBottomOf="@+id/imPath"
+            app:layout_constraintStart_toStartOf="@+id/imPath" />
+
+        <ImageView
+            android:id="@+id/imLevel1"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="-10dp"
+            android:src="@drawable/door_silver"
+            app:layout_constraintBottom_toBottomOf="@+id/imStart"
+            app:layout_constraintStart_toEndOf="@+id/imStart" />
+
+        <ImageView
+            android:id="@+id/imLevel2"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="-8dp"
+            android:src="@drawable/door_silver"
+            app:layout_constraintBottom_toBottomOf="@+id/imLevel1"
+            app:layout_constraintStart_toEndOf="@+id/imLevel1" />
+
+        <ImageView
+            android:id="@+id/imLevel3"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/door_silver"
+            app:layout_constraintBottom_toBottomOf="@+id/imLevel2"
+            app:layout_constraintEnd_toEndOf="@+id/imPath" />
+
+        <ImageView
+            android:id="@+id/imLevel4"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="12dp"
+            android:src="@drawable/door_silver"
+            app:layout_constraintBottom_toTopOf="@+id/imLevel3"
+            app:layout_constraintEnd_toEndOf="@+id/imPath" />
+
+        <ImageView
+            android:id="@+id/imLevel5"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="45dp"
+            android:src="@drawable/door_silver"
+            app:layout_constraintEnd_toStartOf="@+id/imLevel4"
+            app:layout_constraintTop_toTopOf="@+id/imLevel4" />
+
+        <ImageView
+            android:id="@+id/imLevel6"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/door_silver"
+            app:layout_constraintBottom_toBottomOf="@+id/imLevel5"
+            app:layout_constraintEnd_toStartOf="@+id/imLevel5" />
+
+        <ImageView
+            android:id="@+id/imLevel7"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/door_silver"
+            app:layout_constraintBottom_toTopOf="@+id/imLevel6"
+            app:layout_constraintStart_toEndOf="@+id/imLevel6" />
+
+        <ImageView
+            android:id="@+id/imLevel8"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/door_silver"
+            app:layout_constraintStart_toEndOf="@+id/imLevel7"
+            app:layout_constraintTop_toTopOf="@+id/imLevel7" />
+
+        <ImageView
+            android:id="@+id/imLevel9"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="-10dp"
+            android:src="@drawable/door_silver"
+            app:layout_constraintBottom_toTopOf="@+id/imLevel8"
+            app:layout_constraintStart_toEndOf="@+id/imLevel8" />
+
+        <ImageView
+            android:id="@+id/imLevel10"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/door_golden_2_"
+            app:layout_constraintEnd_toEndOf="@+id/imPath"
+            app:layout_constraintStart_toStartOf="@+id/imProgressBG"
+            app:layout_constraintTop_toTopOf="@+id/imPath" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
