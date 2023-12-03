@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 
 // TODO: Rename parameter arguments, choose names that match
@@ -21,6 +22,19 @@ class ProgressFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var imLevel1: ImageView
+    private lateinit var imLevel2: ImageView
+    private lateinit var imLevel3: ImageView
+    private lateinit var imLevel4: ImageView
+    private lateinit var imLevel5: ImageView
+    private lateinit var imLevel6: ImageView
+    private lateinit var imLevel7: ImageView
+    private lateinit var imLevel8: ImageView
+    private lateinit var imLevel9: ImageView
+    private lateinit var imLevel10: ImageView
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,8 +48,47 @@ class ProgressFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_progress, container, false)
+        val view = inflater.inflate(R.layout.fragment_progress, container, false)
+
+        imLevel1 = view.findViewById(R.id.imLevel1)
+        imLevel2 = view.findViewById(R.id.imLevel2)
+        imLevel3 = view.findViewById(R.id.imLevel3)
+        imLevel4 = view.findViewById(R.id.imLevel4)
+        imLevel5 = view.findViewById(R.id.imLevel5)
+        imLevel6 = view.findViewById(R.id.imLevel6)
+        imLevel7 = view.findViewById(R.id.imLevel7)
+        imLevel8 = view.findViewById(R.id.imLevel8)
+        imLevel9 = view.findViewById(R.id.imLevel9)
+        imLevel10 = view.findViewById(R.id.imLevel10)
+
+
+        for(i in 1..9) {
+            var image = view.findViewById<ImageView>(SaveData.levelList[i])
+
+            if(SaveData.saveDataList[i].done) {
+                image.setImageResource(GameEngine.gameLevels[i].imageDone)
+            }
+            else if(SaveData.saveDataList[i-1].done) {
+                if(i == 9) {
+                    image.setImageResource(R.drawable.door_golden_2_)
+                } else {
+                    image.setImageResource(R.drawable.door_silver)
+                }
+            } else {
+                image.setImageResource(R.drawable.cloud_02)
+            }
+        }
+        if(SaveData.saveDataList[0].done) {
+            imLevel1.setImageResource(GameEngine.gameLevels[0].imageDone)
+        } else {
+            imLevel10.setImageResource(R.drawable.door_silver)
+        }
+
+
+
+        return view
     }
+
 
     companion object {
         /**
