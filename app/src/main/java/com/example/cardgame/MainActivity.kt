@@ -1,10 +1,10 @@
 package com.example.cardgame
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 private const val SAVED_DATA = "SaveData"
@@ -17,11 +17,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnPlay: ImageView = findViewById(R.id.imbPlay)
-        val gameIntent = Intent(this, GameScreen::class.java)
-        btnPlay.setOnClickListener() {
-            startActivity(gameIntent)
-        }
+        switchFragment(null, MainMenyFragment())
+
+
     }
 
     override fun onResume() {
@@ -29,13 +27,14 @@ class MainActivity : AppCompatActivity() {
         val savedData = getSharedPreferences(SAVED_DATA, MODE_PRIVATE)
         val saveDataEditor = savedData.edit()
 
-        if (!savedData.contains("Name")) {
-            saveDataEditor.putString("Name", "unknown")
-            saveDataEditor.putInt("Language", 0)
+        if (!savedData.contains("name")) {
+            saveDataEditor.putString("name", "unknown")
+            saveDataEditor.putInt("language", 0)
+            saveDataEditor.putInt("icon", R.drawable.characters_0001)
             saveDataEditor.putString("gameProgress", saveGameProgress())
             saveDataEditor.apply()
         }
-        SaveData.saveDataList = loadGameProgress("SaveData")
+        loadSavedSettings()
 
     }
 
@@ -45,6 +44,13 @@ class MainActivity : AppCompatActivity() {
         Log.d("!!!", "String to save" +json)
         return json
 
+    }
+    fun loadSavedSettings() {
+        val getData = getSharedPreferences(SAVED_DATA, 0)
+        SaveData.name = getData.getString("name", "") ?: ""
+        SaveData.language = getData.getInt("language", 0 )
+        SaveData.icon = getData.getInt("icon", R.drawable.characters_0001)
+        SaveData.saveDataList = loadGameProgress("SaveData")
     }
 
     fun loadGameProgress(key: String): MutableList<SaveData.saveDataLevels> {
@@ -56,5 +62,12 @@ class MainActivity : AppCompatActivity() {
 
         Log.d("!!!", "Hämtat: " + gson.fromJson<Any?>(json, type) ?: "").toString()
         return gson.fromJson(json, type) ?: mutableListOf()
+    }
+
+    fun switchFragment(view: View?, nextFragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fmMainActivity, nextFragment, "gameIntroFragment")
+        transaction.commit()
+
     }
 }
