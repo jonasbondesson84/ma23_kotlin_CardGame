@@ -55,6 +55,7 @@ class GameMode1Fragment : Fragment() {
     private lateinit var rvAIPairs: RecyclerView
     private lateinit var adapterHumanPairs: PairsAdapter
     private lateinit var adapterAIPairs: PairsAdapter
+    private lateinit var imCardDrawnAI: ImageView
 
     private var deckOfCard = deckOfCard().deckOfCard
     private var firstCard = deckOfCard.first()
@@ -136,8 +137,9 @@ class GameMode1Fragment : Fragment() {
         imAIText = view.findViewById(R.id.imAITextGameMode1)
         imPlayerText = view.findViewById(R.id.imPlayerTextGameMode1)
         imPLayerIcon = view.findViewById(R.id.imPLayerIcon)
+        imCardDrawnAI = view.findViewById(R.id.imCardDrawnAI)
         val imDeckOfCard = view.findViewById<ImageView>(R.id.imDeck)
-
+        imCardDrawnAI.visibility = View.INVISIBLE
         createHands()
         hideDeck()
         hideGoFishButton()
@@ -147,8 +149,10 @@ class GameMode1Fragment : Fragment() {
 
         imDeckOfCard.setOnClickListener() {
             if (waitForDrawCard && !timerClickDeck) {
+                aiTurn = true
                 timerClickDeck = true
                 showCardWhenHumanDraws()
+                placeDrawnCard(human)
                 drawCardFromDeck(human.deck, human.deckMap, human)
             }
         }
@@ -217,11 +221,11 @@ class GameMode1Fragment : Fragment() {
         timerClickDeck = true
         if (deckOfCard.isNotEmpty()) {
 
-            var drawnCard = deckOfCard.first()
+            val drawnCard = deckOfCard.first()
             timerScope.launch {
                 withContext(Dispatchers.Main) {
 
-                    showDeck(drawnCard)
+                    showDeck(drawnCard, player)
                     delay(TIMER_ACTION)
                     deck.add(drawnCard)
 //                    Log.d("!!!", "drawn card: " + drawnCard.number.toString())
@@ -272,10 +276,12 @@ class GameMode1Fragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     if (player == human) {
                         showCardWhenHumanDraws()
+
                     } else {
                         hideCardWhenAIDraws()
+
                     }
-                    showDeck(drawnCard)
+                    showDeck(drawnCard, player)
                     delay(TIMER_ACTION)
                     deck.add(drawnCard)
 //                    Log.d("!!!", "drawn card for last: " + drawnCard.number.toString())
@@ -459,6 +465,7 @@ class GameMode1Fragment : Fragment() {
                         textSizeAndShowText(text, ai)
 //                        tvAIText.text = "GO FISH"
                         waitForDrawCard = true
+                        imCardDrawnAI.visibility = View.INVISIBLE
                         clDeck.visibility = View.VISIBLE
                         delay(TIMER_TEXT)
                         timerClickHandPick = false
@@ -578,14 +585,20 @@ class GameMode1Fragment : Fragment() {
         imPLayerIcon.visibility = View.INVISIBLE
     }
 
-    fun showDeck(drawnCard: Card) {
+    fun showDeck(drawnCard: Card, player: Player) {
+
         clDeck.visibility = View.VISIBLE
         clDrawCard.visibility = View.VISIBLE
-        tvCardBottomRight.text = drawnCard.showNumberOnCard(drawnCard.number)
-        tvCardTopLeft.text = drawnCard.showNumberOnCard(drawnCard.number)
-        imCardCenter.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
-        imCardTopLeft.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
-        imCardBottomRight.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+        if (player == ai) {
+            placeDrawnCard(ai)
+        } else {
+            placeDrawnCard(human)
+            tvCardBottomRight.text = drawnCard.showNumberOnCard(drawnCard.number)
+            tvCardTopLeft.text = drawnCard.showNumberOnCard(drawnCard.number)
+            imCardCenter.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+            imCardTopLeft.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+            imCardBottomRight.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+        }
     }
 
     fun hideDeck() {
@@ -668,5 +681,14 @@ class GameMode1Fragment : Fragment() {
 fun calculateScore() {
     GameEngine.gameLevels[GameEngine.currentLevel].score = human.numberOfPairs - ai.numberOfPairs
 }
+    fun placeDrawnCard(player: Player) {
+        if(player == ai) {
+            imCardDrawnAI.visibility = View.VISIBLE
+            clDrawCard.visibility = View.INVISIBLE
+        } else {
+            imCardDrawnAI.visibility = View.INVISIBLE
+            clDrawCard.visibility = View.VISIBLE
+        }
+    }
 
 }

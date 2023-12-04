@@ -27,14 +27,7 @@
             tools:listitem="@layout/pair_item">
 
         </androidx.recyclerview.widget.RecyclerView>
-        <ImageView
-            android:id="@+id/imDeck"
-            android:layout_width="120dp"
-            android:layout_height="190dp"
-            android:src="@drawable/backside_pile"
-            app:layout_constraintBottom_toBottomOf="@id/clDeck"
-            app:layout_constraintStart_toStartOf="@id/clDeck"
-            app:layout_constraintTop_toTopOf="@id/clDeck" />
+
         <ImageView
             android:id="@+id/imPlayerTextGameMode1"
             android:layout_width="210dp"
@@ -91,6 +84,16 @@
             app:layout_constraintStart_toStartOf="@+id/imAITextGameMode1"
             app:layout_constraintTop_toTopOf="@+id/imAITextGameMode1" />
 
+        <ImageView
+            android:id="@+id/imDeck"
+            android:layout_width="190dp"
+            android:layout_height="120dp"
+            android:rotation="90"
+            android:src="@drawable/backside_pile"
+            app:layout_constraintBottom_toBottomOf="@id/clDeck"
+            app:layout_constraintStart_toStartOf="@id/clDeck"
+            app:layout_constraintTop_toTopOf="@id/clDeck" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clDeck"
             android:layout_width="wrap_content"
@@ -102,22 +105,33 @@
 
             <ImageView
                 android:id="@+id/imDeckShown"
-                android:layout_width="120dp"
-                android:layout_height="190dp"
+                android:layout_width="190dp"
+                android:layout_height="120dp"
+                android:rotation="90"
                 android:src="@drawable/backside_pile"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/imCardDrawnAI"
+                android:layout_width="90dp"
+                android:layout_height="160dp"
+                android:src="@drawable/card_backside"
+                app:layout_constraintBottom_toTopOf="@id/imDeckShown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                 />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clCardPile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginTop="-20dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                app:layout_constraintStart_toEndOf="@id/imDeckShown"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/imDeckShown"
+                app:layout_constraintTop_toBottomOf="@+id/imDeckShown">
 
                 <ImageView
                     android:id="@+id/imCardDrawn"

@@ -5,12 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.TreeMap
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,7 +42,7 @@ class GameMode2Fragment : Fragment() {
     private lateinit var imPlayerIcon: ImageView
     private lateinit var imPlayerTextImage: ImageView
     private lateinit var tvPlayerText: TextView
-    private lateinit var clCardDrawn: ConstraintLayout
+    //private lateinit var clCardDrawn: ConstraintLayout
     private lateinit var imDeck: ImageView
     private lateinit var imCardPileCenter: ImageView
     private lateinit var imCardPileTopLeft: ImageView
@@ -51,11 +56,13 @@ class GameMode2Fragment : Fragment() {
     private lateinit var imSpades: ImageView
     private lateinit var imPassIcon: ImageView
     private lateinit var tvPassText: TextView
+    private lateinit var flDrawnCard: FrameLayout
 
     private var deckOfCard = deckOfCard().deckOfCard
     private var pileDeck = mutableListOf<Card>()
     private var selectedSuite = "Heart"
     private var aiTurn = false
+    private var timerScope = CoroutineScope(Dispatchers.Main)
 
 
 
@@ -81,7 +88,7 @@ class GameMode2Fragment : Fragment() {
         imPlayerIcon = view.findViewById(R.id.imPLayerIconGAMEMODE2)
         imPlayerTextImage = view.findViewById(R.id.imPlayerTextGAMEMODE2)
         tvPlayerText = view.findViewById(R.id.tvPlayerTextGAMEMODE2)
-        clCardDrawn = view.findViewById(R.id.clCardDrawnGAMEMODE2)
+        //clCardDrawn = view.findViewById(R.id.clCardDrawnGAMEMODE2)
         imDeck = view.findViewById(R.id.imDeckGAMEMODE2)
         imCardPileCenter = view.findViewById(R.id.imCardPileCenterGAMEMODE2)
         imCardPileTopLeft = view.findViewById(R.id.imCardPileTopLeftGAMEMODE2)
@@ -95,6 +102,7 @@ class GameMode2Fragment : Fragment() {
         imSpades = view.findViewById(R.id.imSuiteSpadesGAMEMODE2)
         tvPassText = view.findViewById(R.id.tvPass)
         imPassIcon = view.findViewById(R.id.imPassIcon)
+        flDrawnCard = view.findViewById(R.id.flDrawnCardPlayer)
 
         rvHumanCards.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
@@ -126,7 +134,7 @@ class GameMode2Fragment : Fragment() {
 
         }
 
-        adapterHumanCards?.onCardClick = { card, position ->
+        adapterHumanCards?.onCardClick = { card, position -> //Click on card in hand
             if(!aiTurn) {
                 hidePassIcon()
                 if (card.number == CRAZY_EIGHT) {
@@ -266,12 +274,25 @@ class GameMode2Fragment : Fragment() {
             player.deck.add(deckOfCard.first())
             deckOfCard.remove(deckOfCard.first())
             sortHand(player)
+
+            showAndHideDrawnCard()
+
         } else if(aiTurn) {
             passTo(human)
         } else {
             showPassIcon()
         }
     }
+
+    fun showAndHideDrawnCard() {
+        timerScope.launch {
+            (activity as GameScreen).showDrawnCard(null, CardFragment(), R.id.flDrawnCardPlayer)
+            delay(1000L)
+            (activity as GameScreen).hideDrawnCard(null, CardFragment())
+        }
+    }
+
+
 
     fun gameDone() {
         countScore(ai)
@@ -357,11 +378,11 @@ class GameMode2Fragment : Fragment() {
     }
 
     fun showCardDrawn() {
-        clCardDrawn.visibility = View.VISIBLE
+//        clCardDrawn.visibility = View.VISIBLE
     }
 
     fun hideCardDrawn() {
-        clCardDrawn.visibility = View.INVISIBLE
+//        clCardDrawn.visibility = View.INVISIBLE
     }
     companion object {
         /**
