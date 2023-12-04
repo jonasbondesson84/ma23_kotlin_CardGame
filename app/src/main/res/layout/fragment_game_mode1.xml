@@ -36,7 +36,7 @@
             app:layout_constraintStart_toStartOf="@id/clDeck"
             app:layout_constraintTop_toTopOf="@id/clDeck" />
         <ImageView
-            android:id="@+id/imPlayerText"
+            android:id="@+id/imPlayerTextGameMode1"
             android:layout_width="210dp"
             android:layout_height="80dp"
             android:layout_marginStart="32dp"
@@ -67,7 +67,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imAIText"
+            android:id="@+id/imAITextGameMode1"
             android:layout_width="210dp"
             android:layout_height="80dp"
             android:layout_marginStart="32dp"
@@ -78,7 +78,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imAIICon" />
 
         <TextView
-            android:id="@+id/tvAIText"
+            android:id="@+id/tvAITextGameMode1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -86,10 +86,10 @@
             android:text="GO FISH!"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imAIText"
-            app:layout_constraintEnd_toEndOf="@+id/imAIText"
-            app:layout_constraintStart_toStartOf="@+id/imAIText"
-            app:layout_constraintTop_toTopOf="@+id/imAIText" />
+            app:layout_constraintBottom_toBottomOf="@+id/imAITextGameMode1"
+            app:layout_constraintEnd_toEndOf="@+id/imAITextGameMode1"
+            app:layout_constraintStart_toStartOf="@+id/imAITextGameMode1"
+            app:layout_constraintTop_toTopOf="@+id/imAITextGameMode1" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clDeck"
@@ -219,17 +219,17 @@
             app:layout_constraintTop_toTopOf="@+id/imGoFishButton" />
 
         <TextView
-            android:id="@+id/tvPlayerText"
+            android:id="@+id/tvPlayerTextGameMode1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/zen_dots"
             android:text="GO FISH"
             android:textSize="24sp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imPlayerText"
-            app:layout_constraintEnd_toEndOf="@+id/imPlayerText"
-            app:layout_constraintStart_toStartOf="@+id/imPlayerText"
-            app:layout_constraintTop_toTopOf="@+id/imPlayerText" />
+            app:layout_constraintBottom_toBottomOf="@+id/imPlayerTextGameMode1"
+            app:layout_constraintEnd_toEndOf="@+id/imPlayerTextGameMode1"
+            app:layout_constraintStart_toStartOf="@+id/imPlayerTextGameMode1"
+            app:layout_constraintTop_toTopOf="@+id/imPlayerTextGameMode1" />
 
         <ImageView
             android:id="@+id/imPLayerIcon"
