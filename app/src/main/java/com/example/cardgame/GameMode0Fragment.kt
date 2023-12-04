@@ -174,7 +174,7 @@ class GameMode0Fragment : Fragment() {
     }
 
     fun showNextCard() {
-        if (currentCardIndex < deckOfCard.getDeckSize()) {
+        if (currentCardIndex < deckOfCard.getDeckSize()-1) {
 
             currentCard = deckOfCard.getNewCard(currentCardIndex)
             nextCard = deckOfCard.getNewCard(currentCardIndex+1)

@@ -24,6 +24,9 @@ class gameDoneFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var tvScore: TextView
+    private lateinit var imStar1: ImageView
+    private lateinit var imStar2: ImageView
+    private lateinit var imStar3: ImageView
    // private val gameIntroFragment = gameIntroFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +45,9 @@ class gameDoneFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_game_done, container, false)
 
         tvScore = view.findViewById(R.id.tvScoreDone)
+        imStar1 = view.findViewById(R.id.imStar1)
+        imStar2 = view.findViewById(R.id.imStar2)
+        imStar3 = view.findViewById(R.id.imStar3)
 
         var levelScore: Int
         if(param1 != null) {
@@ -50,11 +56,23 @@ class gameDoneFragment : Fragment() {
             levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
         }
 
+        if(levelScore > GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
+            imStar1.setImageResource(R.drawable.icon_large_star_whiteoutline)
+        }
+        if(levelScore > (GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded * 1.5)) {
+            imStar2.setImageResource(R.drawable.icon_large_star_whiteoutline)
+        }
+        if(levelScore > (GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded * 2)) {
+            imStar3.setImageResource(R.drawable.icon_large_star_whiteoutline)
+        }
+
         tvScore.text = levelScore.toString()
         var imNextGame = view.findViewById<ImageView>(R.id.imNextGame)
         var tvNextGame = view.findViewById<TextView>(R.id.tvNextGame)
         var imReplayGame = view.findViewById<ImageView>(R.id.imReplayGame)
-        SaveData.saveDataList[GameEngine.currentLevel].bestScore = levelScore
+        if(levelScore > SaveData.saveDataList[GameEngine.currentLevel].bestScore) {
+            SaveData.saveDataList[GameEngine.currentLevel].bestScore = levelScore
+        }
 
         if(levelScore < GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
             tvNextGame.visibility = View.INVISIBLE
