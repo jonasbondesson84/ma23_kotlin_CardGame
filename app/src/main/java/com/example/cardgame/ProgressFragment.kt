@@ -103,7 +103,6 @@ class ProgressFragment : Fragment() {
         }
         imLevel3.setOnClickListener {
             clickForPlay(view,2)
-
         }
         imLevel4.setOnClickListener {
             clickForPlay(view,3)
@@ -135,8 +134,8 @@ class ProgressFragment : Fragment() {
     }
 
     fun clickForPlay(view: View, chosenLevel: Int) {
+        GameEngine.currentLevel = chosenLevel
         if(SaveData.saveDataList[chosenLevel].done) {
-            GameEngine.currentLevel = chosenLevel
             val gameIntent = Intent(view.context, GameScreen::class.java)
             gameIntent.putExtra("playAgain", true)
             startActivity(gameIntent)

@@ -67,7 +67,7 @@ class gameDoneFragment : Fragment() {
 
         imNextGame.setOnClickListener() {
             GameEngine.currentLevel++
-            goToNextGame(null)
+            goToProgressTree()
         }
 
         imReplayGame.setOnClickListener() {
@@ -101,10 +101,9 @@ class gameDoneFragment : Fragment() {
 
     fun goToNextGame(view: View?) {
         (activity as? GameScreen)?.switchFragment(null, gameIntroFragment(), false)
-
-//        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.fmGameScreen, gameIntroFragment, "gameIntoFragment")
-//        transaction.commit()
+    }
+    fun goToProgressTree() {
+        (activity as GameScreen).switchFragment(null, ProgressFragment(), false)
     }
 
 }

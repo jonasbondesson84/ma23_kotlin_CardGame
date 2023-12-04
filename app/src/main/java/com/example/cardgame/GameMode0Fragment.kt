@@ -33,8 +33,22 @@ class GameMode0Fragment : Fragment() {
     private var score = 0
     private var currentCard = deckOfCard.getNewCard(0)
     private var nextCard = deckOfCard.getNewCard(1)
-    //var gameLevels = GameEngine.gameLevels
+    private var rightAnswers = listOf(
+        "Well done!",
+        "Good job!",
+        "That's right!",
+        "You got it!",
+        "Awesome!"
+    )
+    private var wrongAnswer = listOf(
+        "Sorry!",
+        "That was wrong.",
+        "Sorry, try again!",
+        "Better luck next time.",
+        "Try harder!"
+    )
 
+    private lateinit var tvAIText: TextView
     private lateinit var tvCard: TextView
     private lateinit var tvCurrentScore: TextView
     private lateinit var tvCardTopLeft: TextView
@@ -43,6 +57,7 @@ class GameMode0Fragment : Fragment() {
     private lateinit var imCardBottomRight: ImageView
     private lateinit var imCardCenter: ImageView
     private lateinit var pbTimeLeft: ProgressBar
+    private lateinit var imAI: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,20 +76,31 @@ class GameMode0Fragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_gamemode0, container, false)
 
+        val btnHigher: ImageButton = view.findViewById(R.id.imbHigher)
+        val btnLower: ImageButton = view.findViewById(R.id.imbLower)
         tvCard = view.findViewById(R.id.tvCard)
         tvCardTopLeft = view.findViewById(R.id.tvCardTopLeft)
         tvCardBottomRight = view.findViewById(R.id.tvCardBottomRight)
         imCardTopLeft = view.findViewById(R.id.imCardTopLeft)
         imCardBottomRight = view.findViewById(R.id.imCardBottomRight)
         imCardCenter = view.findViewById(R.id.imCardCenter)
-
-        showUICard()
-//        val cardText = "${currentCard.suite} ${currentCard.number}"
-//        tvCard.text = cardText
-        val btnHigher: ImageButton = view.findViewById(R.id.imbHigher)
-        val btnLower: ImageButton = view.findViewById(R.id.imbLower)
+        tvAIText = view.findViewById(R.id.tvAITextGameMode0)
         tvCurrentScore = view.findViewById(R.id.tvCurrentScore)
         pbTimeLeft = view.findViewById(R.id.pbTimeLeft)
+        imAI = view.findViewById(R.id.imAIGameMode0)
+
+        showUICard()
+        when(GameEngine.currentLevel) {
+            0 -> {
+                imAI.setImageResource(R.drawable.characters_0006)
+            }
+            1 -> {
+                imAI.setImageResource(R.drawable.characters_0004)
+            }
+            else -> {
+                imAI.setImageResource(R.drawable.characters_0003)
+            }
+        }
 
         btnHigher.setOnClickListener() {
             checkCardHigher()
@@ -166,16 +192,22 @@ class GameMode0Fragment : Fragment() {
     fun checkCardHigher() {
         if (nextCard.number >= currentCard.number) {
             score++
+            tvAIText.text = rightAnswers.random()
+        } else {
+            tvAIText.text = wrongAnswer.random()
         }
-        tvCurrentScore.text = score.toString()
+        tvCurrentScore.text = "Score: ${score * 100}"
         showNextCard()
     }
 
     fun checkCardLower() {
         if(nextCard.number <= currentCard.number) {
             score++
+            tvAIText.text = rightAnswers.random()
+        } else {
+            tvAIText.text = wrongAnswer.random()
         }
-        tvCurrentScore.text = score.toString()
+        tvCurrentScore.text = "Score: ${score * 100}"
         showNextCard()
     }
 
