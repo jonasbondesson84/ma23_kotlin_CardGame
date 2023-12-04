@@ -27,16 +27,9 @@
             tools:listitem="@layout/pair_item">
 
         </androidx.recyclerview.widget.RecyclerView>
+
         <ImageView
-            android:id="@+id/imDeck"
-            android:layout_width="120dp"
-            android:layout_height="190dp"
-            android:src="@drawable/backside_pile"
-            app:layout_constraintBottom_toBottomOf="@id/clDeck"
-            app:layout_constraintStart_toStartOf="@id/clDeck"
-            app:layout_constraintTop_toTopOf="@id/clDeck" />
-        <ImageView
-            android:id="@+id/imPlayerText"
+            android:id="@+id/imPlayerTextGameMode1"
             android:layout_width="210dp"
             android:layout_height="80dp"
             android:layout_marginStart="32dp"
@@ -67,7 +60,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imAIText"
+            android:id="@+id/imAITextGameMode1"
             android:layout_width="210dp"
             android:layout_height="80dp"
             android:layout_marginStart="32dp"
@@ -78,7 +71,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imAIICon" />
 
         <TextView
-            android:id="@+id/tvAIText"
+            android:id="@+id/tvAITextGameMode1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -86,10 +79,20 @@
             android:text="GO FISH!"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imAIText"
-            app:layout_constraintEnd_toEndOf="@+id/imAIText"
-            app:layout_constraintStart_toStartOf="@+id/imAIText"
-            app:layout_constraintTop_toTopOf="@+id/imAIText" />
+            app:layout_constraintBottom_toBottomOf="@+id/imAITextGameMode1"
+            app:layout_constraintEnd_toEndOf="@+id/imAITextGameMode1"
+            app:layout_constraintStart_toStartOf="@+id/imAITextGameMode1"
+            app:layout_constraintTop_toTopOf="@+id/imAITextGameMode1" />
+
+        <ImageView
+            android:id="@+id/imDeck"
+            android:layout_width="190dp"
+            android:layout_height="120dp"
+            android:rotation="90"
+            android:src="@drawable/backside_pile"
+            app:layout_constraintBottom_toBottomOf="@id/clDeck"
+            app:layout_constraintStart_toStartOf="@id/clDeck"
+            app:layout_constraintTop_toTopOf="@id/clDeck" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clDeck"
@@ -102,22 +105,33 @@
 
             <ImageView
                 android:id="@+id/imDeckShown"
-                android:layout_width="120dp"
-                android:layout_height="190dp"
+                android:layout_width="190dp"
+                android:layout_height="120dp"
+                android:rotation="90"
                 android:src="@drawable/backside_pile"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/imCardDrawnAI"
+                android:layout_width="90dp"
+                android:layout_height="160dp"
+                android:src="@drawable/card_backside"
+                app:layout_constraintBottom_toTopOf="@id/imDeckShown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                 />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clCardPile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginTop="-20dp"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
-                app:layout_constraintStart_toEndOf="@id/imDeckShown"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/imDeckShown"
+                app:layout_constraintTop_toBottomOf="@+id/imDeckShown">
 
                 <ImageView
                     android:id="@+id/imCardDrawn"
@@ -219,17 +233,17 @@
             app:layout_constraintTop_toTopOf="@+id/imGoFishButton" />
 
         <TextView
-            android:id="@+id/tvPlayerText"
+            android:id="@+id/tvPlayerTextGameMode1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/zen_dots"
             android:text="GO FISH"
             android:textSize="24sp"
             android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imPlayerText"
-            app:layout_constraintEnd_toEndOf="@+id/imPlayerText"
-            app:layout_constraintStart_toStartOf="@+id/imPlayerText"
-            app:layout_constraintTop_toTopOf="@+id/imPlayerText" />
+            app:layout_constraintBottom_toBottomOf="@+id/imPlayerTextGameMode1"
+            app:layout_constraintEnd_toEndOf="@+id/imPlayerTextGameMode1"
+            app:layout_constraintStart_toStartOf="@+id/imPlayerTextGameMode1"
+            app:layout_constraintTop_toTopOf="@+id/imPlayerTextGameMode1" />
 
         <ImageView
             android:id="@+id/imPLayerIcon"

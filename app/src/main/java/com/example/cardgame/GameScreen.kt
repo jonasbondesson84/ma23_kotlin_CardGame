@@ -40,6 +40,20 @@ class GameScreen : AppCompatActivity() {
 
     }
 
+    fun showDrawnCard(view: View?, fragment: Fragment, fragmentID: Int) {
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(fragmentID, fragment, "drawnCard").commit()
+    }
+    fun hideDrawnCard(view: View?, fragment: Fragment) {
+        val cardFragment = supportFragmentManager.findFragmentByTag("drawnCard")
+        if(cardFragment != null)  {
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.remove(cardFragment).commit()
+        }
+    }
+
+
     fun saveData() {
         val savedData = getSharedPreferences(SAVED_DATA, MODE_PRIVATE)
         val saveDataEditor = savedData.edit()

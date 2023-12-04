@@ -55,6 +55,7 @@ class GameMode1Fragment : Fragment() {
     private lateinit var rvAIPairs: RecyclerView
     private lateinit var adapterHumanPairs: PairsAdapter
     private lateinit var adapterAIPairs: PairsAdapter
+    private lateinit var imCardDrawnAI: ImageView
 
     private var deckOfCard = deckOfCard().deckOfCard
     private var firstCard = deckOfCard.first()
@@ -65,6 +66,12 @@ class GameMode1Fragment : Fragment() {
     private var timerClickDeck = false
     private var timerClickHandPick = false
     private var timerClickHandAnswer = false
+    private var TEXTSIZE_SHORT = 24F
+    private var TEXTSIZE_MEDIUMSHORT = 18F
+    private var TEXTSIZE_MEDIUMLONG = 16F
+    private var TEXTSIZE_LONG = 12F
+
+
 
     private var randomCardNumber = 0
 
@@ -122,32 +129,39 @@ class GameMode1Fragment : Fragment() {
         tvCardBottomRight = view.findViewById(R.id.tvCardBottomRight2)
         tvCardTopLeft = view.findViewById(R.id.tvCardTopLeft2)
         clDrawCard = view.findViewById(R.id.clCardPile)
-        tvAIText = view.findViewById(R.id.tvAIText)
+        tvAIText = view.findViewById(R.id.tvAITextGameMode1)
         clDeck = view.findViewById(R.id.clDeck)
         imGoFishButton = view.findViewById(R.id.imGoFishButton)
         tvGoFishButton = view.findViewById(R.id.tvGoFishButton)
-        tvPlayerText = view.findViewById(R.id.tvPlayerText)
-        imAIText = view.findViewById(R.id.imAIText)
-        imPlayerText = view.findViewById(R.id.imPlayerText)
+        tvPlayerText = view.findViewById(R.id.tvPlayerTextGameMode1)
+        imAIText = view.findViewById(R.id.imAITextGameMode1)
+        imPlayerText = view.findViewById(R.id.imPlayerTextGameMode1)
         imPLayerIcon = view.findViewById(R.id.imPLayerIcon)
+        imCardDrawnAI = view.findViewById(R.id.imCardDrawnAI)
         val imDeckOfCard = view.findViewById<ImageView>(R.id.imDeck)
-
+        imCardDrawnAI.visibility = View.INVISIBLE
         createHands()
         hideDeck()
         hideGoFishButton()
-        tvAIText.text = "Your turn!"
+        val text = "Your turn"
+        textSizeAndShowText(text, ai)
         hidePlayerText()
 
         imDeckOfCard.setOnClickListener() {
             if (waitForDrawCard && !timerClickDeck) {
+                aiTurn = true
                 timerClickDeck = true
                 showCardWhenHumanDraws()
+                placeDrawnCard(human)
                 drawCardFromDeck(human.deck, human.deckMap, human)
             }
         }
 
         adapterHuman?.onCardClick = { cardValue, numberOfCards ->
-            Log.d("!!!", "Waitfordrawcard: $waitForDrawCard , aitTurnWaitForCard: $aiTurnWaitForCard")
+//            Log.d(
+//                "!!!",
+//                "Waitfordrawcard: $waitForDrawCard , aitTurnWaitForCard: $aiTurnWaitForCard"
+//            )
             if (!waitForDrawCard && !aiTurnWaitForCard && !aiTurn) { //checks what action it is you should take
                 if (!timerClickHandPick) {
                     timerClickHandPick = true  //Makes sure you cant click twice
@@ -205,16 +219,16 @@ class GameMode1Fragment : Fragment() {
 
     fun drawCardFromDeck(deck: MutableList<Card>, deckMap: TreeMap<Int, Int>, player: Player) {
         timerClickDeck = true
-         if (deckOfCard.isNotEmpty()) {
+        if (deckOfCard.isNotEmpty()) {
 
-            var drawnCard = deckOfCard.first()
+            val drawnCard = deckOfCard.first()
             timerScope.launch {
                 withContext(Dispatchers.Main) {
 
-                    showDeck(drawnCard)
+                    showDeck(drawnCard, player)
                     delay(TIMER_ACTION)
                     deck.add(drawnCard)
-                    Log.d("!!!", "drawn card: " + drawnCard.number.toString())
+//                    Log.d("!!!", "drawn card: " + drawnCard.number.toString())
                     recalculateMap(deckMap, deck)
 
 
@@ -228,15 +242,18 @@ class GameMode1Fragment : Fragment() {
                     hideDeck()
                     if (!aiTurn && deck.isNotEmpty()) {
                         waitForDrawCard = true
-                        tvAIText.text = "My turn!"
+
+                        val text = "My turn"
+                        textSizeAndShowText(text, ai)
                         aiTurnWaitForCard = false
                         delay(TIMER_TEXT)
 
                         aiTurnSequence()
                     } else if (deck.isNotEmpty()) {
                         aiTurn = false
+                        val text = "Your turn"
+                        textSizeAndShowText(text, ai)
 
-                        tvAIText.text = " Your turn!"
                         delay(TIMER_TEXT)
                         aiTurnWaitForCard = false
                     }
@@ -257,15 +274,17 @@ class GameMode1Fragment : Fragment() {
             var drawnCard = deckOfCard.first()
             timerScope.launch {
                 withContext(Dispatchers.Main) {
-                    if(player == human) {
+                    if (player == human) {
                         showCardWhenHumanDraws()
+
                     } else {
                         hideCardWhenAIDraws()
+
                     }
-                    showDeck(drawnCard)
+                    showDeck(drawnCard, player)
                     delay(TIMER_ACTION)
                     deck.add(drawnCard)
-                    Log.d("!!!", "drawn card for last: " + drawnCard.number.toString())
+//                    Log.d("!!!", "drawn card for last: " + drawnCard.number.toString())
                     recalculateMap(deckMap, deck)
                     deckOfCard.remove(drawnCard)
                     checkForPairs(deckMap, deck, player)
@@ -273,7 +292,7 @@ class GameMode1Fragment : Fragment() {
                     hideDeck()
                     updateHandView()
                     timerClickDeck = false
-                    Log.d("!!!", "AIturn: " + aiTurn)
+//                    Log.d("!!!", "AIturn: " + aiTurn)
                     if (aiTurn) {
                         aiTurnSequence()
                     }
@@ -303,21 +322,22 @@ class GameMode1Fragment : Fragment() {
                 timerScope.launch {
                     withContext(Dispatchers.Main) {
                         if (player == ai) {
-                            tvAIText.text = "I've got a pair!"
-
+                            val text = "I've got a pair"
+                            textSizeAndShowText(text, ai)
                             delay(TIMER_TEXT)
                             recalculateMap(ai.deckMap, ai.deck)
-                         //   timerClickHandAnswer = false
+                            //   timerClickHandAnswer = false
                             adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
 
                         } else {
                             showPlayerText()
-                            tvPlayerText.text = "I've got a pair!"
 
+                            val text = "I've got a pair"
+                            textSizeAndShowText(text, human)
                             delay(TIMER_TEXT)
                             recalculateMap(human.deckMap, human.deck)
                             hidePlayerText()
-                           // timerClickHandAnswer = false
+                            // timerClickHandAnswer = false
                             adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
                         }
                     }
@@ -355,8 +375,8 @@ class GameMode1Fragment : Fragment() {
         player: Player
     ) {
         deckFrom.filter { it.number == cardValue }.forEach { deckTo.add(it) }
-        Log.d("!!!", "card : " + cardValue + ", to " + player.name)
-        Log.d("!!!", "--------")
+//        Log.d("!!!", "card : " + cardValue + ", to " + player.name)
+//        Log.d("!!!", "--------")
         removeCards(cardValue, deckFrom, deckMapFrom, player)
         recalculateMap(deckMapTo, deckTo)
         recalculateMap(deckMapFrom, deckFrom)
@@ -394,13 +414,17 @@ class GameMode1Fragment : Fragment() {
             timerScope.launch {
                 withContext(Dispatchers.Main) {
                     if (aiTurn) {
-                        tvAIText.text = "I may go again."
+
+                        val text = "I will go again"
+                        textSizeAndShowText(text, ai)
                         delay(TIMER_TEXT)
                     }
                     var randomCard = ai.deck.random()
                     randomCardNumber = randomCard.number
                     var showCardSymbol = randomCard.showNumberOnCard(randomCardNumber)
-                    tvAIText.text = "Give me all your ${showCardSymbol}s"
+//                    tvAIText.text = "Give me all your ${showCardSymbol}s"
+                    val text = "Give me all your ${showCardSymbol}s"
+                    textSizeAndShowText(text, ai)
                     delay(TIMER_TEXT)
                     aiTurnWaitForCard = true
                     waitForDrawCard = false
@@ -421,7 +445,9 @@ class GameMode1Fragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     if (ai.deckMap.containsKey(safeCardValue)) {
                         var showCardSymbol = firstCard.showNumberOnCard(safeCardValue)
-                        tvAIText.text = "Here you go."
+                        var text = "Here you go."
+                        textSizeAndShowText(text, ai)
+//                        tvAIText.text = "Here you go."
                         delay(TIMER_TEXT)
                         exchangeCards(
                             safeCardValue,
@@ -429,12 +455,17 @@ class GameMode1Fragment : Fragment() {
                             human.deck,
                             human.deckMap, ai.deckMap, human
                         )
-                        tvAIText.text = "Your may go again."
+                        text = "You may go again"
+                        textSizeAndShowText(text, ai)
+//                        tvAIText.text = "Your may go again."
                         //delay(TIMER_TEXT)
                         timerClickHandPick = false
                     } else {
-                        tvAIText.text = "GO FISH"
+                        val text = "GO FISH!"
+                        textSizeAndShowText(text, ai)
+//                        tvAIText.text = "GO FISH"
                         waitForDrawCard = true
+                        imCardDrawnAI.visibility = View.INVISIBLE
                         clDeck.visibility = View.VISIBLE
                         delay(TIMER_TEXT)
                         timerClickHandPick = false
@@ -452,9 +483,11 @@ class GameMode1Fragment : Fragment() {
             withContext(Dispatchers.Main) {
                 hideAIText()
                 showPlayerText()
-                tvPlayerText.text =
-                    "I want all your ${firstCard.showNumberOnCard(cardValue)}s"
+                val text = "I want all your ${firstCard.showNumberOnCard(cardValue)}s"
+                textSizeAndShowText(text, human)
                 delay(TIMER_TEXT)
+//                tvPlayerText.text =
+//                    "I want all your ${firstCard.showNumberOnCard(cardValue)}s"
                 hidePlayerText()
                 humanTurn(cardValue)
             }
@@ -468,7 +501,9 @@ class GameMode1Fragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     hideAIText()
                     showPlayerText()
-                    tvPlayerText.text = "Here you go!"
+                    var text = "Here you go"
+                    textSizeAndShowText(text, human)
+//                    tvPlayerText.text = "Here you go!"
                     exchangeCards(
                         cardValue,
                         human.deck,
@@ -480,7 +515,9 @@ class GameMode1Fragment : Fragment() {
                     delay(TIMER_TEXT)
                     hidePlayerText()
                     showAIText()
-                    tvAIText.text = "Thank you"
+//                    tvAIText.text = "Thank you"
+                    text = "Thank you"
+                    textSizeAndShowText(text, ai)
                     delay(TIMER_TEXT)
                     //hideAIText()
                     aiTurnWaitForCard = false
@@ -500,8 +537,12 @@ class GameMode1Fragment : Fragment() {
         timerScope.launch {
             withContext(Dispatchers.Main) {
                 showPlayerText()
-                tvPlayerText.text = "GO FISH!"
-                tvAIText.text = "Darn' it!"
+//                tvPlayerText.text = "GO FISH!"
+                var text = "GO FISH!"
+                textSizeAndShowText(text, human)
+                text = "Darn' it"
+                textSizeAndShowText(text, ai)
+//                tvAIText.text = "Darn' it!"
                 delay(TIMER_TEXT)
                 hideCardWhenAIDraws()
                 drawCardFromDeck(ai.deck, ai.deckMap, ai)
@@ -544,14 +585,20 @@ class GameMode1Fragment : Fragment() {
         imPLayerIcon.visibility = View.INVISIBLE
     }
 
-    fun showDeck(drawnCard: Card) {
+    fun showDeck(drawnCard: Card, player: Player) {
+
         clDeck.visibility = View.VISIBLE
         clDrawCard.visibility = View.VISIBLE
-        tvCardBottomRight.text = drawnCard.showNumberOnCard(drawnCard.number)
-        tvCardTopLeft.text = drawnCard.showNumberOnCard(drawnCard.number)
-        imCardCenter.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
-        imCardTopLeft.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
-        imCardBottomRight.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+        if (player == ai) {
+            placeDrawnCard(ai)
+        } else {
+            placeDrawnCard(human)
+            tvCardBottomRight.text = drawnCard.showNumberOnCard(drawnCard.number)
+            tvCardTopLeft.text = drawnCard.showNumberOnCard(drawnCard.number)
+            imCardCenter.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+            imCardTopLeft.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+            imCardBottomRight.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+        }
     }
 
     fun hideDeck() {
@@ -570,6 +617,9 @@ class GameMode1Fragment : Fragment() {
     }
 
     fun gameDone() {
+        calculateScore()
+        (activity as GameScreen).switchFragment(null, gameDoneFragment(), false)
+
         Log.d("!!!", "game done")
     }
 
@@ -583,6 +633,62 @@ class GameMode1Fragment : Fragment() {
         imCardCenter.visibility = View.VISIBLE
         imCardTopLeft.visibility = View.VISIBLE
         imCardBottomRight.visibility = View.VISIBLE
+    }
+
+    fun textSizeAndShowText(text: String, player: Player) {
+        if (player == ai) {
+            when {
+                text.length > 22 -> {
+                    tvAIText.textSize = TEXTSIZE_LONG
+                }
+
+                text.length in 18..22 -> {
+                    tvAIText.textSize = TEXTSIZE_MEDIUMLONG
+                }
+
+                text.length in 15..18 -> {
+                    tvAIText.textSize = TEXTSIZE_MEDIUMSHORT
+                }
+
+                else -> {
+                    tvAIText.textSize = TEXTSIZE_SHORT
+                }
+            }
+
+            tvAIText.text = text
+        } else {
+            when {
+                text.length > 22 -> {
+                    tvPlayerText.textSize = TEXTSIZE_LONG
+                }
+
+                text.length in 18..22 -> {
+                    tvPlayerText.textSize = TEXTSIZE_MEDIUMLONG
+                }
+
+                text.length in 15..18 -> {
+                    tvPlayerText.textSize = TEXTSIZE_MEDIUMSHORT
+                }
+
+                else -> {
+                    tvPlayerText.textSize = TEXTSIZE_SHORT
+                }
+            }
+
+            tvPlayerText.text = text
+        }
+    }
+fun calculateScore() {
+    GameEngine.gameLevels[GameEngine.currentLevel].score = human.numberOfPairs - ai.numberOfPairs
+}
+    fun placeDrawnCard(player: Player) {
+        if(player == ai) {
+            imCardDrawnAI.visibility = View.VISIBLE
+            clDrawCard.visibility = View.INVISIBLE
+        } else {
+            imCardDrawnAI.visibility = View.INVISIBLE
+            clDrawCard.visibility = View.VISIBLE
+        }
     }
 
 }
