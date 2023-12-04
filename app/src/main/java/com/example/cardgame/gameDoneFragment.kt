@@ -44,7 +44,12 @@ class gameDoneFragment : Fragment() {
 
         tvScore = view.findViewById(R.id.tvScoreDone)
 
-        var levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
+        var levelScore: Int
+        if(param1 != null) {
+            levelScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
+        } else {
+            levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
+        }
 
         tvScore.text = levelScore.toString()
         var imNextGame = view.findViewById<ImageView>(R.id.imNextGame)
@@ -92,7 +97,7 @@ class gameDoneFragment : Fragment() {
     }
 
     fun goToNextGame(view: View?) {
-        (activity as? GameScreen)?.switchFragment(null, gameIntroFragment())
+        (activity as? GameScreen)?.switchFragment(null, gameIntroFragment(), false)
 
 //        val transaction = requireActivity().supportFragmentManager.beginTransaction()
 //        transaction.replace(R.id.fmGameScreen, gameIntroFragment, "gameIntoFragment")

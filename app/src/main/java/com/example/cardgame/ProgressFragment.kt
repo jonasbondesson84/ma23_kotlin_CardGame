@@ -1,5 +1,6 @@
 package com.example.cardgame
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -84,9 +85,61 @@ class ProgressFragment : Fragment() {
             imLevel10.setImageResource(R.drawable.door_silver)
         }
 
+        imLevel1.setOnClickListener {
+            if(SaveData.saveDataList[0].done) {
+                GameEngine.currentLevel = 0
+                val gameIntent = Intent(view.context, GameScreen::class.java)
+                gameIntent.putExtra("playAgain", true)
+                startActivity(gameIntent)
+            } else {
+                val gameIntent = Intent(view.context, GameScreen::class.java)
+                startActivity(gameIntent)
+            }
+        }
+        imLevel2.setOnClickListener {
+            clickForPlay(view,1)
+
+        }
+        imLevel3.setOnClickListener {
+            clickForPlay(view,2)
+
+        }
+        imLevel4.setOnClickListener {
+            clickForPlay(view,3)
+        }
+        imLevel5.setOnClickListener {
+            clickForPlay(view,4)
+        }
+        imLevel6.setOnClickListener {
+            clickForPlay(view,5)
+        }
+        imLevel7.setOnClickListener {
+            clickForPlay(view,6)
+        }
+        imLevel8.setOnClickListener {
+            clickForPlay(view,7)
+        }
+        imLevel9.setOnClickListener {
+            clickForPlay(view,8)
+        }
+        imLevel10.setOnClickListener {
+            clickForPlay(view,9)
+        }
 
 
         return view
+    }
+
+    fun clickForPlay(view: View, chosenLevel: Int) {
+        if(SaveData.saveDataList[chosenLevel].done) {
+            GameEngine.currentLevel = chosenLevel
+            val gameIntent = Intent(view.context, GameScreen::class.java)
+            gameIntent.putExtra("playAgain", true)
+            startActivity(gameIntent)
+        } else if(SaveData.saveDataList[chosenLevel-1].done) {
+            val gameIntent = Intent(view.context, GameScreen::class.java)
+            startActivity(gameIntent)
+        }
     }
 
 

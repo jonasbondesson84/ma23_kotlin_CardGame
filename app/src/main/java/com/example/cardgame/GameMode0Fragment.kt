@@ -119,7 +119,6 @@ class GameMode0Fragment : Fragment() {
         pbTimeLeftAnimator.addListener(object : Animator.AnimatorListener {
 
             override fun onAnimationStart(animation: Animator) {
-
             }
 
             override fun onAnimationEnd(animation: Animator) {
@@ -143,11 +142,8 @@ class GameMode0Fragment : Fragment() {
 
     fun showGameDoneFragment(view: View?) {
 
-        (activity as? GameScreen)?.switchFragment(null, gameDoneFragment())
-        //gameDoneFragment = gameDoneFragment().newInstance()
-//        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.fmGameScreen, gameDoneFragment, "gameDoneFragment")
-//        transaction.commit()
+        (activity as? GameScreen)?.switchFragment(null, gameDoneFragment(), false)
+
 
     }
 
@@ -157,8 +153,6 @@ class GameMode0Fragment : Fragment() {
             currentCard = deckOfCard.getNewCard(currentCardIndex)
             nextCard = deckOfCard.getNewCard(currentCardIndex+1)
             currentCardIndex++
-//            var cardText = " ${currentCard.suite} ${currentCard.number} "
-//            tvCard.text = cardText
             showUICard()
 
 
