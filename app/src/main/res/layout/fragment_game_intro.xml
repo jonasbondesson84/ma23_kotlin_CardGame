@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <ImageButton
-            android:id="@+id/imbLower"
+            android:id="@+id/imLowerGamoeMode0"
             android:layout_width="160dp"
             android:layout_height="56dp"
             android:layout_marginBottom="32dp"
@@ -30,10 +30,10 @@
             android:text="Start"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imbLower"
-            app:layout_constraintEnd_toEndOf="@+id/imbLower"
-            app:layout_constraintStart_toStartOf="@+id/imbLower"
-            app:layout_constraintTop_toTopOf="@+id/imbLower" />
+            app:layout_constraintBottom_toBottomOf="@+id/imLowerGamoeMode0"
+            app:layout_constraintEnd_toEndOf="@+id/imLowerGamoeMode0"
+            app:layout_constraintStart_toStartOf="@+id/imLowerGamoeMode0"
+            app:layout_constraintTop_toTopOf="@+id/imLowerGamoeMode0" />
 
         <ImageView
             android:id="@+id/imageView"
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/characters_0002"
-            app:layout_constraintBottom_toTopOf="@+id/imbLower"
+            app:layout_constraintBottom_toTopOf="@+id/imLowerGamoeMode0"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

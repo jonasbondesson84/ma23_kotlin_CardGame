@@ -15,11 +15,11 @@ class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<
     var onCardClick: ((Int, Int) -> Unit)? = null
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var tvCardTopLeft = itemView.findViewById<TextView>(R.id.tvCardTopLeft)
-        var tvCardBottomRight = itemView.findViewById<TextView>(R.id.tvCardBottomRight)
-        var imCardCenter = itemView.findViewById<ImageView>(R.id.imCardCenter)
-        var imCardTopLeft = itemView.findViewById<ImageView>(R.id.imCardTopLeft)
-        var imCardBottomRight = itemView.findViewById<ImageView>(R.id.imCardBottomRight)
+        var tvCardTopLeft = itemView.findViewById<TextView>(R.id.tvCardTopLeftGameMode0)
+        var tvCardBottomRight = itemView.findViewById<TextView>(R.id.tvCardBottomRightGameMode0)
+        var imCardCenter = itemView.findViewById<ImageView>(R.id.imCardCenterGameMode0)
+        var imCardTopLeft = itemView.findViewById<ImageView>(R.id.imCardTopLeftGamoeMode0)
+        var imCardBottomRight = itemView.findViewById<ImageView>(R.id.imCardBottomRightGamoeMode0)
         var imCard2 = itemView.findViewById<ImageView>(R.id.imCard2)
         var tvCard2Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard2)
         var imCard3 = itemView.findViewById<ImageView>(R.id.imCard3)
