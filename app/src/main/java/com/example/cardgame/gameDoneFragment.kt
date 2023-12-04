@@ -1,7 +1,6 @@
 package com.example.cardgame
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,12 +54,16 @@ class gameDoneFragment : Fragment() {
         var imNextGame = view.findViewById<ImageView>(R.id.imNextGame)
         var tvNextGame = view.findViewById<TextView>(R.id.tvNextGame)
         var imReplayGame = view.findViewById<ImageView>(R.id.imReplayGame)
+        SaveData.saveDataList[GameEngine.currentLevel].bestScore = levelScore
 
-        Log.d("!!!", "levelScore $levelScore ScoreNeeded: " +GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded.toString())
         if(levelScore < GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
             tvNextGame.visibility = View.INVISIBLE
             imNextGame.visibility = View.INVISIBLE
+        } else {
+            SaveData.saveDataList[GameEngine.currentLevel].done = true
         }
+        (activity as GameScreen).saveData()
+        (activity as GameScreen).loadGameProgress()
 
         imNextGame.setOnClickListener() {
             GameEngine.currentLevel++

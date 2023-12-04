@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             saveDataEditor.putString("gameProgress", saveGameProgress())
             saveDataEditor.apply()
         }
-      //  loadSavedSettings()
+        loadSavedSettings()
 
     }
 
