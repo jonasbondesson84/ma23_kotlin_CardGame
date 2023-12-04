@@ -271,11 +271,12 @@ class GameMode2Fragment : Fragment() {
 
     fun drawCardFromDeck(player: Player) {
         if(deckOfCard.isNotEmpty()) {
-            player.deck.add(deckOfCard.first())
-            deckOfCard.remove(deckOfCard.first())
+            val drawnCard= deckOfCard.first()
+            player.deck.add(drawnCard)
+            deckOfCard.remove(drawnCard)
             sortHand(player)
 
-            showAndHideDrawnCard()
+            showAndHideDrawnCard(drawnCard)
 
         } else if(aiTurn) {
             passTo(human)
@@ -284,9 +285,9 @@ class GameMode2Fragment : Fragment() {
         }
     }
 
-    fun showAndHideDrawnCard() {
+    fun showAndHideDrawnCard(card: Card) {
         timerScope.launch {
-            (activity as GameScreen).showDrawnCard(null, CardFragment(), R.id.flDrawnCardPlayer)
+            (activity as GameScreen).showDrawnCard(null, CardFragment.newInstance(card.suite, card.number), R.id.flDrawnCardPlayer)
             delay(1000L)
             (activity as GameScreen).hideDrawnCard(null, CardFragment())
         }
