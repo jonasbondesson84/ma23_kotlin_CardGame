@@ -46,12 +46,18 @@ class GameScreen : AppCompatActivity() {
 
         transaction.add(fragmentID, fragment, "drawnCard").commit()
     }
-    fun hideDrawnCard(view: View?, fragment: Fragment) {
+    fun hideDrawnCard(view: View?) {
         val cardFragment = supportFragmentManager.findFragmentByTag("drawnCard")
         if(cardFragment != null)  {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.remove(cardFragment).commit()
         }
+    }
+
+    fun switchToNextCard(view: View?, fragment: Fragment, fragmentID: Int) {
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(fragmentID, fragment, "nextCard") .commit()
+
     }
 
 

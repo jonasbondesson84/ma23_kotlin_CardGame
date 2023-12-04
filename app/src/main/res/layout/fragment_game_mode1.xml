@@ -122,81 +122,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                  />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clCardPile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-20dp"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/imDeckShown"
-                app:layout_constraintTop_toBottomOf="@+id/imDeckShown">
-
-                <ImageView
-                    android:id="@+id/imCardDrawn"
-                    android:layout_width="120dp"
-                    android:layout_height="190dp"
-                    android:src="@drawable/emptycard_border"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imCardCenter2"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/characters_0005"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/imCardDrawn"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/imCardTopLeft2"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/characters_0005"
-                    app:layout_constraintStart_toStartOf="@+id/tvCardTopLeft2"
-                    app:layout_constraintTop_toBottomOf="@+id/tvCardTopLeft2" />
-
-                <TextView
-                    android:id="@+id/tvCardTopLeft2"
-                    android:layout_width="24dp"
-                    android:layout_height="16dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/zen_dots"
-                    android:text="TextView"
-                    android:textAlignment="center"
-                    app:layout_constraintStart_toStartOf="@+id/imCardDrawn"
-                    app:layout_constraintTop_toTopOf="@+id/imCardDrawn" />
-
-                <TextView
-                    android:id="@+id/tvCardBottomRight2"
-                    android:layout_width="24dp"
-                    android:layout_height="16dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="15dp"
-                    android:fontFamily="@font/zen_dots"
-                    android:rotationX="180"
-                    android:text="TextView"
-                    android:textAlignment="center"
-                    app:layout_constraintBottom_toBottomOf="@+id/imCardDrawn"
-                    app:layout_constraintEnd_toEndOf="@+id/imCardDrawn" />
-
-                <ImageView
-                    android:id="@+id/imCardBottomRight2"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:rotationX="180"
-                    android:src="@drawable/characters_0005"
-                    app:layout_constraintBottom_toTopOf="@+id/tvCardBottomRight2"
-                    app:layout_constraintEnd_toEndOf="@+id/tvCardBottomRight2" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
@@ -252,6 +177,16 @@
             android:src="@drawable/characters_0001"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/flDrawnCardGameMode1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/imDeck"
+            app:layout_constraintStart_toStartOf="@+id/imDeck"
+            app:layout_constraintTop_toBottomOf="@+id/imDeck">
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

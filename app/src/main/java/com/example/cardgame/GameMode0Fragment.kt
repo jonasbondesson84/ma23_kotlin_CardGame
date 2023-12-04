@@ -59,13 +59,13 @@ class GameMode0Fragment : Fragment() {
 
 
     private lateinit var tvAIText: TextView
-    private lateinit var tvCard: TextView
+//    private lateinit var tvCard: TextView
     private lateinit var tvCurrentScore: TextView
-    private lateinit var tvCardTopLeft: TextView
-    private lateinit var tvCardBottomRight: TextView
-    private lateinit var imCardTopLeft: ImageView
-    private lateinit var imCardBottomRight: ImageView
-    private lateinit var imCardCenter: ImageView
+//    private lateinit var tvCardTopLeft: TextView
+//    private lateinit var tvCardBottomRight: TextView
+//    private lateinit var imCardTopLeft: ImageView
+//    private lateinit var imCardBottomRight: ImageView
+//    private lateinit var imCardCenter: ImageView
     private lateinit var pbTimeLeft: ProgressBar
     private lateinit var imAI: ImageView
     private var timerScope = CoroutineScope(Dispatchers.Main)
@@ -90,12 +90,12 @@ class GameMode0Fragment : Fragment() {
 
         val btnHigher: ImageButton = view.findViewById(R.id.imHigherGamoeMode0)
         val btnLower: ImageButton = view.findViewById(R.id.imLowerGamoeMode0)
-        tvCard = view.findViewById(R.id.tvNextCardGameMode0)
-        tvCardTopLeft = view.findViewById(R.id.tvCardTopLeftGameMode0)
-        tvCardBottomRight = view.findViewById(R.id.tvCardBottomRightGameMode0)
-        imCardTopLeft = view.findViewById(R.id.imCardTopLeftGamoeMode0)
-        imCardBottomRight = view.findViewById(R.id.imCardBottomRightGamoeMode0)
-        imCardCenter = view.findViewById(R.id.imCardCenterGameMode0)
+//        tvCard = view.findViewById(R.id.tvNextCardGameMode0)
+//        tvCardTopLeft = view.findViewById(R.id.tvCardTopLeftGameMode0)
+//        tvCardBottomRight = view.findViewById(R.id.tvCardBottomRightGameMode0)
+//        imCardTopLeft = view.findViewById(R.id.imCardTopLeftGamoeMode0)
+//        imCardBottomRight = view.findViewById(R.id.imCardBottomRightGamoeMode0)
+//        imCardCenter = view.findViewById(R.id.imCardCenterGameMode0)
         tvAIText = view.findViewById(R.id.tvAITextGameMode0)
         tvCurrentScore = view.findViewById(R.id.tvCurrentScoreGamoeMode0)
         pbTimeLeft = view.findViewById(R.id.pbTimeLeft)
@@ -104,7 +104,7 @@ class GameMode0Fragment : Fragment() {
         var higherClicked = false
         var lowerClicked = false
 
-        showUICard()
+        showUICard(currentCard)
         when(GameEngine.currentLevel) {
             0 -> {
                 imAI.setImageResource(R.drawable.characters_0006)
@@ -218,7 +218,7 @@ class GameMode0Fragment : Fragment() {
             currentCard = deckOfCard.getNewCard(currentCardIndex)
             nextCard = deckOfCard.getNewCard(currentCardIndex+1)
             currentCardIndex++
-            showUICard()
+            showUICard(currentCard)
 
 
         } else {
@@ -264,13 +264,14 @@ class GameMode0Fragment : Fragment() {
     }
 
 
-    fun showUICard() {
+    fun showUICard(card: Card) {
+        (activity as GameScreen).switchToNextCard(null, CardFragment.newInstance(currentCard.suite, currentCard.number), R.id.flShowCardGameMode0)
 
-        tvCardBottomRight.text = currentCard.showNumberOnCard(currentCard.number)
-        tvCardTopLeft.text = currentCard.showNumberOnCard(currentCard.number)
-        imCardTopLeft.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
-        imCardBottomRight.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
-        imCardCenter.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
+//        tvCardBottomRight.text = currentCard.showNumberOnCard(currentCard.number)
+//        tvCardTopLeft.text = currentCard.showNumberOnCard(currentCard.number)
+//        imCardTopLeft.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
+//        imCardBottomRight.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
+//        imCardCenter.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
 
     }
 

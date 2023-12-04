@@ -107,80 +107,24 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imCardGameMode0"
-                android:layout_width="120dp"
-                android:layout_height="170dp"
-                android:layout_marginStart="24dp"
-                android:src="@drawable/emptycard_border"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@id/imDrawDeckGameMode0"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1.0" />
-
-            <ImageView
                 android:id="@+id/imDrawDeckGameMode0"
                 android:layout_width="140dp"
                 android:layout_height="220dp"
                 android:src="@drawable/backside_pile"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/imCardGameMode0" />
+                app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
-                android:id="@+id/imCardCenterGameMode0"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:src="@drawable/characters_0005"
-                app:layout_constraintBottom_toBottomOf="@+id/imCardGameMode0"
-                app:layout_constraintEnd_toEndOf="@+id/imCardGameMode0"
-                app:layout_constraintStart_toStartOf="@+id/imCardGameMode0"
-                app:layout_constraintTop_toTopOf="@+id/imCardGameMode0" />
-
-            <ImageView
-                android:id="@+id/imCardTopLeftGamoeMode0"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/characters_0005"
-                app:layout_constraintStart_toStartOf="@+id/tvCardTopLeftGameMode0"
-                app:layout_constraintTop_toBottomOf="@+id/tvCardTopLeftGameMode0" />
-
-            <TextView
-                android:id="@+id/tvCardTopLeftGameMode0"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/zen_dots"
-                android:text="TextView"
-                android:textAlignment="center"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="@+id/imCardGameMode0"
-                app:layout_constraintTop_toTopOf="@+id/imCardGameMode0" />
-
-            <TextView
-                android:id="@+id/tvCardBottomRightGameMode0"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/zen_dots"
-                android:rotationX="180"
-                android:text="TextView"
-                android:textAlignment="center"
-                android:textColor="@color/black"
+            <FrameLayout
+                android:id="@+id/flShowCardGameMode0"
+                android:layout_width="140dp"
+                android:layout_height="220dp"
+                android:layout_marginBottom="-10dp"
+                android:scaleX="0.9"
+                android:scaleY="0.9"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintStart_toEndOf="@+id/imDrawDeckGameMode0">
 
-            <ImageView
-                android:id="@+id/imCardBottomRightGamoeMode0"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:rotationX="180"
-                android:src="@drawable/characters_0005"
-                app:layout_constraintBottom_toTopOf="@+id/tvCardBottomRightGameMode0"
-                app:layout_constraintEnd_toEndOf="@+id/tvCardBottomRightGameMode0" />
+            </FrameLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
