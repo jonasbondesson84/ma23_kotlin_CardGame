@@ -21,14 +21,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView10"
+            android:id="@+id/imStar3"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:rotation="15"
             android:src="@drawable/icon_large_starsrey_seethroughoutline"
-            app:layout_constraintStart_toEndOf="@+id/imageView8"
+            app:layout_constraintStart_toEndOf="@+id/imStar2"
             app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
         <ImageView
@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="@+id/imageView6" />
 
         <ImageView
-            android:id="@+id/imageView8"
+            android:id="@+id/imStar2"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/icon_large_starsrey_seethroughoutline"
@@ -52,14 +52,14 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
         <ImageView
-            android:id="@+id/imageView9"
+            android:id="@+id/imStar1"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:rotation="-15"
             android:src="@drawable/icon_large_starsrey_seethroughoutline"
-            app:layout_constraintEnd_toStartOf="@+id/imageView8"
+            app:layout_constraintEnd_toStartOf="@+id/imStar2"
             app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
         <TextView
@@ -85,7 +85,7 @@
             android:src="@drawable/buttontext_orange_onoffbackground"
             app:layout_constraintEnd_toEndOf="@+id/imageView6"
             app:layout_constraintStart_toStartOf="@+id/imageView6"
-            app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+            app:layout_constraintTop_toBottomOf="@+id/imStar2" />
 
         <ImageView
             android:id="@+id/imageView12"
