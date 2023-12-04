@@ -61,6 +61,7 @@ class ProgressFragment : Fragment() {
         imLevel8 = view.findViewById(R.id.imLevel8)
         imLevel9 = view.findViewById(R.id.imLevel9)
         imLevel10 = view.findViewById(R.id.imLevel10)
+        val imOk = view.findViewById<ImageView>(R.id.imOkPathScreen)
 
 
         for(i in 1..9) {
@@ -124,6 +125,9 @@ class ProgressFragment : Fragment() {
         }
         imLevel10.setOnClickListener {
             clickForPlay(view,9)
+        }
+        imOk.setOnClickListener {
+            (activity as MainActivity).switchFragment(null, MainMenyFragment())
         }
 
 
