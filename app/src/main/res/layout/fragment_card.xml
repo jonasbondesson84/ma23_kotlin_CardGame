@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imCard"
+            android:id="@+id/imCardFragment"
             android:layout_width="120dp"
             android:layout_height="190dp"
             android:src="@drawable/emptycard_border"
@@ -19,17 +19,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imCardCenter"
+            android:id="@+id/imCardCenterFragment"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/characters_0005"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imCard" />
+            app:layout_constraintTop_toTopOf="@+id/imCardFragment" />
 
         <TextView
-            android:id="@+id/tvTop"
+            android:id="@+id/tvTopFragment"
             android:layout_width="18dp"
             android:layout_height="24dp"
             android:layout_marginStart="10dp"
@@ -38,11 +38,11 @@
             android:text="A"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/imCard"
-            app:layout_constraintTop_toTopOf="@+id/imCard" />
+            app:layout_constraintStart_toStartOf="@+id/imCardFragment"
+            app:layout_constraintTop_toTopOf="@+id/imCardFragment" />
 
         <TextView
-            android:id="@+id/tvBottom"
+            android:id="@+id/tvBottomFragment"
             android:layout_width="18dp"
             android:layout_height="24dp"
             android:layout_marginEnd="10dp"
@@ -56,20 +56,20 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
-            android:id="@+id/imTop"
+            android:id="@+id/imTopFragment"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/characters_0005"
-            app:layout_constraintStart_toStartOf="@+id/tvTop"
-            app:layout_constraintTop_toBottomOf="@+id/tvTop" />
+            app:layout_constraintStart_toStartOf="@+id/tvTopFragment"
+            app:layout_constraintTop_toBottomOf="@+id/tvTopFragment" />
 
         <ImageView
-            android:id="@+id/imBottom"
+            android:id="@+id/imBottomFragment"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:rotation="180"
             android:src="@drawable/characters_0005"
-            app:layout_constraintBottom_toTopOf="@+id/tvBottom"
-            app:layout_constraintEnd_toEndOf="@+id/tvBottom" />
+            app:layout_constraintBottom_toTopOf="@+id/tvBottomFragment"
+            app:layout_constraintEnd_toEndOf="@+id/tvBottomFragment" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -43,6 +43,7 @@ class GameScreen : AppCompatActivity() {
     fun showDrawnCard(view: View?, fragment: Fragment, fragmentID: Int) {
 
         val transaction = supportFragmentManager.beginTransaction()
+
         transaction.add(fragmentID, fragment, "drawnCard").commit()
     }
     fun hideDrawnCard(view: View?, fragment: Fragment) {

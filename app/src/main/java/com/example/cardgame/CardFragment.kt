@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 
 // TODO: Rename parameter arguments, choose names that match
@@ -19,13 +21,19 @@ private const val ARG_PARAM2 = "param2"
 class CardFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
-    private var param2: String? = null
+    private var param2: Int? = null
+
+    private lateinit var imCenter : ImageView
+    private lateinit var imTop : ImageView
+    private lateinit var imBottom: ImageView
+    private lateinit var tvTop: TextView
+    private lateinit var tvBottom: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            param2 = it.getInt(ARG_PARAM2)
         }
     }
 
@@ -34,8 +42,34 @@ class CardFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_card, container, false)
+        val view = inflater.inflate(R.layout.fragment_card, container, false)
+        val card = Card("Heart", 1)
+
+        imCenter = view.findViewById(R.id.imCardCenterFragment)
+        imTop = view.findViewById(R.id.imTopFragment)
+        imBottom = view.findViewById(R.id.imBottomFragment)
+        tvTop = view.findViewById(R.id.tvTopFragment)
+        tvBottom = view.findViewById(R.id.tvBottomFragment)
+        param1.let{suite ->
+            if (suite != null) {
+                imCenter.setImageResource(card.showSuiteOnCard(suite))
+                imBottom.setImageResource(card.showSuiteOnCard(suite))
+                imTop.setImageResource(card.showSuiteOnCard(suite))
+            }
+        }
+        param2.let {number ->
+            if (number != null) {
+                tvTop.text = card.showNumberOnCard(number)
+                tvBottom.text = card.showNumberOnCard(number)
+            }
+        }
+
+
+
+        return view
     }
+
+
 
     companion object {
         /**
@@ -48,11 +82,11 @@ class CardFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: String, param2: Int) =
             CardFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putInt(ARG_PARAM2, param2)
                 }
             }
     }
