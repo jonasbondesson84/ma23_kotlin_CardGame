@@ -37,11 +37,11 @@ class GameMode1Fragment : Fragment() {
     private var param2: String? = null
     private lateinit var rvAICards: RecyclerView
     private lateinit var rvHumanCards: RecyclerView
-    private lateinit var imCardCenter: ImageView
-    private lateinit var imCardTopLeft: ImageView
-    private lateinit var imCardBottomRight: ImageView
-    private lateinit var tvCardTopLeft: TextView
-    private lateinit var tvCardBottomRight: TextView
+//    private lateinit var imCardCenter: ImageView
+//    private lateinit var imCardTopLeft: ImageView
+//    private lateinit var imCardBottomRight: ImageView
+//    private lateinit var tvCardTopLeft: TextView
+//    private lateinit var tvCardBottomRight: TextView
     private lateinit var clDrawCard: ConstraintLayout
     private lateinit var tvAIText: TextView
     private lateinit var clDeck: ConstraintLayout
@@ -122,13 +122,13 @@ class GameMode1Fragment : Fragment() {
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
         adapterAIPairs = PairsAdapter(view.context, ai.numberOfPairs)
         rvAIPairs.adapter = adapterAIPairs
-
-        imCardCenter = view.findViewById(R.id.imCardCenter2)
-        imCardBottomRight = view.findViewById(R.id.imCardBottomRight2)
-        imCardTopLeft = view.findViewById(R.id.imCardTopLeft2)
-        tvCardBottomRight = view.findViewById(R.id.tvCardBottomRight2)
-        tvCardTopLeft = view.findViewById(R.id.tvCardTopLeft2)
-        clDrawCard = view.findViewById(R.id.clCardPile)
+//
+//        imCardCenter = view.findViewById(R.id.imCardCenter2)
+//        imCardBottomRight = view.findViewById(R.id.imCardBottomRight2)
+//        imCardTopLeft = view.findViewById(R.id.imCardTopLeft2)
+//        tvCardBottomRight = view.findViewById(R.id.tvCardBottomRight2)
+//        tvCardTopLeft = view.findViewById(R.id.tvCardTopLeft2)
+//        clDrawCard = view.findViewById(R.id.clCardPile)
         tvAIText = view.findViewById(R.id.tvAITextGameMode1)
         clDeck = view.findViewById(R.id.clDeck)
         imGoFishButton = view.findViewById(R.id.imGoFishButton)
@@ -151,9 +151,10 @@ class GameMode1Fragment : Fragment() {
             if (waitForDrawCard && !timerClickDeck) {
                 aiTurn = true
                 timerClickDeck = true
-                showCardWhenHumanDraws()
+//                showCardWhenHumanDraws()
                 placeDrawnCard(human)
                 drawCardFromDeck(human.deck, human.deckMap, human)
+
             }
         }
 
@@ -222,10 +223,17 @@ class GameMode1Fragment : Fragment() {
         if (deckOfCard.isNotEmpty()) {
 
             val drawnCard = deckOfCard.first()
+
             timerScope.launch {
                 withContext(Dispatchers.Main) {
-
-                    showDeck(drawnCard, player)
+                    if(player == human) {
+                        showAndHideDrawnCard(drawnCard)
+                    } else {
+                        imCardDrawnAI.visibility = View.VISIBLE
+                        delay(TIMER_ACTION)
+                        imCardDrawnAI.visibility = View.INVISIBLE
+                    }
+                    //showDeck(drawnCard, player)
                     delay(TIMER_ACTION)
                     deck.add(drawnCard)
 //                    Log.d("!!!", "drawn card: " + drawnCard.number.toString())
@@ -274,14 +282,21 @@ class GameMode1Fragment : Fragment() {
             var drawnCard = deckOfCard.first()
             timerScope.launch {
                 withContext(Dispatchers.Main) {
-                    if (player == human) {
-                        showCardWhenHumanDraws()
-
+                    if(player == human) {
+                        showAndHideDrawnCard(drawnCard)
                     } else {
-                        hideCardWhenAIDraws()
-
+                        imCardDrawnAI.visibility = View.VISIBLE
+                        delay(TIMER_ACTION)
+                        imCardDrawnAI.visibility = View.INVISIBLE
                     }
-                    showDeck(drawnCard, player)
+//                    if (player == human) {
+//                        showCardWhenHumanDraws()
+//
+//                    } else {
+//                        hideCardWhenAIDraws()
+//
+//                    }
+                    //showDeck(drawnCard, player)
                     delay(TIMER_ACTION)
                     deck.add(drawnCard)
 //                    Log.d("!!!", "drawn card for last: " + drawnCard.number.toString())
@@ -544,7 +559,7 @@ class GameMode1Fragment : Fragment() {
                 textSizeAndShowText(text, ai)
 //                tvAIText.text = "Darn' it!"
                 delay(TIMER_TEXT)
-                hideCardWhenAIDraws()
+//                hideCardWhenAIDraws()
                 drawCardFromDeck(ai.deck, ai.deckMap, ai)
                 hidePlayerText()
             }
@@ -585,24 +600,24 @@ class GameMode1Fragment : Fragment() {
         imPLayerIcon.visibility = View.INVISIBLE
     }
 
-    fun showDeck(drawnCard: Card, player: Player) {
-
-        clDeck.visibility = View.VISIBLE
-        clDrawCard.visibility = View.VISIBLE
-        if (player == ai) {
-            placeDrawnCard(ai)
-        } else {
-            placeDrawnCard(human)
-            tvCardBottomRight.text = drawnCard.showNumberOnCard(drawnCard.number)
-            tvCardTopLeft.text = drawnCard.showNumberOnCard(drawnCard.number)
-            imCardCenter.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
-            imCardTopLeft.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
-            imCardBottomRight.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
-        }
-    }
+//    fun showDeck(drawnCard: Card, player: Player) {
+//
+//        clDeck.visibility = View.VISIBLE
+//        clDrawCard.visibility = View.VISIBLE
+//        if (player == ai) {
+//            placeDrawnCard(ai)
+//        } else {
+//            placeDrawnCard(human)
+//            tvCardBottomRight.text = drawnCard.showNumberOnCard(drawnCard.number)
+//            tvCardTopLeft.text = drawnCard.showNumberOnCard(drawnCard.number)
+//            imCardCenter.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+//            imCardTopLeft.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+//            imCardBottomRight.setImageResource(drawnCard.showSuiteOnCard(drawnCard.suite))
+//        }
+//    }
 
     fun hideDeck() {
-        clDrawCard.visibility = View.INVISIBLE
+//        clDrawCard.visibility = View.INVISIBLE
         clDeck.visibility = View.INVISIBLE
     }
 
@@ -623,17 +638,17 @@ class GameMode1Fragment : Fragment() {
         Log.d("!!!", "game done")
     }
 
-    fun hideCardWhenAIDraws() {
-        imCardCenter.visibility = View.INVISIBLE
-        imCardTopLeft.visibility = View.INVISIBLE
-        imCardBottomRight.visibility = View.INVISIBLE
-    }
-
-    fun showCardWhenHumanDraws() {
-        imCardCenter.visibility = View.VISIBLE
-        imCardTopLeft.visibility = View.VISIBLE
-        imCardBottomRight.visibility = View.VISIBLE
-    }
+//    fun hideCardWhenAIDraws() {
+//        imCardCenter.visibility = View.INVISIBLE
+//        imCardTopLeft.visibility = View.INVISIBLE
+//        imCardBottomRight.visibility = View.INVISIBLE
+//    }
+//
+//    fun showCardWhenHumanDraws() {
+//        imCardCenter.visibility = View.VISIBLE
+//        imCardTopLeft.visibility = View.VISIBLE
+//        imCardBottomRight.visibility = View.VISIBLE
+//    }
 
     fun textSizeAndShowText(text: String, player: Player) {
         if (player == ai) {
@@ -684,10 +699,18 @@ fun calculateScore() {
     fun placeDrawnCard(player: Player) {
         if(player == ai) {
             imCardDrawnAI.visibility = View.VISIBLE
-            clDrawCard.visibility = View.INVISIBLE
+  //          clDrawCard.visibility = View.INVISIBLE
         } else {
             imCardDrawnAI.visibility = View.INVISIBLE
-            clDrawCard.visibility = View.VISIBLE
+//            clDrawCard.visibility = View.VISIBLE
+        }
+    }
+
+    fun showAndHideDrawnCard(card: Card) {
+        timerScope.launch {
+            (activity as GameScreen).showDrawnCard(null, CardFragment.newInstance(card.suite, card.number), R.id.flDrawnCardGameMode1)
+            delay(1000L)
+            (activity as GameScreen).hideDrawnCard(null)
         }
     }
 

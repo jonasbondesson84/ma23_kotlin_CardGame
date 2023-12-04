@@ -42,13 +42,15 @@ class GameMode2Fragment : Fragment() {
     private lateinit var imPlayerIcon: ImageView
     private lateinit var imPlayerTextImage: ImageView
     private lateinit var tvPlayerText: TextView
+
     //private lateinit var clCardDrawn: ConstraintLayout
     private lateinit var imDeck: ImageView
-    private lateinit var imCardPileCenter: ImageView
-    private lateinit var imCardPileTopLeft: ImageView
-    private lateinit var imCardPileBottomRight: ImageView
-    private lateinit var tvCardPileTopLeft: TextView
-    private lateinit var tvCardPileBottomRight: TextView
+
+    //    private lateinit var imCardPileCenter: ImageView
+//    private lateinit var imCardPileTopLeft: ImageView
+//    private lateinit var imCardPileBottomRight: ImageView
+//    private lateinit var tvCardPileTopLeft: TextView
+//    private lateinit var tvCardPileBottomRight: TextView
     private lateinit var clSuites: ConstraintLayout
     private lateinit var imHearts: ImageView
     private lateinit var imDiamonds: ImageView
@@ -57,13 +59,13 @@ class GameMode2Fragment : Fragment() {
     private lateinit var imPassIcon: ImageView
     private lateinit var tvPassText: TextView
     private lateinit var flDrawnCard: FrameLayout
+    private lateinit var imDrawnCardAI: ImageView
 
     private var deckOfCard = deckOfCard().deckOfCard
     private var pileDeck = mutableListOf<Card>()
     private var selectedSuite = "Heart"
     private var aiTurn = false
     private var timerScope = CoroutineScope(Dispatchers.Main)
-
 
 
     private val human = Player("human", mutableListOf(), TreeMap(), 0, 0)
@@ -82,7 +84,7 @@ class GameMode2Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view =  inflater.inflate(R.layout.fragment_game_mode2, container, false)
+        val view = inflater.inflate(R.layout.fragment_game_mode2, container, false)
         rvAICards = view.findViewById(R.id.rvAICardsGAMEMODE2)
         rvHumanCards = view.findViewById(R.id.rvHumanCardsGAMEMODE2)
         imPlayerIcon = view.findViewById(R.id.imPLayerIconGAMEMODE2)
@@ -90,11 +92,11 @@ class GameMode2Fragment : Fragment() {
         tvPlayerText = view.findViewById(R.id.tvPlayerTextGAMEMODE2)
         //clCardDrawn = view.findViewById(R.id.clCardDrawnGAMEMODE2)
         imDeck = view.findViewById(R.id.imDeckGAMEMODE2)
-        imCardPileCenter = view.findViewById(R.id.imCardPileCenterGAMEMODE2)
-        imCardPileTopLeft = view.findViewById(R.id.imCardPileTopLeftGAMEMODE2)
-        imCardPileBottomRight = view.findViewById(R.id.imCardPileBottomRightGAMEMODE2)
-        tvCardPileTopLeft = view.findViewById(R.id.tvCardPileTopLeftGAMEMODE2)
-        tvCardPileBottomRight = view.findViewById(R.id.tvCardPileBottomRightGAMEMODE2)
+//        imCardPileCenter = view.findViewById(R.id.imCardPileCenterGAMEMODE2)
+//        imCardPileTopLeft = view.findViewById(R.id.imCardPileTopLeftGAMEMODE2)
+//        imCardPileBottomRight = view.findViewById(R.id.imCardPileBottomRightGAMEMODE2)
+//        tvCardPileTopLeft = view.findViewById(R.id.tvCardPileTopLeftGAMEMODE2)
+//        tvCardPileBottomRight = view.findViewById(R.id.tvCardPileBottomRightGAMEMODE2)
         clSuites = view.findViewById(R.id.clSuites)
         imHearts = view.findViewById(R.id.imSuiteHeartGAMEMODE2)
         imDiamonds = view.findViewById(R.id.imSuiteDiamondGAMEMODE2)
@@ -103,6 +105,7 @@ class GameMode2Fragment : Fragment() {
         tvPassText = view.findViewById(R.id.tvPass)
         imPassIcon = view.findViewById(R.id.imPassIcon)
         flDrawnCard = view.findViewById(R.id.flDrawnCardPlayer)
+        imDrawnCardAI = view.findViewById(R.id.imDrawnCardAIGameMode2)
 
         rvHumanCards.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
@@ -115,7 +118,7 @@ class GameMode2Fragment : Fragment() {
         rvAICards.adapter = adapterAICards
 
 
-        
+
         createHands()
         updateHandView()
         hidePlayerIconAndText()
@@ -125,8 +128,9 @@ class GameMode2Fragment : Fragment() {
         printHand()
         hideSuitesList()
         hidePassIcon()
+        imDrawnCardAI.visibility = View.INVISIBLE
         var currentCard: Card = pileDeck.last()
-        var currentCardPosition = pileDeck.size-1
+        var currentCardPosition = pileDeck.size - 1
 
 
         imDeck.setOnClickListener() {
@@ -135,7 +139,7 @@ class GameMode2Fragment : Fragment() {
         }
 
         adapterHumanCards?.onCardClick = { card, position -> //Click on card in hand
-            if(!aiTurn) {
+            if (!aiTurn) {
                 hidePassIcon()
                 if (card.number == CRAZY_EIGHT) {
                     aiTurn = true
@@ -181,7 +185,7 @@ class GameMode2Fragment : Fragment() {
             removeCardFromHand(currentCard, human, currentCardPosition)
             currentCard.suite = "Spades"
 //            updatePileCard(updatedCard, "Spades")
-            addCardToPile(currentCard,human)
+            addCardToPile(currentCard, human)
             aiTurnSequence()
         }
 
@@ -207,16 +211,25 @@ class GameMode2Fragment : Fragment() {
         updatePileCard(firstDraw, firstDraw.suite)
 
     }
+
     fun updatePileCard(card: Card, suite: String) {
         selectedSuite = suite
-        imCardPileCenter.setImageResource(card.showSuiteOnCard(selectedSuite))
-        imCardPileTopLeft.setImageResource(card.showSuiteOnCard(selectedSuite))
-        imCardPileBottomRight.setImageResource(card.showSuiteOnCard(selectedSuite))
-        tvCardPileTopLeft.text = card.showNumberOnCard(card.number)
-        tvCardPileBottomRight.text = card.showNumberOnCard(card.number)
+        (activity as GameScreen).switchToNextCard(
+            null,
+            CardFragment.newInstance(card.suite, card.number),
+            R.id.flCardPileGameMode2
+        )
+//        imCardPileCenter.setImageResource(card.showSuiteOnCard(selectedSuite))
+//        imCardPileTopLeft.setImageResource(card.showSuiteOnCard(selectedSuite))
+//        imCardPileBottomRight.setImageResource(card.showSuiteOnCard(selectedSuite))
+//        tvCardPileTopLeft.text = card.showNumberOnCard(card.number)
+//        tvCardPileBottomRight.text = card.showNumberOnCard(card.number)
         hideSuitesList()
         Log.d("!!!", "Top of pile: " + card.suite + card.number.toString())
-        Log.d("!!!", "Last of pileDeck: " + pileDeck.last().suite + pileDeck.last().number.toString())
+        Log.d(
+            "!!!",
+            "Last of pileDeck: " + pileDeck.last().suite + pileDeck.last().number.toString()
+        )
 
     }
 
@@ -229,9 +242,9 @@ class GameMode2Fragment : Fragment() {
     fun aiTurnSequence() {
         var crazyEight: Card? = null
 
-        for ( card in ai.deck) {
-            if (card.suite == selectedSuite || card.number == pileDeck.last().number ) {
-                if(card.number == CRAZY_EIGHT) {
+        for (card in ai.deck) {
+            if (card.suite == selectedSuite || card.number == pileDeck.last().number) {
+                if (card.number == CRAZY_EIGHT) {
                     crazyEight = card
                     break
                 }
@@ -252,7 +265,7 @@ class GameMode2Fragment : Fragment() {
             return
         }
         drawCardFromDeck(ai)
-        if(aiTurn) {
+        if (aiTurn) {
             aiTurnSequence()
         }
     }
@@ -270,15 +283,19 @@ class GameMode2Fragment : Fragment() {
     }
 
     fun drawCardFromDeck(player: Player) {
-        if(deckOfCard.isNotEmpty()) {
-            val drawnCard= deckOfCard.first()
+        if (deckOfCard.isNotEmpty()) {
+            val drawnCard = deckOfCard.first()
             player.deck.add(drawnCard)
             deckOfCard.remove(drawnCard)
+
+            if (player == human) {
+                showAndHideDrawnCard(drawnCard)
+            } else {
+                showAndHideDrawnCardAI()
+            }
             sortHand(player)
 
-            showAndHideDrawnCard(drawnCard)
-
-        } else if(aiTurn) {
+        } else if (aiTurn) {
             passTo(human)
         } else {
             showPassIcon()
@@ -287,12 +304,23 @@ class GameMode2Fragment : Fragment() {
 
     fun showAndHideDrawnCard(card: Card) {
         timerScope.launch {
-            (activity as GameScreen).showDrawnCard(null, CardFragment.newInstance(card.suite, card.number), R.id.flDrawnCardPlayer)
+            (activity as GameScreen).showDrawnCard(
+                null,
+                CardFragment.newInstance(card.suite, card.number),
+                R.id.flDrawnCardPlayer
+            )
             delay(1000L)
-            (activity as GameScreen).hideDrawnCard(null, CardFragment())
+            (activity as GameScreen).hideDrawnCard(null)
         }
     }
 
+    fun showAndHideDrawnCardAI() {
+        timerScope.launch {
+            imDrawnCardAI.visibility = View.VISIBLE
+            delay(1000L)
+            imDrawnCardAI.visibility = View.INVISIBLE
+        }
+    }
 
 
     fun gameDone() {
@@ -306,16 +334,16 @@ class GameMode2Fragment : Fragment() {
             countScore += card.number
         }
         player.score = countScore
-        Log.d("!!!", "Playerscore: " +player.score.toString())
+        Log.d("!!!", "Playerscore: " + player.score.toString())
     }
 
     fun removeCardFromHand(card: Card, player: Player, position: Int) {
         player.deck.remove(card)
-        if(player.deck.isEmpty()) {
+        if (player.deck.isEmpty()) {
             gameDone()
         }
-            //adapterHumanCards.notifyItemRemoved(position)
-            updateHandView()
+        //adapterHumanCards.notifyItemRemoved(position)
+        updateHandView()
 
     }
 
@@ -337,12 +365,12 @@ class GameMode2Fragment : Fragment() {
             Log.d("!!!", "H: " + card.suite + " " + card.number.toString())
         }
         for (card in ai.deck) {
-            Log.d("!!!", "AI: " + card.suite+ " " + card.number.toString())
+            Log.d("!!!", "AI: " + card.suite + " " + card.number.toString())
         }
         Log.d("!!!", "--------------")
     }
 
-    fun passTo(player: Player){
+    fun passTo(player: Player) {
         if (player == ai) {
             aiTurn = true
             aiTurnSequence()
@@ -361,17 +389,21 @@ class GameMode2Fragment : Fragment() {
         tvPassText.visibility = View.INVISIBLE
         imPassIcon.visibility = View.INVISIBLE
     }
+
     fun showSuitesList() {
         clSuites.visibility = View.VISIBLE
     }
+
     fun hideSuitesList() {
         clSuites.visibility = View.INVISIBLE
     }
+
     fun showPlayerIconAndText() {
         imPlayerIcon.visibility = View.VISIBLE
         imPlayerTextImage.visibility = View.VISIBLE
         tvPlayerText.visibility = View.VISIBLE
     }
+
     fun hidePlayerIconAndText() {
         imPlayerIcon.visibility = View.INVISIBLE
         imPlayerTextImage.visibility = View.INVISIBLE
@@ -385,6 +417,7 @@ class GameMode2Fragment : Fragment() {
     fun hideCardDrawn() {
 //        clCardDrawn.visibility = View.INVISIBLE
     }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
