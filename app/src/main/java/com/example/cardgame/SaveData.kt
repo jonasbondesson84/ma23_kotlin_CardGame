@@ -24,8 +24,8 @@ object SaveData {
 
     fun resetData() {
         saveDataList.clear()
-        saveDataList.add(saveDataLevels(1, 0, true))
-        saveDataList.add(saveDataLevels(2, 0, true))
+        saveDataList.add(saveDataLevels(1, 65, true))
+        saveDataList.add(saveDataLevels(2, 9999, true))
         saveDataList.add(saveDataLevels(3, 0, false))
         saveDataList.add(saveDataLevels(4, 0, false))
         saveDataList.add(saveDataLevels(5, 0, false))
