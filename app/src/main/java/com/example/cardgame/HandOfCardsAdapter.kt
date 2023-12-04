@@ -14,12 +14,12 @@ class HandOfCardsAdapter(val context: Context, val player: Player /*val handOfCa
     var onCardClick: ((Card, Int) -> Unit)? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvCardTopLeft = itemView.findViewById<TextView>(R.id.tvCardTopLeft)
-        var tvCardBottomRight = itemView.findViewById<TextView>(R.id.tvCardBottomRight)
-        var imCardCenter = itemView.findViewById<ImageView>(R.id.imCardCenter)
-        var imCardTopLeft = itemView.findViewById<ImageView>(R.id.imCardTopLeft)
-        var imCardBottomRight = itemView.findViewById<ImageView>(R.id.imCardBottomRight)
-        var imCard = itemView.findViewById<ImageView>(R.id.imCard1)
+        var tvCardTopLeft = itemView.findViewById<TextView>(R.id.tvCardTopLeftGameMode0)
+        var tvCardBottomRight = itemView.findViewById<TextView>(R.id.tvCardBottomRightGameMode0)
+        var imCardCenter = itemView.findViewById<ImageView>(R.id.imCardCenterGameMode0)
+        var imCardTopLeft = itemView.findViewById<ImageView>(R.id.imCardTopLeftGamoeMode0)
+        var imCardBottomRight = itemView.findViewById<ImageView>(R.id.imCardBottomRightGamoeMode0)
+        var imCard = itemView.findViewById<ImageView>(R.id.imCardGameMode0)
         var cardPosition = 0
 
 

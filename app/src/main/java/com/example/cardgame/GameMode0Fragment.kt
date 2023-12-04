@@ -3,6 +3,7 @@ package com.example.cardgame
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,10 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,12 +32,12 @@ class GameMode0Fragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-//    private var gameDoneFragment = gameDoneFragment()
     private var deckOfCard = deckOfCard()
     private var currentCardIndex = 1
     private var score = 0
     private var currentCard = deckOfCard.getNewCard(0)
     private var nextCard = deckOfCard.getNewCard(1)
+    private var currentStreak = 0
     private var rightAnswers = listOf(
         "Well done!",
         "Good job!",
@@ -47,6 +52,11 @@ class GameMode0Fragment : Fragment() {
         "Better luck next time.",
         "Try harder!"
     )
+    private var TEXTSIZE_SHORT = 24F
+    private var TEXTSIZE_MEDIUMSHORT = 18F
+    private var TEXTSIZE_MEDIUMLONG = 16F
+    private var TEXTSIZE_LONG = 12F
+
 
     private lateinit var tvAIText: TextView
     private lateinit var tvCard: TextView
@@ -58,6 +68,8 @@ class GameMode0Fragment : Fragment() {
     private lateinit var imCardCenter: ImageView
     private lateinit var pbTimeLeft: ProgressBar
     private lateinit var imAI: ImageView
+    private var timerScope = CoroutineScope(Dispatchers.Main)
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,18 +88,21 @@ class GameMode0Fragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_gamemode0, container, false)
 
-        val btnHigher: ImageButton = view.findViewById(R.id.imbHigher)
-        val btnLower: ImageButton = view.findViewById(R.id.imbLower)
-        tvCard = view.findViewById(R.id.tvCard)
-        tvCardTopLeft = view.findViewById(R.id.tvCardTopLeft)
-        tvCardBottomRight = view.findViewById(R.id.tvCardBottomRight)
-        imCardTopLeft = view.findViewById(R.id.imCardTopLeft)
-        imCardBottomRight = view.findViewById(R.id.imCardBottomRight)
-        imCardCenter = view.findViewById(R.id.imCardCenter)
+        val btnHigher: ImageButton = view.findViewById(R.id.imHigherGamoeMode0)
+        val btnLower: ImageButton = view.findViewById(R.id.imLowerGamoeMode0)
+        tvCard = view.findViewById(R.id.tvNextCardGameMode0)
+        tvCardTopLeft = view.findViewById(R.id.tvCardTopLeftGameMode0)
+        tvCardBottomRight = view.findViewById(R.id.tvCardBottomRightGameMode0)
+        imCardTopLeft = view.findViewById(R.id.imCardTopLeftGamoeMode0)
+        imCardBottomRight = view.findViewById(R.id.imCardBottomRightGamoeMode0)
+        imCardCenter = view.findViewById(R.id.imCardCenterGameMode0)
         tvAIText = view.findViewById(R.id.tvAITextGameMode0)
-        tvCurrentScore = view.findViewById(R.id.tvCurrentScore)
+        tvCurrentScore = view.findViewById(R.id.tvCurrentScoreGamoeMode0)
         pbTimeLeft = view.findViewById(R.id.pbTimeLeft)
         imAI = view.findViewById(R.id.imAIGameMode0)
+
+        var higherClicked = false
+        var lowerClicked = false
 
         showUICard()
         when(GameEngine.currentLevel) {
@@ -103,11 +118,35 @@ class GameMode0Fragment : Fragment() {
         }
 
         btnHigher.setOnClickListener() {
-            checkCardHigher()
+            if(!higherClicked) {
+                higherClicked = true
+                checkCardHigher()
+                timerScope.launch {
+                    btnHigher.setImageResource(R.drawable.buttontext_large_greyoutline_round)
+                    btnLower.setImageResource(R.drawable.buttontext_large_greyoutline_round)
+                    delay(1000L)
+                    btnHigher.setImageResource(R.drawable.buttontext_large_orange_round)
+                    btnLower.setImageResource(R.drawable.buttontext_large_orange_round)
+                    higherClicked = false
+                }
+            }
+
         }
 
         btnLower.setOnClickListener() {
-            checkCardLower()
+            if(!lowerClicked) {
+                lowerClicked = true
+
+                checkCardLower()
+                timerScope.launch {
+                    btnHigher.setImageResource(R.drawable.buttontext_large_greyoutline_round)
+                    btnLower.setImageResource(R.drawable.buttontext_large_greyoutline_round)
+                    delay(1000L)
+                    btnHigher.setImageResource(R.drawable.buttontext_large_orange_round)
+                    btnLower.setImageResource(R.drawable.buttontext_large_orange_round)
+                    lowerClicked = false
+                }
+            }
         }
 
         startTimer()
@@ -163,7 +202,7 @@ class GameMode0Fragment : Fragment() {
     }
     fun gameDone() {
         showGameDoneFragment(null)
-        GameEngine.gameLevels[GameEngine.currentLevel].score = score * 100
+        GameEngine.gameLevels[GameEngine.currentLevel].score = score
     }
 
     fun showGameDoneFragment(view: View?) {
@@ -190,24 +229,37 @@ class GameMode0Fragment : Fragment() {
     }
 
     fun checkCardHigher() {
+
         if (nextCard.number >= currentCard.number) {
-            score++
-            tvAIText.text = rightAnswers.random()
+            score += 100
+            var text = rightAnswers.random()
+            textSizeAndShowText(text)
+            currentStreak++
+            Log.d("!!!", currentStreak.toString())
         } else {
-            tvAIText.text = wrongAnswer.random()
+            currentStreak = 0
+            var text = wrongAnswer.random()
+            textSizeAndShowText(text)
         }
-        tvCurrentScore.text = "Score: ${score * 100}"
+        addStreakPoints()
+        tvCurrentScore.text = ": ${score}"
         showNextCard()
     }
 
     fun checkCardLower() {
+
         if(nextCard.number <= currentCard.number) {
-            score++
-            tvAIText.text = rightAnswers.random()
+            score += 100
+            currentStreak++
+            var text = rightAnswers.random()
+            textSizeAndShowText(text)
         } else {
-            tvAIText.text = wrongAnswer.random()
+            var text = wrongAnswer.random()
+            textSizeAndShowText(text)
+            currentStreak = 0
         }
-        tvCurrentScore.text = "Score: ${score * 100}"
+        addStreakPoints()
+        tvCurrentScore.text = ": ${score}"
         showNextCard()
     }
 
@@ -220,5 +272,39 @@ class GameMode0Fragment : Fragment() {
         imCardBottomRight.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
         imCardCenter.setImageResource(currentCard.showSuiteOnCard(currentCard.suite))
 
+    }
+
+    fun addStreakPoints() {
+        if (currentStreak >= 10) {
+            score += (200 * currentStreak)
+            var text = "Streak bonus: ${(200 * currentStreak)}"
+            textSizeAndShowText(text)
+        } else if( currentStreak >= 5) {
+            score += (100 * currentStreak)
+            var text = "Streak bonus: ${(100 * currentStreak)}"
+            textSizeAndShowText(text)
+        } else if(currentStreak >= 3) {
+            score += (50 * currentStreak)
+            var text = "Streak bonus: ${(50 * currentStreak)}"
+            textSizeAndShowText(text)
+        }
+    }
+
+    fun textSizeAndShowText(text: String){
+        when {
+            text.length > 22 -> {
+                tvAIText.textSize = TEXTSIZE_LONG
+            }
+            text.length in 18..22 -> {
+                tvAIText.textSize = TEXTSIZE_MEDIUMLONG
+            }
+            text.length in 15 .. 18 -> {
+                tvAIText.textSize = TEXTSIZE_MEDIUMSHORT
+            }
+            else -> {
+                tvAIText.textSize = TEXTSIZE_SHORT
+            }
+        }
+        tvAIText.text = text
     }
 }
