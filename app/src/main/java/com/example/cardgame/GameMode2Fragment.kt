@@ -60,6 +60,7 @@ class GameMode2Fragment : Fragment() {
     private lateinit var tvPassText: TextView
     private lateinit var flDrawnCard: FrameLayout
     private lateinit var imDrawnCardAI: ImageView
+    private lateinit var flCardPile: FrameLayout
 
     private var deckOfCard = deckOfCard().deckOfCard
     private var pileDeck = mutableListOf<Card>()
@@ -106,6 +107,7 @@ class GameMode2Fragment : Fragment() {
         imPassIcon = view.findViewById(R.id.imPassIcon)
         flDrawnCard = view.findViewById(R.id.flDrawnCardPlayer)
         imDrawnCardAI = view.findViewById(R.id.imDrawnCardAIGameMode2)
+        flCardPile = view.findViewById(R.id.flCardPileGameMode2)
 
         rvHumanCards.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
@@ -152,7 +154,9 @@ class GameMode2Fragment : Fragment() {
                     aiTurn = true
                     addCardToPile(card, human)
                     removeCardFromHand(card, human, position)
-                    aiTurnSequence()
+                    if(human.deck.isNotEmpty()) {
+                        aiTurnSequence()
+                    }
                 }
             }
         }
@@ -208,17 +212,24 @@ class GameMode2Fragment : Fragment() {
         var firstDraw = deckOfCard.first()
         pileDeck.add(firstDraw)
         deckOfCard.remove(firstDraw)
-        updatePileCard(firstDraw, firstDraw.suite)
+        (activity as GameScreen).switchToNextCard(null,CardFragment.newInstance(firstDraw.suite, firstDraw.number),
+               R.id.flCardPileGameMode2)
+        //updatePileCard(firstDraw, firstDraw.suite)
 
     }
 
     fun updatePileCard(card: Card, suite: String) {
         selectedSuite = suite
-        (activity as GameScreen).switchToNextCard(
-            null,
-            CardFragment.newInstance(card.suite, card.number),
-            R.id.flCardPileGameMode2
-        )
+        (activity as GameScreen).updateCardLayout(null, card)
+
+
+//        if(card != null) {
+//            (activity as GameScreen).switchToNextCard(
+//                null,
+//                CardFragment.newInstance(card.suite, card.number),
+//                R.id.flCardPileGameMode2
+//            )
+//        }
 //        imCardPileCenter.setImageResource(card.showSuiteOnCard(selectedSuite))
 //        imCardPileTopLeft.setImageResource(card.showSuiteOnCard(selectedSuite))
 //        imCardPileBottomRight.setImageResource(card.showSuiteOnCard(selectedSuite))
@@ -257,7 +268,7 @@ class GameMode2Fragment : Fragment() {
         }
         if (crazyEight != null) {
             removeCardFromHand(crazyEight, ai, 0)
-            countSuits(ai)?.let {
+            countSuitsForAI(ai)?.let {
                 crazyEight.suite = it
             }
             addCardToPile(crazyEight, ai)
@@ -270,7 +281,7 @@ class GameMode2Fragment : Fragment() {
         }
     }
 
-    fun countSuits(player: Player): String? {
+    fun countSuitsForAI(player: Player): String? {
         var deckMap = mutableMapOf<String, Int>()
         for (card in player.deck) {
             val countSuite = deckMap.getOrDefault(card.suite, 0)
@@ -326,6 +337,8 @@ class GameMode2Fragment : Fragment() {
     fun gameDone() {
         countScore(ai)
         countScore(human)
+        GameEngine.gameLevels[GameEngine.currentLevel].score = 100 - human.score + ai.score
+        (activity as GameScreen).switchFragment(null, gameDoneFragment(), false)
     }
 
     fun countScore(player: Player) {
@@ -341,6 +354,7 @@ class GameMode2Fragment : Fragment() {
         player.deck.remove(card)
         if (player.deck.isEmpty()) {
             gameDone()
+            return
         }
         //adapterHumanCards.notifyItemRemoved(position)
         updateHandView()
@@ -351,6 +365,7 @@ class GameMode2Fragment : Fragment() {
         selectedSuite = card.suite
         pileDeck.add(card)
         updatePileCard(card, card.suite)
+        printHand()
 
     }
 
@@ -368,6 +383,9 @@ class GameMode2Fragment : Fragment() {
             Log.d("!!!", "AI: " + card.suite + " " + card.number.toString())
         }
         Log.d("!!!", "--------------")
+        for (card in pileDeck) {
+            Log.d("!!!", "Piledeck: " +card.suite +" " + card.number.toString())
+        }
     }
 
     fun passTo(player: Player) {
@@ -417,6 +435,7 @@ class GameMode2Fragment : Fragment() {
     fun hideCardDrawn() {
 //        clCardDrawn.visibility = View.INVISIBLE
     }
+
 
     companion object {
         /**

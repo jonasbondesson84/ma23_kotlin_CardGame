@@ -69,6 +69,14 @@ class CardFragment : Fragment() {
         return view
     }
 
+    fun updateCard(card: Card){
+        imCenter.setImageResource(card.showSuiteOnCard(card.suite))
+        imTop.setImageResource(card.showSuiteOnCard(card.suite))
+        imBottom.setImageResource(card.showSuiteOnCard(card.suite))
+        tvTop.text = card.showNumberOnCard(card.number)
+        tvBottom.text = card.showNumberOnCard(card.number)
+    }
+
 
 
     companion object {

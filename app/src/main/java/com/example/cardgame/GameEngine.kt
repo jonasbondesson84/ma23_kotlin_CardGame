@@ -10,9 +10,9 @@ object GameEngine {
         Level(5, "Rules for level 5: GAMEMODE GO FISH", 1, 0, 1, R.drawable.tree),
         Level(6, "Rules for level 6:", 3, 0, 1, R.drawable.carrot),
         Level(7, "Rules for level 7:", 5, 0, 1, R.drawable.bush),
-        Level(8, "Rules for level 8: GAMEMODE CRAZY 8", 10, 0, 2, R.drawable.beachball),
-        Level(9, "Rules for level 9:", 10, 0, 2, R.drawable.tomato),
-        Level(10, "Rules for level 10:", 10, 0, 2, R.drawable.fountain)
+        Level(8, "Rules for level 8: GAMEMODE CRAZY 8", 100, 0, 2, R.drawable.beachball),
+        Level(9, "Rules for level 9:", 10, 120, 2, R.drawable.tomato),
+        Level(10, "Rules for level 10:", 10, 140, 2, R.drawable.fountain)
     )
     var currentLevel = 0;
 
