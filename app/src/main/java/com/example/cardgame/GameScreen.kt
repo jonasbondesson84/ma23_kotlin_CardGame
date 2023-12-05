@@ -60,6 +60,11 @@ class GameScreen : AppCompatActivity() {
 
     }
 
+    fun updateCardLayout(view: View?, card: Card) {
+        val fragment = supportFragmentManager.findFragmentByTag("nextCard") as CardFragment
+        fragment.updateCard(card)
+    }
+
 
     fun saveData() {
         val savedData = getSharedPreferences(SAVED_DATA, MODE_PRIVATE)
