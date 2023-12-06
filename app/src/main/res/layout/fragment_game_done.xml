@@ -12,8 +12,9 @@
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="289dp"
-            android:layout_height="264dp"
+            android:layout_width="270dp"
+            android:layout_height="285dp"
+            android:scaleType="fitXY"
             android:src="@drawable/box_orange_rounded"
             app:layout_constraintBottom_toTopOf="@+id/imNextGame"
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,11 +114,11 @@
             android:id="@+id/imReplayGame"
             android:layout_width="176dp"
             android:layout_height="51dp"
+            android:layout_marginBottom="16dp"
             android:src="@drawable/buttontext_large_orange_round"
             app:layout_constraintBottom_toBottomOf="@+id/imageView6"
             app:layout_constraintEnd_toEndOf="@+id/imageView6"
-            app:layout_constraintStart_toStartOf="@+id/imageView6"
-            app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+            app:layout_constraintStart_toStartOf="@+id/imageView6" />
 
         <TextView
             android:id="@+id/textView6"
@@ -154,6 +155,19 @@
             app:layout_constraintEnd_toEndOf="@+id/imNextGame"
             app:layout_constraintStart_toStartOf="@+id/imNextGame"
             app:layout_constraintTop_toTopOf="@+id/imNextGame" />
+
+        <TextView
+            android:id="@+id/tvBestScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/zen_dots"
+            android:text="Best score:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/imageView11"
+            app:layout_constraintStart_toStartOf="@+id/imageView11"
+            app:layout_constraintTop_toBottomOf="@+id/imageView11" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

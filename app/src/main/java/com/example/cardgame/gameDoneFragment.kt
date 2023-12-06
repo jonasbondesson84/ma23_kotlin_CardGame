@@ -27,6 +27,7 @@ class gameDoneFragment : Fragment() {
     private lateinit var imStar1: ImageView
     private lateinit var imStar2: ImageView
     private lateinit var imStar3: ImageView
+    private lateinit var tvBestScore: TextView
    // private val gameIntroFragment = gameIntroFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +49,7 @@ class gameDoneFragment : Fragment() {
         imStar1 = view.findViewById(R.id.imStar1)
         imStar2 = view.findViewById(R.id.imStar2)
         imStar3 = view.findViewById(R.id.imStar3)
+        tvBestScore = view.findViewById(R.id.tvBestScore)
 
         var levelScore: Int
         if(param1 != null) {
@@ -67,6 +69,13 @@ class gameDoneFragment : Fragment() {
         }
 
         tvScore.text = levelScore.toString()
+        var bestScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
+        if(bestScore == 0){
+            tvBestScore.visibility = View.INVISIBLE
+        } else {
+            tvBestScore.visibility = View.VISIBLE
+            tvBestScore.text = "Best score: ${bestScore}"
+        }
         var imNextGame = view.findViewById<ImageView>(R.id.imNextGame)
         var tvNextGame = view.findViewById<TextView>(R.id.tvNextGame)
         var imReplayGame = view.findViewById<ImageView>(R.id.imReplayGame)
