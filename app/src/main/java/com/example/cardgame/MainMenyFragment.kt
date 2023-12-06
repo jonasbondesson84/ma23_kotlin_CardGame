@@ -1,5 +1,6 @@
 package com.example.cardgame
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,13 +49,14 @@ class MainMenyFragment : Fragment() {
 
         imPlay.setOnClickListener() {
             //SaveData.saveDataList[6].done = true
-            (activity as MainActivity).switchFragment(null, ProgressFragment())
-
+            //(activity as MainActivity).switchFragment(null, ProgressFragment())
+            val gameIntent = Intent(view.context, GameScreen::class.java)
+            startActivity(gameIntent)
         }
 
-        imProgress.setOnClickListener {
-            (activity as MainActivity).switchFragment(view, ProgressFragment())
-        }
+//        imProgress.setOnClickListener {
+//            (activity as MainActivity).switchFragment(view, ProgressFragment())
+//        }
 
         imSettings.setOnClickListener() {
 

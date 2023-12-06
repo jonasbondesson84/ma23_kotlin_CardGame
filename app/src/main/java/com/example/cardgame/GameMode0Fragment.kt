@@ -299,9 +299,10 @@ class GameMode0Fragment : Fragment() {
         }
         score += streakBonus
      //   val text = requireContext().resources.getString(R.string.streakBonus, streakBonus.toString())//"Streak bonus: ${streakBonus}"
-
-        val text = "Streak bonus : $streakBonus"
-        textSizeAndShowText(text)
+        if(streakBonus > 3) {
+            val text = "Streak bonus : $streakBonus"
+            textSizeAndShowText(text)
+        }
     }
 
     fun textSizeAndShowText(text: String){

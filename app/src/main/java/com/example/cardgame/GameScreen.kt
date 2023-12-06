@@ -18,18 +18,19 @@ class GameScreen : AppCompatActivity() {
         setContentView(R.layout.activity_game_screen)
         val playAgain = intent.getBooleanExtra("playAgain", false)
         Log.d("!!!", playAgain.toString())
-        if (playAgain) {
-            switchFragment(
-                null,
-                gameDoneFragment.newInstance(
-                    SaveData.saveDataList[GameEngine.currentLevel].bestScore,
-                    ""
-                ),
-                true
-            )
-        } else {
-            switchFragment(null, gameIntroFragment(), false)
-        }
+        switchFragment(null, ProgressFragment(), false)
+//        if (playAgain) {
+//            switchFragment(
+//                null,
+//                gameDoneFragment.newInstance(
+//                    SaveData.saveDataList[GameEngine.currentLevel].bestScore,
+//                    ""
+//                ),
+//                true
+//            )
+//        } else {
+//            switchFragment(null, gameIntroFragment(), false)
+//        }
 
     }
 
