@@ -287,6 +287,8 @@ class GameMode2Fragment : Fragment() {
                         addCardToPile(card, ai)
                         removeCardFromHand(card, ai, 0)
                         aiTurn = false
+                        text = "Your turn"
+                        textSizeAndShowText(text, ai)
                         return@withContext
 
                     }
@@ -306,10 +308,12 @@ class GameMode2Fragment : Fragment() {
                     textSizeAndShowText(text, ai)
                     hideSuiteAI()
                     aiTurn = false
+
                     return@withContext
                 }
                 drawCardFromDeck(ai)
                 if (aiTurn) {
+                    delay(TIMER_ACTION)
                     aiTurnSequence()
                 }
             }
