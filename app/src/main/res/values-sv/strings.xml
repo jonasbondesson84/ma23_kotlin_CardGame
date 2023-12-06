@@ -1,65 +1,67 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Kortspel</string>
+    <string name="app_name">Cardgame</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="play">Spela</string>
-    <string name="settings">Inställningar</string>
+    <string name="play">Play</string>
+    <string name="settings">Settings</string>
 
-    <string name="start">Starta</string>
+    <string name="start">Start</string>
 
-    <string name="levelDone">Nivå avklarad</string>
-    <string name="bestScore">Bästa poäng: %1$s</string>
-    <string name="replay">Spela om</string>
-    <string name="next">Nästa</string>
-    <string name="back">Tillbaka</string>
+    <string name="levelDone">Level done</string>
+    <string name="bestScore">Best score: %1$s</string>
+    <string name="replay">Replay</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
 
-    <string name="name">Namn</string>
-    <string name="icon">Ikon</string>
-    <string name="language">Språk</string>
-    <string name="reset">Återställ spelframgångar</string>
-    <string name="save">Spara</string>
-    <string name="cancel">Avbryt</string>
+    <string name="name">Name</string>
+    <string name="icon">Icon</string>
+    <string name="language">Language</string>
+    <string name="reset">Reset game progress</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
-    <string name="ace">E</string>
+    <string name="ace">A</string>
     <string name="king">K</string>
-    <string name="queen">D</string>
-    <string name="jack">Kn</string>
+    <string name="queen">Q</string>
+    <string name="jack">J</string>
 
     <string-array name="rightAnswers">
-        <item>Bra gjort!</item>
-        <item>Bra jobbat!</item>
-        <item>Helt rätt!</item>
-        <item>Du klarade det!</item>
-        <item>Grymt!</item>
+        <item>Well done!</item>
+        <item>Good job!</item>
+        <item>That\'s right!</item>
+        <item>You got it!</item>
+        <item>Awesome!</item>
     </string-array>
 
     <string-array name="wrongAnswers">
-        <item>Tyvärr!</item>
-        <item>Det var fel.</item>
-        <item>Tyvärr, försök igen.</item>
-        <item>Bättre lycka nästa gång.</item>
-        <item>Försök igen!</item>
+        <item>Sorry!</item>
+        <item>That was wrong.</item>
+        <item>Sorry, try again!</item>
+        <item>Better luck next time.</item>
+        <item>Try harder!</item>
     </string-array>
 
     <string name="streakBonus">Steak bonus: %1$s</string>
-    <string name="timeLeft">Tid kvar:</string>
-    <string name="nextCardis">Nästa kort är</string>
-    <string name="lower">Lägre</string>
-    <string name="higher">Högre</string>
+    <string name="timeLeft">Time left:</string>
+    <string name="nextCardis">Next card is</string>
+    <string name="lower">Lower</string>
+    <string name="higher">Higher</string>
 
-    <string name="yourTurn">Din tur</string>
-    <string name="gotPair">Jag fick ett par!</string>
-    <string name="wantYour">Jag vill ha alla dina %1$sor</string>
-    <string name="hereYouGo">Varsågod!</string>
-    <string name="goFish">FINNS I SJÖN!</string>
-    <string name="youGoAgain">Din tur igen</string>
-    <string name="darn">Typiskt!</string>
+    <string name="yourTurn">Your turn</string>
+    <string name="gotPair">I\'ve got a pair!</string>
+    <string name="wantYour">I want all your %1$ss</string>
+    <string name="hereYouGo">Here you go!</string>
+    <string name="goFish">GO FISH!</string>
+    <string name="youGoAgain">You can go again</string>
+    <string name="darn">Darn\' it!</string>
 
-    <string name="chooseSuite">Välj en ny färg</string>
-    <string name="myTurn">Min tur!</string>
-    <string name="AIchangedSuite">Jag bytte färgen till      </string>
+    <string name="chooseSuite">Choose a new suite</string>
+    <string name="myTurn">My turn!</string>
+    <string name="AIchangedSuite">I changed the suite to      </string>
     <string name="gameOver">Game Over</string>
-    <string name="pass">Passa</string>
+    <string name="pass">Pass</string>
+
+
+
 
 
     <string-array name="Rules">
@@ -77,4 +79,87 @@
 
     </string-array>
 
+
 </resources>
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<resources>-->
+<!--    <string name="app_name">Kortspel</string>-->
+<!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
+<!--    <string name="play">Spela</string>-->
+<!--    <string name="settings">Inställningar</string>-->
+
+<!--    <string name="start">Starta</string>-->
+
+<!--    <string name="levelDone">Nivå avklarad</string>-->
+<!--    <string name="bestScore">Bästa poäng: %1$s</string>-->
+<!--    <string name="replay">Spela om</string>-->
+<!--    <string name="next">Nästa</string>-->
+<!--    <string name="back">Tillbaka</string>-->
+
+<!--    <string name="name">Namn</string>-->
+<!--    <string name="icon">Ikon</string>-->
+<!--    <string name="language">Språk</string>-->
+<!--    <string name="reset">Återställ spelframgångar</string>-->
+<!--    <string name="save">Spara</string>-->
+<!--    <string name="cancel">Avbryt</string>-->
+
+<!--    <string name="ace">E</string>-->
+<!--    <string name="king">K</string>-->
+<!--    <string name="queen">D</string>-->
+<!--    <string name="jack">Kn</string>-->
+
+<!--    <string-array name="rightAnswers">-->
+<!--        <item>Bra gjort!</item>-->
+<!--        <item>Bra jobbat!</item>-->
+<!--        <item>Helt rätt!</item>-->
+<!--        <item>Du klarade det!</item>-->
+<!--        <item>Grymt!</item>-->
+<!--    </string-array>-->
+
+<!--    <string-array name="wrongAnswers">-->
+<!--        <item>Tyvärr!</item>-->
+<!--        <item>Det var fel.</item>-->
+<!--        <item>Tyvärr, försök igen.</item>-->
+<!--        <item>Bättre lycka nästa gång.</item>-->
+<!--        <item>Försök igen!</item>-->
+<!--    </string-array>-->
+
+<!--    <string name="streakBonus">Steak bonus: %1$s</string>-->
+<!--    <string name="timeLeft">Tid kvar:</string>-->
+<!--    <string name="nextCardis">Nästa kort är</string>-->
+<!--    <string name="lower">Lägre</string>-->
+<!--    <string name="higher">Högre</string>-->
+
+<!--    <string name="yourTurn">Din tur</string>-->
+<!--    <string name="gotPair">Jag fick ett par!</string>-->
+<!--    <string name="wantYour">Jag vill ha alla dina %1$sor</string>-->
+<!--    <string name="hereYouGo">Varsågod!</string>-->
+<!--    <string name="goFish">FINNS I SJÖN!</string>-->
+<!--    <string name="youGoAgain">Din tur igen</string>-->
+<!--    <string name="darn">Typiskt!</string>-->
+
+<!--    <string name="chooseSuite">Välj en ny färg</string>-->
+<!--    <string name="myTurn">Min tur!</string>-->
+<!--    <string name="AIchangedSuite">Jag bytte färgen till      </string>-->
+<!--    <string name="gameOver">Game Over</string>-->
+<!--    <string name="pass">Passa</string>-->
+
+
+<!--    <string-array name="Rules">-->
+<!--        <item>rules 1</item>-->
+<!--        <item>rules 2</item>-->
+<!--        <item>rules 3</item>-->
+<!--        <item>rules 4</item>-->
+<!--        <item>rules 5</item>-->
+<!--        <item>rules 6</item>-->
+<!--        <item>rules 7</item>-->
+<!--        <item>rules 8</item>-->
+<!--        <item>rules 9</item>-->
+<!--        <item>rules 10</item>-->
+
+
+<!--    </string-array>-->
+
+<!--</resources>-->

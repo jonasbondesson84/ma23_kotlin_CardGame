@@ -47,7 +47,7 @@ class MainMenyFragment : Fragment() {
         (activity as MainActivity).loadSavedSettings()
 
         imPlay.setOnClickListener() {
-            SaveData.saveDataList[6].done = true
+            //SaveData.saveDataList[6].done = true
             (activity as MainActivity).switchFragment(null, ProgressFragment())
 
         }

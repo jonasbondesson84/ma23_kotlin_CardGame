@@ -2,6 +2,7 @@ package com.example.cardgame
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,6 +67,7 @@ class ProgressFragment : Fragment() {
 
         for(i in 1..9) {
             var image = view.findViewById<ImageView>(SaveData.levelList[i])
+            Log.d("!!!", "levelList: $i is " + SaveData.saveDataList[i].done.toString())
 
             if(SaveData.saveDataList[i].done) {
                 image.setImageResource(GameEngine.gameLevels[i].imageDone)

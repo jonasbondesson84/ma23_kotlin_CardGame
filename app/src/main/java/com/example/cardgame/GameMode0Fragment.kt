@@ -39,24 +39,24 @@ class GameMode0Fragment : Fragment() {
     private var currentCard = deckOfCard.getNewCard(0)
     private var nextCard = deckOfCard.getNewCard(1)
     private var currentStreak = 0
-    private var rightAnswers = resources.getStringArray(R.array.rightAnswers)
+    private var rightAnswers = //requireContext().resources.getStringArray(R.array.rightAnswers)
 
-//        listOf(
-//        "Well done!",
-//        "Good job!",
-//        "That's right!",
-//        "You got it!",
-//        "Awesome!"
-//    )
-    private var wrongAnswer = resources.getStringArray(R.array.wrongAnswers)
+        listOf(
+        "Well done!",
+        "Good job!",
+        "That's right!",
+        "You got it!",
+        "Awesome!"
+    )
+    private var wrongAnswer = //requireContext().resources.getStringArray(R.array.wrongAnswers)
 
-//        listOf(
-//        "Sorry!",
-//        "That was wrong.",
-//        "Sorry, try again!",
-//        "Better luck next time.",
-//        "Try harder!"
-//    )
+        listOf(
+        "Sorry!",
+        "That was wrong.",
+        "Sorry, try again!",
+        "Better luck next time.",
+        "Try harder!"
+    )
     private var TEXTSIZE_SHORT = 24F
     private var TEXTSIZE_MEDIUMSHORT = 18F
     private var TEXTSIZE_MEDIUMLONG = 16F
@@ -298,7 +298,9 @@ class GameMode0Fragment : Fragment() {
             streakBonus = 50 * currentStreak
         }
         score += streakBonus
-        val text = resources.getString(R.string.streakBonus, streakBonus.toString())//"Streak bonus: ${streakBonus}"
+     //   val text = requireContext().resources.getString(R.string.streakBonus, streakBonus.toString())//"Streak bonus: ${streakBonus}"
+
+        val text = "Streak bonus : $streakBonus"
         textSizeAndShowText(text)
     }
 
