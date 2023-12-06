@@ -241,21 +241,7 @@ class GameMode1Fragment : Fragment() {
                 }
 
             }
-//            Log.d(
-//                "!!!",
-//                "Waitfordrawcard: $waitForDrawCard , aitTurnWaitForCard: $aiTurnWaitForCard"
-//            )
-//            if (!waitForDrawCard && !aiTurnWaitForCard && !aiTurn) { //checks what action it is you should take
-//                if (!timerClickHandPick) {
-//                    timerClickHandPick = true  //Makes sure you cant click twice
-//                    askAIForCard(cardValue)
-//                }
-//            } else if (aiTurnWaitForCard) {  //Checks what action you takes
-//                if (!timerClickHandAnswer) { //makes sure you cant click twice
-//                    timerClickHandAnswer = true
-//                    giveAICard(cardValue)
-//                }
-//            }
+
         }
 
         imGoFishButton.setOnClickListener() {
