@@ -68,22 +68,25 @@ class gameDoneFragment : Fragment() {
         tvNextGame = view.findViewById(R.id.tvNextGame)
         val imReplayGame = view.findViewById<ImageView>(R.id.imReplayGame)
 
-        var levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
-//        if(param1 != null) {
-//            levelScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
-//        } else {
-//            levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
-//        }
-        //setStars(levelScore)
+        var levelScore : Int
+        if(param2 != null) {
+            levelScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
+            setStars(levelScore)
 
 
-        //tvScore.text = levelScore.toString()
-        animateScore(levelScore)
+            tvScore.text = levelScore.toString()
+
+        } else {
+            levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
+            animateScore(levelScore)
+        }
+
+
         setBestScore(levelScore)
-        var bestScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
+        val bestScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
         tvBestScore.text = getString(R.string.bestScore, bestScore.toString())
 
-        hideNextButton(levelScore)
+        hideNextButton(bestScore)
         (activity as GameScreen).saveData()
         (activity as GameScreen).loadGameProgress()
 
@@ -120,8 +123,8 @@ class gameDoneFragment : Fragment() {
 
     }
 
-    fun hideNextButton(levelScore: Int) {
-        if(levelScore < GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
+    fun hideNextButton(bestScore: Int) {
+        if(bestScore < GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
             tvNextGame.visibility = View.INVISIBLE
             imNextGame.visibility = View.INVISIBLE
         } else {

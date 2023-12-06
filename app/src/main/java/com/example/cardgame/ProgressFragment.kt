@@ -68,7 +68,11 @@ class ProgressFragment : Fragment() {
         // All for click on levels -------------------------------------
         imLevel1.setOnClickListener {
             GameEngine.currentLevel = 0
-            (activity as GameScreen).switchFragment(null, gameIntroFragment(), false)
+            if(SaveData.saveDataList[0].done) {
+                (activity as GameScreen).switchFragment(null, gameDoneFragment.newInstance(SaveData.saveDataList[0].bestScore, "playAgain"), true)
+            } else  {
+                (activity as GameScreen).switchFragment(null, gameIntroFragment(), false)
+            }
             //clickForPlay(view, 0)
 //            if(SaveData.saveDataList[0].done) {
 //                GameEngine.currentLevel = 0
@@ -125,7 +129,9 @@ class ProgressFragment : Fragment() {
 
     fun clickForPlay(view: View, chosenLevel: Int) {
         GameEngine.currentLevel = chosenLevel
-        if(SaveData.saveDataList[chosenLevel].done || SaveData.saveDataList[chosenLevel-1].done) {
+        if(SaveData.saveDataList[chosenLevel].done) {
+            (activity as GameScreen).switchFragment(null, gameDoneFragment.newInstance(SaveData.saveDataList[chosenLevel].bestScore, "playAgain"), true)
+        } else if ( SaveData.saveDataList[chosenLevel-1].done) {
             (activity as GameScreen).switchFragment(null, gameIntroFragment(), false)
         }
 //        if(SaveData.saveDataList[chosenLevel].done) {
