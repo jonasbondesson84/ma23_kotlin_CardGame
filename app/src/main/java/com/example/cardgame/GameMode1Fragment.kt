@@ -137,7 +137,7 @@ class GameMode1Fragment : Fragment() {
         imPLayerIcon.visibility = View.INVISIBLE
         createHands()
 
-        val text = "Your turn"
+        val text = resources.getString(R.string.yourTurn)
         textSizeAndShowText(text, ai)
         hidePlayerText()
 
@@ -149,7 +149,7 @@ class GameMode1Fragment : Fragment() {
                         drawCard(human)
                         if (checkForPairs(human)) {
                             showPlayerText()
-                            var text = "I've got a pair!"
+                            var text = resources.getString(R.string.gotPair)//"I've got a pair!"
                             textSizeAndShowText(text, human)
                             adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
 
@@ -179,7 +179,7 @@ class GameMode1Fragment : Fragment() {
 
                         showPlayerText()
                         hideAIText()
-                        var text = "I want all your ${cardValue}s"
+                        var text = resources.getString(R.string.wantYour, cardValue.toString())//"I want all your ${cardValue}s"
                         textSizeAndShowText(text, human)
                         delay(TIMER_TEXT)
                         hidePlayerText()
@@ -187,22 +187,22 @@ class GameMode1Fragment : Fragment() {
                         var aiGotCard = askForCard(ai, cardValue)
                         showAIText()
                         if (aiGotCard) {
-                            text = "Here you go!"
+                            text = resources.getString(R.string.hereYouGo)//"Here you go!"
                             exchangeCards(ai, human, cardValue)
                         } else {
-                            text = "GO FISH!"
+                            text = resources.getString(R.string.goFish)//"GO FISH!"
                             // drawCard(human)
                             playerCanDrawCard = true
                         }
                         textSizeAndShowText(text, ai)
                         delay(TIMER_TEXT)
                         if(aiGotCard) {
-                            text = "You can go again!"
+                            text = resources.getString(R.string.youGoAgain)//"You can go again!"
                             textSizeAndShowText(text, ai)
                         }
                         if(checkForPairs(human)) {
                             showPlayerText()
-                            text = "I've got a pair!"
+                            text = resources.getString(R.string.gotPair)//"I've got a pair!"
                             textSizeAndShowText(text, human)
                             adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
 
@@ -222,14 +222,14 @@ class GameMode1Fragment : Fragment() {
                 timerScope.launch {
                     withContext(Dispatchers.Main) {
                         showPlayerText()
-                        var text = "Here you go!"
+                        var text = resources.getString(R.string.hereYouGo)//"Here you go!"
                         textSizeAndShowText(text, human)
                         delay(TIMER_TEXT)
                         hidePlayerText()
                         exchangeCards(human, ai, cardValue)
                         if (checkForPairs(ai)) {
                             showAIText()
-                            text = "I've got a pair"
+                            text = resources.getString(R.string.gotPair)//"I've got a pair"
                             textSizeAndShowText(text, ai)
                             adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
                             delay(TIMER_TEXT)
@@ -250,11 +250,11 @@ class GameMode1Fragment : Fragment() {
                     hideAIText()
                     hideGoFish()
                     showPlayerText()
-                    var text = "GO FISH!"
+                    var text = resources.getString(R.string.goFish)//"GO FISH!"
                     textSizeAndShowText(text, human)
                     delay(500L)
                     showAIText()
-                    text = "Darn' it!"
+                    text = resources.getString(R.string.darn)//"Darn' it!"
                     textSizeAndShowText(text, ai)
                     delay(TIMER_TEXT)
                     hidePlayerText()
@@ -263,7 +263,7 @@ class GameMode1Fragment : Fragment() {
                     drawCard(ai)
                     if(checkForPairs(ai)) {
                         showAIText()
-                        text = "I've got a pair!"
+                        text = resources.getString(R.string.gotPair)//"I've got a pair!"
                         textSizeAndShowText(text, ai)
                         delay(TIMER_TEXT)
                         adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
@@ -345,7 +345,7 @@ class GameMode1Fragment : Fragment() {
                     hideAIText()
                     delay(500L)
                     showAIText()
-                    var text = "I want all your ${aiAskedCardNumber}s"
+                    var text = resources.getString(R.string.wantYour, aiAskedCardNumber.toString())//"I want all your ${aiAskedCardNumber}s"
                     textSizeAndShowText(text, ai)
                     delay(TIMER_TEXT)
 

@@ -24,30 +24,30 @@ class Card(var suite: String, var number: Int) {
             else ->
                 imageID = R.drawable.box_orange_rounded
         }
-            return imageID
-        }
+        return imageID
+    }
 
     fun showNumberOnCard(cardValue: Int): String {
 
-            var numberSymbol = ""
-            when(cardValue) {
-                14 -> {
-                    numberSymbol = "A"
-                }
-                13 -> {
-                    numberSymbol = "K"
-                }
-                12 -> {
-                    numberSymbol = "Q"
-                }
-                11 -> {
-                    numberSymbol = "J"
-                }
-                else -> {
-                    numberSymbol = cardValue.toString()
-                }
+        var numberSymbol = ""
+        when(cardValue) {
+            14 -> {
+                numberSymbol = "A"
             }
-            return numberSymbol
+            13 -> {
+                numberSymbol = "K"
+            }
+            12 -> {
+                numberSymbol = "Q"
+            }
+            11 -> {
+                numberSymbol = "J"
+            }
+            else -> {
+                numberSymbol = cardValue.toString()
+            }
+        }
+        return numberSymbol
     }
 
 }

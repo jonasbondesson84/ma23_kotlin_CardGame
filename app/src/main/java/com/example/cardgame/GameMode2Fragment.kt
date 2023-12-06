@@ -134,7 +134,7 @@ class GameMode2Fragment : Fragment() {
         createHands()
         updateHandView()
         hidePlayerIconAndText()
-        hideCardDrawn()
+        //hideCardDrawn()
         sortHand(human)
         sortHand(ai)
         printHand()
@@ -142,7 +142,7 @@ class GameMode2Fragment : Fragment() {
         hidePassIcon()
         hideSuiteAI()
         showAIText()
-        var text = "Your turn!"
+        var text = resources.getString(R.string.yourTurn)//"Your turn!"
         textSizeAndShowText(text, ai)
 
         imDrawnCardAI.visibility = View.INVISIBLE
@@ -168,7 +168,7 @@ class GameMode2Fragment : Fragment() {
                             currentCard = card
                             currentCardPosition = position
                             showPlayerIconAndText()
-                            var text = "Choose new suite"
+                            var text = resources.getString(R.string.chooseSuite)//"Choose new suite"
                             textSizeAndShowText(text, human)
                             delay(TIMER_TEXT)
                             hidePlayerIconAndText()
@@ -274,7 +274,7 @@ class GameMode2Fragment : Fragment() {
             withContext(Dispatchers.Main) {
                 var crazyEight: Card? = null
                 showAIText()
-                var text = "My turn!"
+                var text = resources.getString(R.string.myTurn)//"My turn!"
                 textSizeAndShowText(text, ai)
                 delay(TIMER_TEXT)
 
@@ -287,14 +287,14 @@ class GameMode2Fragment : Fragment() {
                         addCardToPile(card, ai)
                         removeCardFromHand(card, ai, 0)
                         aiTurn = false
-                        text = "Your turn"
+                        text = resources.getString(R.string.yourTurn)//"Your turn"
                         textSizeAndShowText(text, ai)
                         return@withContext
 
                     }
                 }
                 if (crazyEight != null) {
-                    text = "I change the suite to        "
+                    text = resources.getString(R.string.AIchangedSuite)//"I change the suite to        "
                     textSizeAndShowText(text, ai)
 
                     removeCardFromHand(crazyEight, ai, 0)
@@ -304,7 +304,7 @@ class GameMode2Fragment : Fragment() {
                     showSuiteAI(crazyEight)
                     delay(TIMER_TEXT)
                     addCardToPile(crazyEight, ai)
-                    text = "Your turn"
+                    text = resources.getString(R.string.yourTurn)//"Your turn"
                     textSizeAndShowText(text, ai)
                     hideSuiteAI()
                     aiTurn = false
@@ -376,7 +376,7 @@ class GameMode2Fragment : Fragment() {
     fun gameDone() {
         timerScope.launch {
             withContext(Dispatchers.Main) {
-                var text = "Game over!"
+                var text = resources.getString(R.string.gameOver)//"Game over!"
                 if(human.deck.isEmpty()) {
                     hideAIText()
                     showPlayerIconAndText()

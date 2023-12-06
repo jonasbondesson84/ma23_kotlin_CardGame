@@ -71,11 +71,10 @@ class gameDoneFragment : Fragment() {
         tvScore.text = levelScore.toString()
         var bestScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
         if(bestScore == 0){
-            tvBestScore.visibility = View.INVISIBLE
-        } else {
-            tvBestScore.visibility = View.VISIBLE
-            tvBestScore.text = "Best score: ${bestScore}"
+            bestScore = levelScore
         }
+        tvBestScore.text = getString(R.string.bestScore, bestScore.toString())
+
         var imNextGame = view.findViewById<ImageView>(R.id.imNextGame)
         var tvNextGame = view.findViewById<TextView>(R.id.tvNextGame)
         var imReplayGame = view.findViewById<ImageView>(R.id.imReplayGame)
