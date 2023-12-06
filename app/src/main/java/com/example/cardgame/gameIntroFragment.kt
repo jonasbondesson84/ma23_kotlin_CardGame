@@ -27,7 +27,8 @@ class gameIntroFragment : Fragment() {
 //    private val gameMode0Fragment = GameMode0Fragment()
 //    private val gameMode1Fragment = GameMode1Fragment()
 //    private val gameMode2Fragment = GameMode2Fragment()
-    lateinit var tvRules: TextView
+    private lateinit var tvRules: TextView
+    private lateinit var tvScoreNeeded: TextView
 
 
 
@@ -53,7 +54,10 @@ class gameIntroFragment : Fragment() {
         val rules = gameLevels[GameEngine.currentLevel].rules
 
         tvRules = view.findViewById(R.id.tvRules)
+        tvScoreNeeded = view.findViewById(R.id.tvScoreNeeded)
         tvRules.text = rules
+        tvScoreNeeded.text = "Score needed to win: ${GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded}"
+
 
 
 

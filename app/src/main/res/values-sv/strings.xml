@@ -6,6 +6,8 @@
 
     <string name="start">Start</string>
 
+    <string name="scoreNeeded">Score needed to win: %1$s</string>
+
     <string name="levelDone">Level done</string>
     <string name="bestScore">Best score: %1$s</string>
     <string name="replay">Replay</string>
