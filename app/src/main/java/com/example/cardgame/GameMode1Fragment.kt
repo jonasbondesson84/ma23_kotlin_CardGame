@@ -131,7 +131,7 @@ class GameMode1Fragment : Fragment() {
         imCardDrawnAI = view.findViewById(R.id.imCardDrawnAI)
         val imDeckOfCard = view.findViewById<ImageView>(R.id.imDeck)
 
-
+        imPLayerIcon.setImageResource(SaveData.icon)
         imCardDrawnAI.visibility = View.INVISIBLE
         hideGoFish()
         imPLayerIcon.visibility = View.INVISIBLE

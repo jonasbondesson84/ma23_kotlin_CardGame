@@ -129,7 +129,7 @@ class GameMode2Fragment : Fragment() {
         adapterAICards = HandOfCardsAdapter(view.context, ai)
         rvAICards.adapter = adapterAICards
 
-
+        imPlayerIcon.setImageResource(SaveData.icon)
 
         createHands()
         updateHandView()

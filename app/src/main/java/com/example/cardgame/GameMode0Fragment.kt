@@ -68,7 +68,7 @@ class GameMode0Fragment : Fragment() {
 //    private lateinit var imCardBottomRight: ImageView
 //    private lateinit var imCardCenter: ImageView
     private lateinit var pbTimeLeft: ProgressBar
-    private lateinit var imAI: ImageView
+    private lateinit var imPlayerIcon: ImageView
     private var timerScope = CoroutineScope(Dispatchers.Main)
 
 
@@ -105,23 +105,26 @@ class GameMode0Fragment : Fragment() {
         tvAIText = view.findViewById(R.id.tvAITextGameMode0)
         tvCurrentScore = view.findViewById(R.id.tvCurrentScoreGamoeMode0)
         pbTimeLeft = view.findViewById(R.id.pbTimeLeft)
-        imAI = view.findViewById(R.id.imAIGameMode0)
+        imPlayerIcon = view.findViewById(R.id.imAIGameMode0)
+
 
         var higherClicked = false
         var lowerClicked = false
 
         showUICard(currentCard)
-        when(GameEngine.currentLevel) {
-            0 -> {
-                imAI.setImageResource(R.drawable.characters_0006)
-            }
-            1 -> {
-                imAI.setImageResource(R.drawable.characters_0004)
-            }
-            else -> {
-                imAI.setImageResource(R.drawable.characters_0003)
-            }
-        }
+
+        imPlayerIcon.setImageResource(SaveData.icon)
+//        when(GameEngine.currentLevel) {
+//            0 -> {
+//                imPlayerIcon.setImageResource(R.drawable.characters_0006)
+//            }
+//            1 -> {
+//                imPlayerIcon.setImageResource(R.drawable.characters_0004)
+//            }
+//            else -> {
+//                imPlayerIcon.setImageResource(R.drawable.characters_0003)
+//            }
+//        }
 
         btnHigher.setOnClickListener() {
             if(!higherClicked) {
