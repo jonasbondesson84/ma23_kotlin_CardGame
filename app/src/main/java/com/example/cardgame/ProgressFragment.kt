@@ -63,29 +63,8 @@ class ProgressFragment : Fragment() {
         imLevel10 = view.findViewById(R.id.imLevel10)
         val imOk = view.findViewById<ImageView>(R.id.imOkPathScreen)
 
+        setLevelImages(view)
 
-        for(i in 1..9) {
-            var image = view.findViewById<ImageView>(SaveData.levelList[i])
-            Log.d("!!!", "levelList: $i is " + SaveData.saveDataList[i].done.toString())
-
-            if(SaveData.saveDataList[i].done) {
-                image.setImageResource(GameEngine.gameLevels[i].imageDone)
-            }
-            else if(SaveData.saveDataList[i-1].done) {
-                if(i == 9) {
-                    image.setImageResource(R.drawable.door_golden_2_)
-                } else {
-                    image.setImageResource(R.drawable.door_silver)
-                }
-            } else {
-                image.setImageResource(R.drawable.cloud_02)
-            }
-        }
-        if(SaveData.saveDataList[0].done) {
-            imLevel1.setImageResource(GameEngine.gameLevels[0].imageDone)
-        } else {
-            imLevel10.setImageResource(R.drawable.door_silver)
-        }
         // All for click on levels -------------------------------------
         imLevel1.setOnClickListener {
             GameEngine.currentLevel = 0
@@ -157,6 +136,32 @@ class ProgressFragment : Fragment() {
 //        } else if(SaveData.saveDataList[chosenLevel-1].done) {
 ////            val gameIntent = Intent(view.context, GameScreen::class.java)
 ////            startActivity(gameIntent)
+//        }
+    }
+
+    fun setLevelImages(view: View) {
+        for(i in 1..9) {
+            var image = view.findViewById<ImageView>(SaveData.levelList[i])
+            Log.d("!!!", "levelList: $i is " + SaveData.saveDataList[i].done.toString())
+
+            if(SaveData.saveDataList[i].done) {
+                image.setImageResource(GameEngine.gameLevels[i].imageDone)
+            }
+            else if(SaveData.saveDataList[i-1].done) {
+                if(i == 9) {
+                    image.setImageResource(R.drawable.door_golden_2_)
+                } else {
+                    image.setImageResource(R.drawable.door_silver)
+                }
+            } else {
+                image.setImageResource(R.drawable.cloud_02)
+            }
+        }
+        if(SaveData.saveDataList[0].done) {
+            imLevel1.setImageResource(GameEngine.gameLevels[0].imageDone)
+        }
+//        } else {
+//            imLevel10.setImageResource(R.drawable.door_silver)
 //        }
     }
 
