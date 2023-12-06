@@ -90,13 +90,13 @@ class gameDoneFragment : Fragment() {
         (activity as GameScreen).saveData()
         (activity as GameScreen).loadGameProgress()
 
-        imNextGame.setOnClickListener() {
+        imNextGame.setOnClickListener {
             GameEngine.currentLevel++
             goToProgressTree()
         }
 
-        imReplayGame.setOnClickListener() {
-            goToNextGame(null)
+        imReplayGame.setOnClickListener {
+            goToNextGame()
         }
 
 
@@ -109,8 +109,9 @@ class gameDoneFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 for(i in 0 .. levelScore) {
                     tvScore.text = i.toString()
-                    delay(1L)
                     setStars(i)
+                    delay(1L)
+
                 }
             }
         }
@@ -139,13 +140,13 @@ class gameDoneFragment : Fragment() {
     }
 
     fun getStarsImages(levelScore: Int, scoreForStar: Int): Int {
-        if(levelScore > scoreForStar) {
+        if(levelScore >= scoreForStar) {
             return R.drawable.icon_large_star_whiteoutline
         } else {
             return R.drawable.icon_large_starsrey_seethroughoutline
         }
     }
-    fun goToNextGame(view: View?) {
+    fun goToNextGame() {
         (activity as? GameScreen)?.switchFragment(null, gameIntroFragment(), false)
     }
     fun goToProgressTree() {
@@ -157,7 +158,7 @@ class gameDoneFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
+         * @param score Parameter 1.
          * @param param2 Parameter 2.
          * @return A new instance of fragment gameDoneFragment.
          */
