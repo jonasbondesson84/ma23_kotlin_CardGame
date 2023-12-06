@@ -21,6 +21,9 @@ class MainMenyFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+//    private var languageConfig = resources.configuration
+//    private lateinit var languageResource: Resources
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +43,7 @@ class MainMenyFragment : Fragment() {
         val imPlay = view.findViewById<ImageView>(R.id.imbPlay)
         val imSettings = view.findViewById<ImageView>(R.id.imSettings)
         val imProgress = view.findViewById<ImageView>(R.id.imProgress)
-
+        setLanguage()
         (activity as MainActivity).loadSavedSettings()
 
         imPlay.setOnClickListener() {
@@ -59,6 +62,18 @@ class MainMenyFragment : Fragment() {
         }
 
         return view
+    }
+
+    fun setLanguage() {
+
+
+
+//        if(SaveData.language == 1) {
+//            languageConfig.setLocale(Locale("sv"))
+//        } else {
+//            languageConfig.setLocale(Locale("en"))
+//        }
+//          languageResource = requireContext().createConfigurationContext(languageConfig).resources
     }
 
     companion object {

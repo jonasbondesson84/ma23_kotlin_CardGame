@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kortspel</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="play">Spela</string>
+    <string name="settings">Inställningar</string>
+
+    <string name="start">Starta</string>
+
+    <string name="levelDone">Nivå avklarad</string>
+    <string name="bestScore">Bästa poäng: %1$s</string>
+    <string name="replay">Spela om</string>
+    <string name="next">Nästa</string>
+    <string name="back">Tillbaka</string>
+
+    <string name="name">Namn</string>
+    <string name="icon">Ikon</string>
+    <string name="language">Språk</string>
+    <string name="reset">Återställ spelframgångar</string>
+    <string name="save">Spara</string>
+    <string name="cancel">Avbryt</string>
+
+    <string name="ace">E</string>
+    <string name="king">K</string>
+    <string name="queen">D</string>
+    <string name="jack">Kn</string>
+
+    <string-array name="rightAnswers">
+        <item>Bra gjort!</item>
+        <item>Bra jobbat!</item>
+        <item>Helt rätt!</item>
+        <item>Du klarade det!</item>
+        <item>Grymt!</item>
+    </string-array>
+
+    <string-array name="wrongAnswers">
+        <item>Tyvärr!</item>
+        <item>Det var fel.</item>
+        <item>Tyvärr, försök igen.</item>
+        <item>Bättre lycka nästa gång.</item>
+        <item>Försök igen!</item>
+    </string-array>
+
+    <string name="streakBonus">Steak bonus: %1$s</string>
+    <string name="timeLeft">Tid kvar:</string>
+    <string name="nextCardis">Nästa kort är</string>
+    <string name="lower">Lägre</string>
+    <string name="higher">Högre</string>
+
+    <string name="yourTurn">Din tur</string>
+    <string name="gotPair">Jag fick ett par!</string>
+    <string name="wantYour">Jag vill ha alla dina %1$sor</string>
+    <string name="hereYouGo">Varsågod!</string>
+    <string name="goFish">FINNS I SJÖN!</string>
+    <string name="youGoAgain">Din tur igen</string>
+    <string name="darn">Typiskt!</string>
+
+    <string name="chooseSuite">Välj en ny färg</string>
+    <string name="myTurn">Min tur!</string>
+    <string name="AIchangedSuite">Jag bytte färgen till      </string>
+    <string name="gameOver">Game Over</string>
+    <string name="pass">Passa</string>
+
+
+    <string-array name="Rules">
+        <item>rules 1</item>
+        <item>rules 2</item>
+        <item>rules 3</item>
+        <item>rules 4</item>
+        <item>rules 5</item>
+        <item>rules 6</item>
+        <item>rules 7</item>
+        <item>rules 8</item>
+        <item>rules 9</item>
+        <item>rules 10</item>
+
+
+    </string-array>
+
+</resources>
