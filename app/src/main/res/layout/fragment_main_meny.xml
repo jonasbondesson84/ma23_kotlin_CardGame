@@ -15,19 +15,11 @@
             android:id="@+id/constraintLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="-30dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView17">
-
-            <ImageView
-                android:id="@+id/imProgress"
-                android:layout_width="207dp"
-                android:layout_height="83dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imbPlay"
-                app:srcCompat="@drawable/buttontext_large_orange_round" />
 
             <ImageView
                 android:id="@+id/imbPlay"
@@ -51,27 +43,14 @@
                 app:layout_constraintStart_toStartOf="@+id/imbPlay"
                 app:layout_constraintTop_toTopOf="@+id/imbPlay" />
 
-            <TextView
-                android:id="@+id/tvProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/zen_dots"
-                android:text="Progress"
-                android:textColor="@color/black"
-                android:textSize="26sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imProgress"
-                app:layout_constraintEnd_toEndOf="@+id/imProgress"
-                app:layout_constraintHorizontal_bias="0.504"
-                app:layout_constraintStart_toStartOf="@+id/imProgress"
-                app:layout_constraintTop_toTopOf="@+id/imProgress" />
-
             <ImageView
                 android:id="@+id/imSettings"
                 android:layout_width="207dp"
                 android:layout_height="83dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imProgress"
+                app:layout_constraintTop_toBottomOf="@+id/imbPlay"
                 app:srcCompat="@drawable/buttontext_large_orange_round" />
 
             <TextView
@@ -85,7 +64,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imSettings"
                 app:layout_constraintEnd_toEndOf="@+id/imbPlay"
                 app:layout_constraintStart_toStartOf="@+id/imbPlay"
-                app:layout_constraintTop_toBottomOf="@+id/imProgress" />
+                app:layout_constraintTop_toTopOf="@+id/imSettings" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
