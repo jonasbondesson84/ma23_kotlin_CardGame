@@ -146,6 +146,7 @@ class SettingsFragment : Fragment() {
         }
         Log.d("!!!", "" + icon + " " + R.drawable.characters_0002)
         saveDataEditor.apply()
+        loadSavedSettings()
 
 
     }
@@ -158,13 +159,13 @@ class SettingsFragment : Fragment() {
         return json
     }
 
-//    fun loadSavedSettings() {
-//        val getData = (activity as MainActivity).getSharedPreferences(SAVED_DATA, 0)
-//        SaveData.name = getData.getString("name", "") ?: ""
-//        SaveData.language = getData.getInt("language", 0)
-//        SaveData.icon = getData.getInt("icon", R.drawable.characters_0001)
-//        SaveData.saveDataList = (activity as MainActivity).loadGameProgress("SaveData")
-//    }
+    fun loadSavedSettings() {
+        val getData = (activity as MainActivity).getSharedPreferences(SAVED_DATA, 0)
+        SaveData.name = getData.getString("name", "") ?: ""
+        SaveData.language = getData.getInt("language", 0)
+        SaveData.icon = getData.getInt("icon", R.drawable.characters_0001)
+        SaveData.saveDataList = (activity as MainActivity).loadGameProgress("SaveData")
+    }
 
     companion object {
         /**
