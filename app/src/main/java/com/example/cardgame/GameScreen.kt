@@ -18,7 +18,7 @@ class GameScreen : AppCompatActivity() {
         setContentView(R.layout.activity_game_screen)
         val playAgain = intent.getBooleanExtra("playAgain", false)
         Log.d("!!!", playAgain.toString())
-        switchFragment(null, ProgressFragment(), false)
+        switchFragment(null, ProgressFragment(), playAgain)
 //        if (playAgain) {
 //            switchFragment(
 //                null,
