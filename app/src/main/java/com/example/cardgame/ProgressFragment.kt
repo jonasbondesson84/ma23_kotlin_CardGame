@@ -1,6 +1,5 @@
 package com.example.cardgame
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -87,21 +86,21 @@ class ProgressFragment : Fragment() {
         } else {
             imLevel10.setImageResource(R.drawable.door_silver)
         }
-
+        // All for click on levels -------------------------------------
         imLevel1.setOnClickListener {
-            if(SaveData.saveDataList[0].done) {
-                GameEngine.currentLevel = 0
-                val gameIntent = Intent(view.context, GameScreen::class.java)
-                gameIntent.putExtra("playAgain", true)
-                startActivity(gameIntent)
-            } else {
-                val gameIntent = Intent(view.context, GameScreen::class.java)
-                startActivity(gameIntent)
-            }
+            clickForPlay(view, 0)
+//            if(SaveData.saveDataList[0].done) {
+//                GameEngine.currentLevel = 0
+//                val gameIntent = Intent(view.context, GameScreen::class.java)
+//                gameIntent.putExtra("playAgain", true)
+//                startActivity(gameIntent)
+//            } else {
+//                val gameIntent = Intent(view.context, GameScreen::class.java)
+//                startActivity(gameIntent)
+//            }
         }
         imLevel2.setOnClickListener {
             clickForPlay(view,1)
-
         }
         imLevel3.setOnClickListener {
             clickForPlay(view,2)
@@ -127,8 +126,16 @@ class ProgressFragment : Fragment() {
         imLevel10.setOnClickListener {
             clickForPlay(view,9)
         }
+        //-------------------------------------------------
+
         imOk.setOnClickListener {
-            (activity as MainActivity).switchFragment(null, MainMenyFragment())
+            val currentScreen = this.javaClass.simpleName
+
+            if(currentScreen == MainActivity::class.java.simpleName) {
+                (activity as MainActivity).switchFragment(null, MainMenyFragment())
+            } else {
+                (activity as GameScreen).finish()
+            }
         }
 
 
@@ -137,14 +144,16 @@ class ProgressFragment : Fragment() {
 
     fun clickForPlay(view: View, chosenLevel: Int) {
         GameEngine.currentLevel = chosenLevel
-        if(SaveData.saveDataList[chosenLevel].done) {
-            val gameIntent = Intent(view.context, GameScreen::class.java)
-            gameIntent.putExtra("playAgain", true)
-            startActivity(gameIntent)
-        } else if(SaveData.saveDataList[chosenLevel-1].done) {
-            val gameIntent = Intent(view.context, GameScreen::class.java)
-            startActivity(gameIntent)
-        }
+        (activity as GameScreen).switchFragment(null, gameIntroFragment(), false)
+//        if(SaveData.saveDataList[chosenLevel].done) {
+//            (activity as GameScreen).switchFragment(null, gameIntroFragment(), false)
+////            val gameIntent = Intent(view.context, GameScreen::class.java)
+////            gameIntent.putExtra("playAgain", true)
+////            startActivity(gameIntent)
+//        } else if(SaveData.saveDataList[chosenLevel-1].done) {
+////            val gameIntent = Intent(view.context, GameScreen::class.java)
+////            startActivity(gameIntent)
+//        }
     }
 
 
