@@ -24,6 +24,9 @@ class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<
         var tvCard2Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard2)
         var imCard3 = itemView.findViewById<ImageView>(R.id.imCard3)
         var tvCard3Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard3)
+
+        var imCard4 = itemView.findViewById<ImageView>(R.id.imCard4)
+        var tvCard4Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard4)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -53,17 +56,26 @@ class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<
             onCardClick?.invoke(cardMapKey, cardMapValue)
         }
         when(cardMapValue ) {
+            4 -> {
+                showCard4(holder,card, cardMapKey)
+                showCard3(holder, card, cardMapKey)
+                showCard2(holder, card, cardMapKey)
+                showCard1(holder, card, cardMapKey, cardMapSuite)
+            }
             3 -> {
+                hideCard4(holder)
                 showCard3(holder, card, cardMapKey)
                 showCard2(holder, card, cardMapKey)
                 showCard1(holder, card, cardMapKey,cardMapSuite)
             }
             2 -> {
+                hideCard4(holder)
                 hideCard3(holder)
                 showCard2(holder,card,cardMapKey)
                 showCard1(holder,card,cardMapKey,cardMapSuite)
             }
             else -> {
+                hideCard4(holder)
                 hideCard3(holder)
                 hideCard2(holder)
                 showCard1(holder, card, cardMapKey, cardMapSuite)
@@ -74,6 +86,17 @@ class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<
 
 
     }
+    fun showCard4(holder:ViewHolder, card: Card, cardMapKey: Int) {
+        holder.imCard4.visibility = View.VISIBLE
+        holder.tvCard4Text.visibility = View.VISIBLE
+        holder.tvCard4Text.text = card.showNumberOnCard(cardMapKey)
+    }
+
+    fun hideCard4(holder:ViewHolder) {
+        holder.imCard4.visibility = View.INVISIBLE
+        holder.tvCard4Text.visibility = View.INVISIBLE
+    }
+
     fun showCard3(holder: ViewHolder, card: Card, cardMapKey: Int) {
         holder.tvCard3Text.visibility = View.VISIBLE
         holder.imCard3.visibility = View.VISIBLE

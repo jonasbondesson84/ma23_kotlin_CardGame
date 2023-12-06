@@ -136,19 +136,30 @@ class GameMode1Fragment : Fragment() {
         hideGoFish()
         imPLayerIcon.visibility = View.INVISIBLE
         createHands()
-//        hideDeck()
-//        hideGoFishButton()
-        adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
+
         val text = "Your turn"
         textSizeAndShowText(text, ai)
         hidePlayerText()
 
         imDeckOfCard.setOnClickListener() {
-            if (playerCanDrawCard) {
-                playerCanDrawCard = false
-                drawCard(human)
-                aiTurn = true
-                aiTurn()
+            timerScope.launch {
+                withContext(Dispatchers.Main) {
+                    if (playerCanDrawCard) {
+                        playerCanDrawCard = false
+                        drawCard(human)
+                        if (checkForPairs(human)) {
+                            showPlayerText()
+                            var text = "I've got a pair!"
+                            textSizeAndShowText(text, human)
+                            adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
+
+                        }
+                        delay(TIMER_TEXT)
+                        hidePlayerText()
+                        aiTurn = true
+                        aiTurn()
+                    }
+                }
             }
 //            if (waitForDrawCard && !timerClickDeck) {
 //                aiTurn = true
@@ -189,9 +200,6 @@ class GameMode1Fragment : Fragment() {
                             text = "You can go again!"
                             textSizeAndShowText(text, ai)
                         }
-
-
-
                         if(checkForPairs(human)) {
                             showPlayerText()
                             text = "I've got a pair!"
@@ -267,6 +275,14 @@ class GameMode1Fragment : Fragment() {
                     hideAIText()
 
                     drawCard(ai)
+                    if(checkForPairs(ai)) {
+                        showAIText()
+                        text = "I've got a pair!"
+                        textSizeAndShowText(text, ai)
+                        delay(TIMER_TEXT)
+                        adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
+                        hideAIText()
+                    }
                     aiTurn = false
                     waitForPlayerToGiveCard = false
 
@@ -309,7 +325,7 @@ class GameMode1Fragment : Fragment() {
         recalculateMap(human)
         checkForPairs(ai)
         checkForPairs(human)
-        updateHandView()
+//        updateHandView()
     }
 
     fun recalculateMap(player: Player) {
@@ -326,7 +342,7 @@ class GameMode1Fragment : Fragment() {
         }
         //checkForPairs(player)
         updateHandView()
-        //printMap()
+        printMap(player)
     }
 
     fun updateHandView() {
@@ -379,20 +395,20 @@ class GameMode1Fragment : Fragment() {
             drawCard(playerFrom)
 
         }
-        updateHandView()
+
 
     }
 
     fun removeCard(player: Player, card: Card) {
         player.deck.remove(card)
-        recalculateMap(player)
-        updateHandView()
+        //recalculateMap(player)
+//        updateHandView()
     }
 
     fun drawCard(player: Player) {
         if (deckOfCard.isNotEmpty()) {
             val drawnCard = deckOfCard.first()
-            Log.d("!!!", "card drawn: " + drawnCard.number.toString())
+            //Log.d("!!!", "card drawn: " + drawnCard.number.toString())
             deckOfCard.remove(drawnCard)
             player.deck.add(drawnCard)
             recalculateMap(player)
@@ -414,12 +430,13 @@ class GameMode1Fragment : Fragment() {
                 }
             }
         }
-        updateHandView()
+        //updateHandView()
     }
 
     fun checkForPairs(player: Player): Boolean {
+
         for ((key, value) in player.deckMap) {
-            Log.d("!!!", key.toString() + " " + value.toString())
+            //Log.d("!!!", key.toString() + " " + value.toString())
             if (value == 4) {
                 player.numberOfPairs++
                 player.deckMap.remove(key)
@@ -432,7 +449,7 @@ class GameMode1Fragment : Fragment() {
                 }
                 recalculateMap(player)
                 Log.d("!!!", "I've got a pair!")
-                updateHandView()
+//                updateHandView()
                 if (ai.deck.isEmpty() && human.deck.isEmpty()) {
                     endGame()
                 }
@@ -458,13 +475,13 @@ class GameMode1Fragment : Fragment() {
 
     }
 
-//    fun printMap() {
-//        for((key, value) in human.deckMap) {
-//            Log.d("!!!", key.toString() + " " + value.toString() )
-//
-//        }
-//        Log.d("!!!","-------------")
-//    }
+    fun printMap(player: Player) {
+        for((key, value) in player.deckMap) {
+            Log.d("!!!", player.name + ": " +key.toString() + " " + value.toString() )
+
+        }
+        Log.d("!!!","-------------")
+    }
 
     fun textSizeAndShowText(text: String, player: Player) {
         if (player == ai) {
