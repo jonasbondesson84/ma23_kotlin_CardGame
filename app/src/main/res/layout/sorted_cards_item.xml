@@ -7,11 +7,31 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="100dp"
-        android:layout_height="185dp"
+        android:layout_height="200dp"
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/imCard4"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginBottom="-5dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@+id/imCard3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imCard3"
+            app:srcCompat="@drawable/emptycard_top" />
 
+        <TextView
+            android:id="@+id/tvCardTopLeftCard4"
+            android:layout_width="24dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/zen_dots"
+            android:text="TextView"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imCard4" />
         <ImageView
             android:id="@+id/imCard3"
             android:layout_width="wrap_content"
