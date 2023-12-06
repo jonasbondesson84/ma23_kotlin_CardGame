@@ -21,13 +21,14 @@
 
         <ImageView
             android:id="@+id/imPlayerTextGAMEMODE2"
-            android:layout_width="210dp"
+            android:layout_width="250dp"
             android:layout_height="80dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="-35dp"
             android:scaleType="fitXY"
-            android:src="@drawable/textbox_blank_side"
-            app:layout_constraintBottom_toTopOf="@+id/imPLayerIconGAMEMODE2"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:src="@drawable/textbox_blank_left"
+            app:layout_constraintBottom_toBottomOf="@id/imPLayerIconGAMEMODE2"
+            app:layout_constraintTop_toTopOf="@+id/imPLayerIconGAMEMODE2"
+            app:layout_constraintStart_toEndOf="@id/imPLayerIconGAMEMODE2" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHumanCardsGAMEMODE2"
@@ -124,8 +125,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/zen_dots"
-            android:text="GO FISH"
+            android:text="Crazy 8"
             android:textSize="24sp"
+            android:layout_marginLeft="38dp"
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="@+id/imPlayerTextGAMEMODE2"
             app:layout_constraintEnd_toEndOf="@+id/imPlayerTextGAMEMODE2"
@@ -149,7 +151,7 @@
             android:layout_width="120dp"
             android:layout_height="160dp"
             android:src="@drawable/characters_0001"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/rvHumanCardsGAMEMODE2"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -232,6 +234,16 @@
             app:layout_constraintBottom_toTopOf="@+id/clDeckGAMEMODE2"
             app:layout_constraintEnd_toEndOf="@+id/clDeckGAMEMODE2"
             app:layout_constraintStart_toStartOf="@+id/clDeckGAMEMODE2" />
+
+        <ImageView
+            android:id="@+id/imSuiteAIGameMode2"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="2dp"
+            android:src="@drawable/characters_0001"
+            app:layout_constraintBottom_toBottomOf="@+id/tvAITextGAMEMODE2"
+            app:layout_constraintEnd_toEndOf="@+id/imAITextGAMEMODE2"
+            app:layout_constraintTop_toTopOf="@+id/tvAITextGAMEMODE2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

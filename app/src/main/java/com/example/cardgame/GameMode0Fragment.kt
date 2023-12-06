@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -79,6 +80,11 @@ class GameMode0Fragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timerScope.cancel()
     }
 
     override fun onCreateView(
