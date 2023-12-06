@@ -1,6 +1,7 @@
 package com.example.cardgame
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,6 +57,7 @@ class gameIntroFragment : Fragment() {
         tvRules = view.findViewById(R.id.tvRules)
         tvScoreNeeded = view.findViewById(R.id.tvScoreNeeded)
         tvRules.text = rules
+        tvRules.movementMethod = ScrollingMovementMethod()
         tvScoreNeeded.text = "Score needed to win: ${GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded}"
 
 
