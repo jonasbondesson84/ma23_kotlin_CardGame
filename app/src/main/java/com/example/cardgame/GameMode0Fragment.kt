@@ -39,20 +39,24 @@ class GameMode0Fragment : Fragment() {
     private var currentCard = deckOfCard.getNewCard(0)
     private var nextCard = deckOfCard.getNewCard(1)
     private var currentStreak = 0
-    private var rightAnswers = listOf(
-        "Well done!",
-        "Good job!",
-        "That's right!",
-        "You got it!",
-        "Awesome!"
-    )
-    private var wrongAnswer = listOf(
-        "Sorry!",
-        "That was wrong.",
-        "Sorry, try again!",
-        "Better luck next time.",
-        "Try harder!"
-    )
+    private var rightAnswers = resources.getStringArray(R.array.rightAnswers)
+
+//        listOf(
+//        "Well done!",
+//        "Good job!",
+//        "That's right!",
+//        "You got it!",
+//        "Awesome!"
+//    )
+    private var wrongAnswer = resources.getStringArray(R.array.wrongAnswers)
+
+//        listOf(
+//        "Sorry!",
+//        "That was wrong.",
+//        "Sorry, try again!",
+//        "Better luck next time.",
+//        "Try harder!"
+//    )
     private var TEXTSIZE_SHORT = 24F
     private var TEXTSIZE_MEDIUMSHORT = 18F
     private var TEXTSIZE_MEDIUMLONG = 16F
@@ -60,9 +64,9 @@ class GameMode0Fragment : Fragment() {
 
 
     private lateinit var tvAIText: TextView
-//    private lateinit var tvCard: TextView
+    //    private lateinit var tvCard: TextView
     private lateinit var tvCurrentScore: TextView
-//    private lateinit var tvCardTopLeft: TextView
+    //    private lateinit var tvCardTopLeft: TextView
 //    private lateinit var tvCardBottomRight: TextView
 //    private lateinit var imCardTopLeft: ImageView
 //    private lateinit var imCardBottomRight: ImageView
@@ -285,19 +289,17 @@ class GameMode0Fragment : Fragment() {
     }
 
     fun addStreakPoints() {
+        var streakBonus = 0
         if (currentStreak >= 10) {
-            score += (200 * currentStreak)
-            var text = "Streak bonus: ${(200 * currentStreak)}"
-            textSizeAndShowText(text)
+            streakBonus = 200 * currentStreak
         } else if( currentStreak >= 5) {
-            score += (100 * currentStreak)
-            var text = "Streak bonus: ${(100 * currentStreak)}"
-            textSizeAndShowText(text)
+            streakBonus = 100 * currentStreak
         } else if(currentStreak >= 3) {
-            score += (50 * currentStreak)
-            var text = "Streak bonus: ${(50 * currentStreak)}"
-            textSizeAndShowText(text)
+            streakBonus = 50 * currentStreak
         }
+        score += streakBonus
+        val text = resources.getString(R.string.streakBonus, streakBonus.toString())//"Streak bonus: ${streakBonus}"
+        textSizeAndShowText(text)
     }
 
     fun textSizeAndShowText(text: String){

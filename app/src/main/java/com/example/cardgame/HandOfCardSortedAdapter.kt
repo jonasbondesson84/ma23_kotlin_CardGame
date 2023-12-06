@@ -27,6 +27,7 @@ class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<
 
         var imCard4 = itemView.findViewById<ImageView>(R.id.imCard4)
         var tvCard4Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard4)
+       // val context: Context = itemView.requir
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
