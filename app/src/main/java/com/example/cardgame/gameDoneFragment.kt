@@ -7,6 +7,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +34,10 @@ class gameDoneFragment : Fragment() {
     private lateinit var imStar2: ImageView
     private lateinit var imStar3: ImageView
     private lateinit var tvBestScore: TextView
+    private lateinit var imNextGame: ImageView
+    private lateinit var tvNextGame: TextView
+
+    private var timerScope = CoroutineScope(Dispatchers.Main)
    // private val gameIntroFragment = gameIntroFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +48,10 @@ class gameDoneFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        timerScope.cancel()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,44 +64,26 @@ class gameDoneFragment : Fragment() {
         imStar2 = view.findViewById(R.id.imStar2)
         imStar3 = view.findViewById(R.id.imStar3)
         tvBestScore = view.findViewById(R.id.tvBestScore)
+        imNextGame = view.findViewById(R.id.imNextGame)
+        tvNextGame = view.findViewById(R.id.tvNextGame)
+        val imReplayGame = view.findViewById<ImageView>(R.id.imReplayGame)
 
-        var levelScore: Int
-        if(param1 != null) {
-            levelScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
-        } else {
-            levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
-        }
+        var levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
+//        if(param1 != null) {
+//            levelScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
+//        } else {
+//            levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
+//        }
+        //setStars(levelScore)
 
-        if(levelScore > GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
-            imStar1.setImageResource(R.drawable.icon_large_star_whiteoutline)
-        }
-        if(levelScore > (GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded * 1.5)) {
-            imStar2.setImageResource(R.drawable.icon_large_star_whiteoutline)
-        }
-        if(levelScore > (GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded * 2)) {
-            imStar3.setImageResource(R.drawable.icon_large_star_whiteoutline)
-        }
 
-        tvScore.text = levelScore.toString()
+        //tvScore.text = levelScore.toString()
+        animateScore(levelScore)
+        setBestScore(levelScore)
         var bestScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
-        if(bestScore == 0){
-            bestScore = levelScore
-        }
         tvBestScore.text = getString(R.string.bestScore, bestScore.toString())
 
-        var imNextGame = view.findViewById<ImageView>(R.id.imNextGame)
-        var tvNextGame = view.findViewById<TextView>(R.id.tvNextGame)
-        var imReplayGame = view.findViewById<ImageView>(R.id.imReplayGame)
-        if(levelScore > SaveData.saveDataList[GameEngine.currentLevel].bestScore) {
-            SaveData.saveDataList[GameEngine.currentLevel].bestScore = levelScore
-        }
-
-        if(levelScore < GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
-            tvNextGame.visibility = View.INVISIBLE
-            imNextGame.visibility = View.INVISIBLE
-        } else {
-            SaveData.saveDataList[GameEngine.currentLevel].done = true
-        }
+        hideNextButton(levelScore)
         (activity as GameScreen).saveData()
         (activity as GameScreen).loadGameProgress()
 
@@ -103,6 +99,54 @@ class gameDoneFragment : Fragment() {
 
 
         return view
+    }
+
+    fun animateScore(levelScore: Int) {
+        timerScope.launch {
+            withContext(Dispatchers.Main) {
+                for(i in 0 .. levelScore) {
+                    tvScore.text = i.toString()
+                    delay(1L)
+                    setStars(i)
+                }
+            }
+        }
+    }
+
+    fun setBestScore(levelScore: Int) {
+        if(levelScore > SaveData.saveDataList[GameEngine.currentLevel].bestScore) {
+            SaveData.saveDataList[GameEngine.currentLevel].bestScore = levelScore
+        }
+
+    }
+
+    fun hideNextButton(levelScore: Int) {
+        if(levelScore < GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
+            tvNextGame.visibility = View.INVISIBLE
+            imNextGame.visibility = View.INVISIBLE
+        } else {
+            SaveData.saveDataList[GameEngine.currentLevel].done = true
+        }
+    }
+
+    fun setStars(levelScore: Int) {
+        imStar1.setImageResource(getStarsImages(levelScore, GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded))
+        imStar2.setImageResource(getStarsImages(levelScore, (GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded * 1.5).toInt()))
+        imStar3.setImageResource(getStarsImages(levelScore, (GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded * 2)))
+    }
+
+    fun getStarsImages(levelScore: Int, scoreForStar: Int): Int {
+        if(levelScore > scoreForStar) {
+            return R.drawable.icon_large_star_whiteoutline
+        } else {
+            return R.drawable.icon_large_starsrey_seethroughoutline
+        }
+    }
+    fun goToNextGame(view: View?) {
+        (activity as? GameScreen)?.switchFragment(null, gameIntroFragment(), false)
+    }
+    fun goToProgressTree() {
+        (activity as GameScreen).switchFragment(null, ProgressFragment(), false)
     }
 
     companion object {
@@ -125,11 +169,6 @@ class gameDoneFragment : Fragment() {
             }
     }
 
-    fun goToNextGame(view: View?) {
-        (activity as? GameScreen)?.switchFragment(null, gameIntroFragment(), false)
-    }
-    fun goToProgressTree() {
-        (activity as GameScreen).switchFragment(null, ProgressFragment(), false)
-    }
+
 
 }
