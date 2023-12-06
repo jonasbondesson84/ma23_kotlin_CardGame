@@ -30,6 +30,7 @@ class gameIntroFragment : Fragment() {
 //    private val gameMode2Fragment = GameMode2Fragment()
     private lateinit var tvRules: TextView
     private lateinit var tvScoreNeeded: TextView
+    private lateinit var tvRulesTop: TextView
 
 
 
@@ -56,9 +57,13 @@ class gameIntroFragment : Fragment() {
 
         tvRules = view.findViewById(R.id.tvRules)
         tvScoreNeeded = view.findViewById(R.id.tvScoreNeeded)
+        tvRulesTop = view.findViewById(R.id.tvRulesTop)
+
         tvRules.text = rules
         tvRules.movementMethod = ScrollingMovementMethod()
         tvScoreNeeded.text = "Score needed to win: ${GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded}"
+        tvRulesTop.text = "Rules for game ${GameEngine.gameLevels[GameEngine.currentLevel].level}: \n${GameEngine.gameLevels[GameEngine.currentLevel].gameName}"
+
 
 
 
