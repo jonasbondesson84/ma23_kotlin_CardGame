@@ -50,6 +50,7 @@ class GameMode1Fragment : Fragment() {
     private lateinit var adapterHumanPairs: PairsAdapter
     private lateinit var adapterAIPairs: PairsAdapter
     private lateinit var imCardDrawnAI: ImageView
+    private lateinit var imDeckOfCard: ImageView
 
     private var deckOfCard = deckOfCard().deckOfCard
     private var firstCard = deckOfCard.first()
@@ -129,7 +130,7 @@ class GameMode1Fragment : Fragment() {
         imPlayerText = view.findViewById(R.id.imPlayerTextGameMode1)
         imPLayerIcon = view.findViewById(R.id.imPLayerIconGameMode1)
         imCardDrawnAI = view.findViewById(R.id.imCardDrawnAI)
-        val imDeckOfCard = view.findViewById<ImageView>(R.id.imDeck)
+        imDeckOfCard = view.findViewById(R.id.imDeck)
 
         imPLayerIcon.setImageResource(SaveData.icon)
         imCardDrawnAI.visibility = View.INVISIBLE
@@ -311,6 +312,8 @@ class GameMode1Fragment : Fragment() {
         recalculateMap(human)
         checkForPairs(ai)
         checkForPairs(human)
+        adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
+        adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
 //        updateHandView()
     }
 
@@ -415,6 +418,11 @@ class GameMode1Fragment : Fragment() {
                     }
                 }
             }
+            if(deckOfCard.size == 1) {
+                imDeckOfCard.setImageResource(R.drawable.card_backside)
+            }
+        } else {
+            imDeckOfCard.visibility = View.INVISIBLE
         }
         //updateHandView()
     }

@@ -76,7 +76,7 @@ class GameMode2Fragment : Fragment() {
 
 
     private val human = Player("human", mutableListOf(), TreeMap(), 0, 0)
-    private val ai = Player("Computer", mutableListOf(), TreeMap(), 0, 0)
+    private val ai = Player("computer", mutableListOf(), TreeMap(), 0, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -345,11 +345,16 @@ class GameMode2Fragment : Fragment() {
             }
             sortHand(player)
 
+//            if(deckOfCard.size == 1) {
+//                imDeck.setImageResource(R.drawable.card_backside)
+//            }
+
         } else if (aiTurn) {
             passTo(human)
         } else {
             showPassIcon()
         }
+
     }
 
     fun showAndHideDrawnCard(card: Card) {

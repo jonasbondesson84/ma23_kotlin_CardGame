@@ -3,7 +3,7 @@ package com.example.cardgame
 object SaveData {
     class saveDataLevels(var level: Int, var bestScore: Int, var done: Boolean)
      var name: String = ""
-     var language: Int = 0
+     var language: String = "en"
      var icon: Int = 0
     var saveDataList = mutableListOf<saveDataLevels>()
     var levelList = listOf(

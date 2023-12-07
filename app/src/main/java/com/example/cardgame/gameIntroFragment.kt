@@ -72,14 +72,14 @@ class gameIntroFragment : Fragment() {
         btnNext.setOnClickListener() {
             when(gameLevels[GameEngine.currentLevel].gameMode) {
                 0 -> {
-                    (activity as? GameScreen)?.switchFragment(view, GameMode0Fragment(), false)
+                    (activity as GameScreen).switchFragment(view, GameMode0Fragment(), false)
                 }
 
                 1 -> {
-                    (activity as? GameScreen)?.switchFragment(view, GameMode1Fragment(), false)
+                    (activity as GameScreen).switchFragment(view, GameMode1Fragment(), false)
                 }
                 else -> {
-                    (activity as? GameScreen)?.switchFragment(view, GameMode2Fragment(), false)
+                    (activity as GameScreen).switchFragment(view, GameMode2Fragment(), false)
                 }
             }
 
@@ -108,11 +108,4 @@ class gameIntroFragment : Fragment() {
     }
 
 
-    fun showGameFragment(view: View?, gameMode: Fragment) {
-
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fmGameScreen, gameMode, "gameFragment")
-        transaction.commit()
-
-    }
 }

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,7 +30,7 @@ class SettingsFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private var language: Int = 0
+    private var language: String = "en"
     private var name: String = ""
     private var icon = 0
     private var iconList = mutableListOf<Int>()
@@ -76,12 +77,14 @@ class SettingsFragment : Fragment() {
         etvName.setText(name)
         imIconSelected.setImageResource(icon)
 
-        if (language == 0) {
+        if (language == "en") {
             imBritish.setImageResource(R.drawable.flag_brittish2)
             imSwedish.setImageResource(R.drawable.flag_swedish_inactive)
-        } else {
+        } else if (language == "sv"){
             imBritish.setImageResource(R.drawable.flag_british_inactive)
             imSwedish.setImageResource(R.drawable.flag_swedish2)
+        } else {
+            Log.d("!!!", "Fel på språk")
         }
 
         adapterIcons?.onIconClick = { icon = it
@@ -94,6 +97,7 @@ class SettingsFragment : Fragment() {
         imSave.setOnClickListener() {
 
             saveData()
+            restartActivity()
             goToMainMenu()
         }
 
@@ -102,12 +106,14 @@ class SettingsFragment : Fragment() {
         }
 
         imBritish.setOnClickListener {
-            language = 0
+
+            setLocationForLanguage("en")
             imBritish.setImageResource(R.drawable.flag_brittish2)
             imSwedish.setImageResource(R.drawable.flag_swedish_inactive)
         }
         imSwedish.setOnClickListener {
-            language = 1
+
+            setLocationForLanguage("sv")
             imBritish.setImageResource(R.drawable.flag_british_inactive)
             imSwedish.setImageResource(R.drawable.flag_swedish2)
         }
@@ -139,7 +145,7 @@ class SettingsFragment : Fragment() {
         )
         val saveDataEditor = savedData.edit()
         saveDataEditor.putString("name", etvName.text.toString() ?: "unknown")
-        saveDataEditor.putInt("language", language)
+        saveDataEditor.putString("language", language)
         saveDataEditor.putInt("icon", icon)
         if (swResetData.isChecked) {
             saveDataEditor.putString("gameProgress", resetGameProgress())
@@ -147,8 +153,21 @@ class SettingsFragment : Fragment() {
         Log.d("!!!", "" + icon + " " + R.drawable.characters_0002)
         saveDataEditor.apply()
         loadSavedSettings()
+    }
+    private fun setLocationForLanguage(languageChange: String) {
+        language = languageChange
+        val locale = Locale(languageChange)
+        Locale.setDefault(locale)
+        val resources = context?.resources
+        val config = resources?.configuration
+        config?.locale = locale
+        resources?.updateConfiguration(config, resources.displayMetrics)
+    }
 
-
+    fun restartActivity() {
+        val intent = requireActivity().intent
+        requireActivity().finish()
+        startActivity(intent)
     }
 
     fun resetGameProgress(): String {
@@ -162,7 +181,7 @@ class SettingsFragment : Fragment() {
     fun loadSavedSettings() {
         val getData = (activity as MainActivity).getSharedPreferences(SAVED_DATA, 0)
         SaveData.name = getData.getString("name", "") ?: ""
-        SaveData.language = getData.getInt("language", 0)
+        SaveData.language = getData.getString("language", "en") ?: "en"
         SaveData.icon = getData.getInt("icon", R.drawable.characters_0001)
         SaveData.saveDataList = (activity as MainActivity).loadGameProgress("SaveData")
     }
