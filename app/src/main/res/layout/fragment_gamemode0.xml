@@ -154,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:fontFamily="@font/zen_dots"
-            android:text="Lets go!"
+            android:text="@string/letsgo"
             android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="@+id/imTextAIGAmeMode0"

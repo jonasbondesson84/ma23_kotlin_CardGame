@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Cardgame</string>
+    <string name="app_name">FoodTopia</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="aCardGame">a card game saga</string>
     <string name="play">Play</string>
     <string name="settings">Settings</string>
 
@@ -46,6 +47,7 @@
     <string name="nextCardis">Next card is</string>
     <string name="lower">Lower</string>
     <string name="higher">Higher</string>
+    <string name="letsgo">Lets go!</string>
 
     <string name="yourTurn">Your turn</string>
     <string name="gotPair">I\'ve got a pair!</string>

@@ -39,24 +39,24 @@ class GameMode0Fragment : Fragment() {
     private var currentCard = deckOfCard.getNewCard(0)
     private var nextCard = deckOfCard.getNewCard(1)
     private var currentStreak = 0
-    private var rightAnswers = //requireContext().resources.getStringArray(R.array.rightAnswers)
+    private lateinit var rightAnswers: Array<String>
 
-        listOf(
-        "Well done!",
-        "Good job!",
-        "That's right!",
-        "You got it!",
-        "Awesome!"
-    )
-    private var wrongAnswer = //requireContext().resources.getStringArray(R.array.wrongAnswers)
+//        listOf(
+//        "Well done!",
+//        "Good job!",
+//        "That's right!",
+//        "You got it!",
+//        "Awesome!"
+//    )
+    private lateinit var wrongAnswer : Array<String>
 
-        listOf(
-        "Sorry!",
-        "That was wrong.",
-        "Sorry, try again!",
-        "Better luck next time.",
-        "Try harder!"
-    )
+//        listOf(
+//        "Sorry!",
+//        "That was wrong.",
+//        "Sorry, try again!",
+//        "Better luck next time.",
+//        "Try harder!"
+//    )
     private var TEXTSIZE_SHORT = 24F
     private var TEXTSIZE_MEDIUMSHORT = 18F
     private var TEXTSIZE_MEDIUMLONG = 16F
@@ -111,6 +111,8 @@ class GameMode0Fragment : Fragment() {
         pbTimeLeft = view.findViewById(R.id.pbTimeLeft)
         imPlayerIcon = view.findViewById(R.id.imAIGameMode0)
 
+        rightAnswers = resources.getStringArray(R.array.rightAnswers)
+        wrongAnswer = requireContext().resources.getStringArray(R.array.wrongAnswers)
 
         var higherClicked = false
         var lowerClicked = false
@@ -300,7 +302,7 @@ class GameMode0Fragment : Fragment() {
         score += streakBonus
      //   val text = requireContext().resources.getString(R.string.streakBonus, streakBonus.toString())//"Streak bonus: ${streakBonus}"
         if(streakBonus > 3) {
-            val text = "Streak bonus : $streakBonus"
+            val text = resources.getString(R.string.streakBonus, streakBonus.toString())//"Streak bonus : $streakBonus"
             textSizeAndShowText(text)
         }
     }
