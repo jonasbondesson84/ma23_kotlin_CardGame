@@ -1,7 +1,6 @@
 package com.example.cardgame
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -26,19 +25,22 @@ class MainActivity : AppCompatActivity() {
             saveDataEditor.putInt("icon", R.drawable.characters_0001)
             saveDataEditor.putString("gameProgress", saveGameProgress())
             saveDataEditor.apply()
-            setLocationForLanguage("en")
             restartActivity()
         }
         loadSavedSettings()
-
-
-
-
+        checkLanguage()
     }
 
     override fun onResume() {
         super.onResume()
         switchFragment(null, MainMenyFragment())
+    }
+
+    private fun checkLanguage() {
+        if(SaveData.language != resources.configuration.locales[0].language){
+            setLocationForLanguage(SaveData.language)
+            restartActivity()
+        }
     }
     private fun setLocationForLanguage(languageChange: String) {
         val locale = Locale(languageChange)
@@ -49,18 +51,17 @@ class MainActivity : AppCompatActivity() {
         resources?.updateConfiguration(config, resources.displayMetrics)
     }
 
-    fun restartActivity() {
+    private fun restartActivity() {
         val intent = this.intent
         this.finish()
         startActivity(intent)
     }
 
 
-    fun saveGameProgress(): String {
+    private fun saveGameProgress(): String {
         SaveData.resetData()
         val gson = Gson()
         val json = gson.toJson(SaveData.saveDataList)
-        Log.d("!!!", "String to save" +json)
         return json
 
     }
@@ -69,17 +70,15 @@ class MainActivity : AppCompatActivity() {
         SaveData.name = getData.getString("name", "") ?: ""
         SaveData.language = getData.getString("language", "en" ) ?: "en"
         SaveData.icon = getData.getInt("icon", R.drawable.characters_0001)
-        SaveData.saveDataList = loadGameProgress("SaveData")
+        SaveData.saveDataList = loadGameProgress()
     }
 
-    fun loadGameProgress(key: String): MutableList<SaveData.saveDataLevels> {
+    fun loadGameProgress(): MutableList<SaveData.SaveDataLevels> {
         val savedData = getSharedPreferences(SAVED_DATA, MODE_PRIVATE)
         val gson = Gson()
         val json = savedData.getString("gameProgress", "")
-        Log.d("!!!", "Loaded string: " + json)
-        val type = object : TypeToken<MutableList<SaveData.saveDataLevels>>() {}.type
+        val type = object : TypeToken<MutableList<SaveData.SaveDataLevels>>() {}.type
 
-        Log.d("!!!", "Hämtat: " + gson.fromJson<Any?>(json, type) ?: "").toString()
         return gson.fromJson(json, type) ?: mutableListOf()
     }
 

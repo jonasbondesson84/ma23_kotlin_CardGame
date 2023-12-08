@@ -9,25 +9,24 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.util.TreeMap
 
-class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<Int, Int>, val handOfCards: MutableList<Card>): RecyclerView.Adapter<HandOfCardSortedAdapter.ViewHolder>() {
+class HandOfCardSortedAdapter(val context: Context, private val handOfCardsMap: TreeMap<Int, Int>, private val handOfCards: MutableList<Card>): RecyclerView.Adapter<HandOfCardSortedAdapter.ViewHolder>() {
 
-    var layoutInflater = LayoutInflater.from(context)
+    private var layoutInflater = LayoutInflater.from(context)
     var onCardClick: ((Int, Int) -> Unit)? = null
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var tvCardTopLeft = itemView.findViewById<TextView>(R.id.tvCardTopLeftHandAdapter)
-        var tvCardBottomRight = itemView.findViewById<TextView>(R.id.tvCardBottomRightHandAdapter)
-        var imCardCenter = itemView.findViewById<ImageView>(R.id.imCardCenterHandAdapter)
-        var imCardTopLeft = itemView.findViewById<ImageView>(R.id.imCardTopLeftHandAdapter)
-        var imCardBottomRight = itemView.findViewById<ImageView>(R.id.imCardBottomRightHandAdapter)
-        var imCard2 = itemView.findViewById<ImageView>(R.id.imCard2)
-        var tvCard2Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard2)
-        var imCard3 = itemView.findViewById<ImageView>(R.id.imCard3)
-        var tvCard3Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard3)
+        var tvCardTopLeft: TextView = itemView.findViewById(R.id.tvCardTopLeftHandAdapter)
+        var tvCardBottomRight: TextView = itemView.findViewById(R.id.tvCardBottomRightHandAdapter)
+        var imCardCenter: ImageView = itemView.findViewById(R.id.imCardCenterHandAdapter)
+        var imCardTopLeft: ImageView = itemView.findViewById(R.id.imCardTopLeftHandAdapter)
+        var imCardBottomRight: ImageView = itemView.findViewById(R.id.imCardBottomRightHandAdapter)
+        var imCard2: ImageView = itemView.findViewById(R.id.imCard2)
+        var tvCard2Text: TextView = itemView.findViewById(R.id.tvCardTopLeftCard2)
+        var imCard3: ImageView = itemView.findViewById(R.id.imCard3)
+        var tvCard3Text:TextView = itemView.findViewById(R.id.tvCardTopLeftCard3)
+        var imCard4: ImageView = itemView.findViewById(R.id.imCard4)
+        var tvCard4Text: TextView = itemView.findViewById(R.id.tvCardTopLeftCard4)
 
-        var imCard4 = itemView.findViewById<ImageView>(R.id.imCard4)
-        var tvCard4Text = itemView.findViewById<TextView>(R.id.tvCardTopLeftCard4)
-       // val context: Context = itemView.requir
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -53,9 +52,10 @@ class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<
             }
         }
         
-        holder.itemView.setOnClickListener() {
+        holder.itemView.setOnClickListener {
             onCardClick?.invoke(cardMapKey, cardMapValue)
         }
+        //Shows number of cards based on how many you have in your cardMap
         when(cardMapValue ) {
             4 -> {
                 showCard4(holder,card, cardMapKey)
@@ -87,40 +87,40 @@ class HandOfCardSortedAdapter(val context: Context, val handOfCardsMap: TreeMap<
 
 
     }
-    fun showCard4(holder:ViewHolder, card: Card, cardMapKey: Int) {
+    private fun showCard4(holder:ViewHolder, card: Card, cardMapKey: Int) {
         holder.imCard4.visibility = View.VISIBLE
         holder.tvCard4Text.visibility = View.VISIBLE
         holder.tvCard4Text.text = card.showNumberOnCard(cardMapKey)
     }
 
-    fun hideCard4(holder:ViewHolder) {
+    private fun hideCard4(holder:ViewHolder) {
         holder.imCard4.visibility = View.INVISIBLE
         holder.tvCard4Text.visibility = View.INVISIBLE
     }
 
-    fun showCard3(holder: ViewHolder, card: Card, cardMapKey: Int) {
+    private fun showCard3(holder: ViewHolder, card: Card, cardMapKey: Int) {
         holder.tvCard3Text.visibility = View.VISIBLE
         holder.imCard3.visibility = View.VISIBLE
         holder.tvCard3Text.text= card.showNumberOnCard(cardMapKey)
     }
 
-    fun hideCard3(holder: ViewHolder) {
+    private fun hideCard3(holder: ViewHolder) {
         holder.tvCard3Text.visibility = View.INVISIBLE
         holder.imCard3.visibility = View.INVISIBLE
     }
 
-    fun showCard2(holder: ViewHolder, card: Card, cardMapKey: Int) {
+    private fun showCard2(holder: ViewHolder, card: Card, cardMapKey: Int) {
         holder.tvCard2Text.visibility = View.VISIBLE
         holder.imCard2.visibility = View.VISIBLE
         holder.tvCard2Text.text= card.showNumberOnCard(cardMapKey)
     }
 
-    fun hideCard2(holder: ViewHolder) {
+    private fun hideCard2(holder: ViewHolder) {
         holder.tvCard2Text.visibility = View.INVISIBLE
         holder.imCard2.visibility = View.INVISIBLE
     }
 
-    fun showCard1(holder: ViewHolder, card: Card, cardMapKey: Int, cardMapSuite: String) {
+    private fun showCard1(holder: ViewHolder, card: Card, cardMapKey: Int, cardMapSuite: String) {
         holder.tvCardTopLeft.text = card.showNumberOnCard(cardMapKey)
         holder.tvCardBottomRight.text = card.showNumberOnCard(cardMapKey)
         holder.imCardCenter.setImageResource(card.showSuiteOnCard(cardMapSuite))

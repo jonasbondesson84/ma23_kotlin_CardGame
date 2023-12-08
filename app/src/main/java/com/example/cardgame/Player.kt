@@ -7,5 +7,6 @@ class Player(
     var deck: MutableList<Card>,
     var deckMap: TreeMap<Int, Int>,
     var numberOfPairs: Int,
-    var score: Int
-) {}
+    var score: Int,
+    var computer: Boolean
+)

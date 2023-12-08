@@ -6,16 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class PairsAdapter(val context: Context, var numberOfPairs: Int): RecyclerView.Adapter<PairsAdapter.ViewHolder>() {
+class PairsAdapter(val context: Context, private var numberOfPairs: Int): RecyclerView.Adapter<PairsAdapter.ViewHolder>() {
 
-    var layoutInflater = LayoutInflater.from(context)
-
-
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private var layoutInflater = LayoutInflater.from(context)
 
 
-
-    }
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = layoutInflater.inflate(R.layout.pair_item, parent, false)
@@ -33,6 +29,6 @@ class PairsAdapter(val context: Context, var numberOfPairs: Int): RecyclerView.A
 
     fun updateNumberOfPairs(newNumberOfPairs: Int) {
         numberOfPairs = newNumberOfPairs
-        notifyDataSetChanged()
+        notifyItemInserted(numberOfPairs-1)
     }
 }

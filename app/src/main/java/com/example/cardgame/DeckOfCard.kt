@@ -1,6 +1,6 @@
 package com.example.cardgame
 
-class deckOfCard {
+class DeckOfCard {
 
      val deckOfCard = mutableListOf<Card>()
 
@@ -10,7 +10,7 @@ class deckOfCard {
     }
 
 
-    fun createDeck() {
+    private fun createDeck() {
         var suite: String
         for(i in 1..4) {
             when (i) {
@@ -32,7 +32,7 @@ class deckOfCard {
         }
     }
 
-    fun createCards(suite: String) {
+    private fun createCards(suite: String) {
         for (i in 2 .. 5) {
             deckOfCard.add(Card(suite, i))
         }

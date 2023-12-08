@@ -1,7 +1,6 @@
 package com.example.cardgame
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,10 @@ private const val ARG_PARAM2 = "param2"
 private const val CRAZY_EIGHT = 2
 private const val TIMER_TEXT = 1000L
 private const val TIMER_ACTION = 1000L
+private const val TEXTSIZE_SHORT = 24F
+private const val TEXTSIZE_MEDIUMSHORT = 18F
+private const val TEXTSIZE_MEDIUMLONG = 16F
+private const val TEXTSIZE_LONG = 12F
 
 /**
  * A simple [Fragment] subclass.
@@ -40,7 +43,6 @@ class GameMode2Fragment : Fragment() {
 
     private lateinit var adapterHumanCards: HandOfCardsAdapter
     private lateinit var adapterAICards: HandOfCardsAdapter
-
     private lateinit var rvAICards: RecyclerView
     private lateinit var rvHumanCards: RecyclerView
     private lateinit var imPlayerIcon: ImageView
@@ -48,8 +50,6 @@ class GameMode2Fragment : Fragment() {
     private lateinit var tvPlayerText: TextView
     private lateinit var tvAIText: TextView
     private lateinit var imAIText: ImageView
-
-    //private lateinit var clCardDrawn: ConstraintLayout
     private lateinit var imDeck: ImageView
     private lateinit var clSuites: ConstraintLayout
     private lateinit var imHearts: ImageView
@@ -63,20 +63,16 @@ class GameMode2Fragment : Fragment() {
     private lateinit var flCardPile: FrameLayout
     private lateinit var imSuiteAI: ImageView
 
-    private var deckOfCard = deckOfCard().deckOfCard
+    private var deckOfCard = DeckOfCard().deckOfCard
     private var pileDeck = mutableListOf<Card>()
-
-    //private var selectedSuite = "Heart"
     private var aiTurn = false
     private var timerScope = CoroutineScope(Dispatchers.Main)
-    private var TEXTSIZE_SHORT = 24F
-    private var TEXTSIZE_MEDIUMSHORT = 18F
-    private var TEXTSIZE_MEDIUMLONG = 16F
-    private var TEXTSIZE_LONG = 12F
+    private lateinit var currentCard: Card
+    private var currentCardPosition: Int = 1
+    private val human = Player("human", mutableListOf(), TreeMap(), 0, 0, false)
+    private val ai = Player("computer", mutableListOf(), TreeMap(), 0, 0, true)
+    private var currentNumbersOfPasses = 0
 
-
-    private val human = Player("human", mutableListOf(), TreeMap(), 0, 0)
-    private val ai = Player("computer", mutableListOf(), TreeMap(), 0, 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,9 +101,7 @@ class GameMode2Fragment : Fragment() {
         imAIText = view.findViewById(R.id.imAITextGAMEMODE2)
         tvAIText = view.findViewById(R.id.tvAITextGAMEMODE2)
         imSuiteAI = view.findViewById(R.id.imSuiteAIGameMode2)
-
         imDeck = view.findViewById(R.id.imDeckGAMEMODE2)
-
         clSuites = view.findViewById(R.id.clSuites)
         imHearts = view.findViewById(R.id.imSuiteHeartGAMEMODE2)
         imDiamonds = view.findViewById(R.id.imSuiteDiamondGAMEMODE2)
@@ -131,63 +125,41 @@ class GameMode2Fragment : Fragment() {
 
         imPlayerIcon.setImageResource(SaveData.icon)
 
+
+
         createHands()
         updateHandView()
         hidePlayerIconAndText()
-        //hideCardDrawn()
         sortHand(human)
-        sortHand(ai)
-        printHand()
         hideSuitesList()
         hidePassIcon()
         hideSuiteAI()
         showAIText()
-        var text = resources.getString(R.string.yourTurn)//"Your turn!"
+        val text = resources.getString(R.string.yourTurn)
         textSizeAndShowText(text, ai)
+        currentCard = pileDeck.last()
+        currentCardPosition = pileDeck.size - 1
 
         imDrawnCardAI.visibility = View.INVISIBLE
-        var currentCard: Card = pileDeck.last()
-        var currentCardPosition = pileDeck.size - 1
 
-
-
-        imDeck.setOnClickListener() {
-            drawCardFromDeck(human)
-            if(deckOfCard.size == 1) {
-                imDeck.scaleX = 0.8f
-                imDeck.scaleY = 0.8f
-                imDeck.setImageResource(R.drawable.card_backside)
-            } else if( deckOfCard.isEmpty()) {
-                imDeck.visibility = View.INVISIBLE
+        imDeck.setOnClickListener {
+            if(!aiTurn) {
+                drawCardFromDeck(human)
             }
-
         }
 
-        adapterHumanCards?.onCardClick = { card, position -> //Click on card in hand
+        adapterHumanCards.onCardClick = { card, position ->
             if (!aiTurn) {
                 hideAIText()
-                Log.d("!!!", "Card clicked on : " + card.suite + " " + card.number)
                 hidePassIcon()
                 timerScope.launch {
                     withContext(Dispatchers.Main) {
                         if (card.number == CRAZY_EIGHT) {
-                            aiTurn = true
-                            currentCard = card
-                            currentCardPosition = position
-                            showPlayerIconAndText()
-                            var text = resources.getString(R.string.chooseSuite)//"Choose new suite"
-                            textSizeAndShowText(text, human)
-                            delay(TIMER_TEXT)
-                            hidePlayerIconAndText()
-                            delay(TIMER_ACTION / 2)
-                            //Log.d("!!!", currentCard.number.toString())
-                            showSuitesList()
-
+                            crazyEightHuman(card, position)
                         } else if (card.number == pileDeck.last().number || card.suite == pileDeck.last().suite) {
                             aiTurn = true
-                            addCardToPile(card, human)
-                            removeCardFromHand(card, human, position)
-
+                            addCardToPile(card)
+                            removeCardFromHand(card, human)
                             if (human.deck.isNotEmpty()) {
                                 aiTurnSequence()
                             }
@@ -197,47 +169,64 @@ class GameMode2Fragment : Fragment() {
             }
         }
 
-        imHearts.setOnClickListener() {
-
-            removeCardFromHand(currentCard, human, currentCardPosition)
-            currentCard.suite = "Hearts"
-            //updatePileCard(currentCard, "Hearts")
-            addCardToPile(currentCard, human)
-            aiTurnSequence()
-        }
-        imDiamonds.setOnClickListener() {
-
-            removeCardFromHand(currentCard, human, currentCardPosition)
-            currentCard.suite = "Diamonds"
-            //updatePileCard(currentCard, "Diamonds")
-            addCardToPile(currentCard, human)
-            aiTurnSequence()
-        }
-        imClubs.setOnClickListener() {
-            removeCardFromHand(currentCard, human, currentCardPosition)
-            currentCard.suite = "Clubs"
-            //updatePileCard(currentCard, "Clubs")
-            addCardToPile(currentCard, human)
-            aiTurnSequence()
-        }
-        imSpades.setOnClickListener() {
-
-            removeCardFromHand(currentCard, human, currentCardPosition)
-            currentCard.suite = "Spades"
-//            updatePileCard(updatedCard, "Spades")
-            addCardToPile(currentCard, human)
-            aiTurnSequence()
+        imHearts.setOnClickListener {
+            chooseSuite("Hearts")
         }
 
-        imPassIcon.setOnClickListener() {
-            passTo(ai)
+        imDiamonds.setOnClickListener {
+            chooseSuite("Diamonds")
         }
 
+        imClubs.setOnClickListener {
+            chooseSuite("Clubs")
+        }
+        imSpades.setOnClickListener {
+            chooseSuite("Spades")
+        }
+
+        imPassIcon.setOnClickListener {
+            if(!aiTurn) {
+                currentNumbersOfPasses++
+                passTo(ai)
+            }
+        }
 
         return view
     }
 
-    fun createHands() {
+    private fun chooseSuite(suite: String) {
+        removeCardFromHand(currentCard, human)
+        currentCard.suite = suite
+        addCardToPile(currentCard)
+        aiTurnSequence()
+    }
+    private fun crazyEightHuman(card: Card, position: Int) {
+        timerScope.launch {
+            withContext(Dispatchers.Main) {
+                aiTurn = true
+                currentCard = card
+                currentCardPosition = position
+                showPlayerIconAndText()
+                val text = resources.getString(R.string.chooseSuite)
+                textSizeAndShowText(text, human)
+                delay(TIMER_TEXT)
+                hidePlayerIconAndText()
+                delay(TIMER_ACTION / 2)
+                showSuitesList()
+            }
+        }
+    }
+
+    private fun changeDeckImage() {
+        if(deckOfCard.size == 1) {
+            imDeck.scaleX = 0.8f
+            imDeck.scaleY = 0.8f
+            imDeck.setImageResource(R.drawable.card_backside)
+        } else if( deckOfCard.isEmpty()) {
+            imDeck.visibility = View.INVISIBLE
+        }
+    }
+    private fun createHands() {
         pileDeck
         for (i in 0..4) {
             ai.deck.add(deckOfCard.first())
@@ -245,126 +234,121 @@ class GameMode2Fragment : Fragment() {
             human.deck.add(deckOfCard.first())
             deckOfCard.remove(deckOfCard.first())
         }
-        var firstDraw = deckOfCard.first()
+        val firstDraw = deckOfCard.first()
         pileDeck.add(firstDraw)
         deckOfCard.remove(firstDraw)
         (activity as GameScreen).switchToNextCard(
             null, CardFragment.newInstance(firstDraw.suite, firstDraw.number),
             R.id.flCardPileGameMode2
         )
-
-
     }
 
-    fun updatePileCard(card: Card) {
-        //selectedSuite = suite
+    private fun updatePileCard(card: Card) {
         (activity as GameScreen).updateCardLayout(null, card)
-
         hideSuitesList()
-        Log.d("!!!", "Top of pile: " + card.suite + card.number.toString())
-        Log.d(
-            "!!!",
-            "Last of pileDeck: " + pileDeck.last().suite + pileDeck.last().number.toString()
-        )
-
     }
 
-    fun updateHandView() {
+    private fun updateHandView() {
 
-        adapterHumanCards?.notifyDataSetChanged()
-        rvAICards.adapter?.notifyDataSetChanged()
+        adapterHumanCards.notifyDataSetChanged()
+        adapterAICards.notifyDataSetChanged()
     }
 
-    fun aiTurnSequence() {
-
+    private fun aiTurnSequence() {
         timerScope.launch {
             withContext(Dispatchers.Main) {
-                var crazyEight: Card? = null
+                val crazyEight: Card
                 showAIText()
-                var text = resources.getString(R.string.myTurn)//"My turn!"
+                var text = resources.getString(R.string.myTurn)
                 textSizeAndShowText(text, ai)
                 delay(TIMER_TEXT)
-
                 for (card in ai.deck) {
                     if (card.suite == pileDeck.last().suite || card.number == pileDeck.last().number) {
                         if (card.number == CRAZY_EIGHT) {
                             crazyEight = card
-                            break
+                            crazyEightAI(crazyEight)
+                            return@withContext
                         }
-                        addCardToPile(card, ai)
-                        removeCardFromHand(card, ai, 0)
+                        addCardToPile(card)
+                        removeCardFromHand(card, ai)
                         aiTurn = false
-                        text = resources.getString(R.string.yourTurn)//"Your turn"
+                        text = resources.getString(R.string.yourTurn)
                         textSizeAndShowText(text, ai)
                         return@withContext
-
                     }
                 }
-                if (crazyEight != null) {
-                    text = resources.getString(R.string.AIchangedSuite)//"I change the suite to        "
-                    textSizeAndShowText(text, ai)
 
-                    removeCardFromHand(crazyEight, ai, 0)
-                    countSuitsForAI(ai)?.let {
-                        crazyEight.suite = it
+                    drawCardFromDeck(ai)
+                    if (aiTurn) {
+                        delay(TIMER_ACTION)
+                        aiTurnSequence()
                     }
-                    showSuiteAI(crazyEight)
-                    delay(TIMER_TEXT)
-                    addCardToPile(crazyEight, ai)
-                    text = resources.getString(R.string.yourTurn)//"Your turn"
-                    textSizeAndShowText(text, ai)
-                    hideSuiteAI()
-                    aiTurn = false
 
-                    return@withContext
-                }
-                drawCardFromDeck(ai)
-                if (aiTurn) {
-                    delay(TIMER_ACTION)
-                    aiTurnSequence()
-                }
             }
         }
     }
 
-    fun countSuitsForAI(player: Player): String? {
-        var deckMap = mutableMapOf<String, Int>()
+    private fun crazyEightAI(crazyEight: Card) {
+        timerScope.launch { withContext(Dispatchers.Main){
+        var text = resources.getString(R.string.AIchangedSuite)
+        textSizeAndShowText(text, ai)
+        removeCardFromHand(crazyEight, ai)
+        countSuitsForAI(ai)?.let {
+            crazyEight.suite = it
+        }
+        showSuiteAI(crazyEight)
+        delay(TIMER_TEXT)
+        addCardToPile(crazyEight)
+        text = resources.getString(R.string.yourTurn)
+        textSizeAndShowText(text, ai)
+        hideSuiteAI()
+        aiTurn = false
+        }
+        }
+        return
+    }
+
+    private fun countSuitsForAI(player: Player): String? {
+        val deckMap = mutableMapOf<String, Int>()
         for (card in player.deck) {
             val countSuite = deckMap.getOrDefault(card.suite, 0)
             deckMap[card.suite] = countSuite
-
         }
-        var highestNumberOfSuite = deckMap.maxByOrNull { it.value }?.key
-        Log.d("!!!", "highestnumberofsuite: " + highestNumberOfSuite)
+        val highestNumberOfSuite = deckMap.maxByOrNull { it.value }?.key
         return highestNumberOfSuite
     }
 
-    fun drawCardFromDeck(player: Player) {
+    private fun drawCardFromDeck(player: Player) {
         if (deckOfCard.isNotEmpty()) {
             val drawnCard = deckOfCard.first()
             player.deck.add(drawnCard)
             deckOfCard.remove(drawnCard)
-
             if (player == human) {
                 showAndHideDrawnCard(drawnCard)
             } else {
                 showAndHideDrawnCardAI()
             }
+            changeDeckImage()
             sortHand(player)
-
-//            if(deckOfCard.size == 1) {
-//                imDeck.setImageResource(R.drawable.card_backside)
-//            }
-
         } else if (aiTurn) {
+            timerScope.launch {
+                withContext(Dispatchers.Main) {
+
+            val text = resources.getString(R.string.iPass)
+                    showAIText()
+            textSizeAndShowText(text, ai)
+                    currentNumbersOfPasses++
+                    delay(TIMER_TEXT)
             passTo(human)
+        }
+    }
         } else {
             showPassIcon()
         }
 
     }
 
-    fun showAndHideDrawnCard(card: Card) {
+    private fun showAndHideDrawnCard(card: Card) {
         timerScope.launch {
             (activity as GameScreen).showDrawnCard(
                 null,
@@ -376,7 +360,7 @@ class GameMode2Fragment : Fragment() {
         }
     }
 
-    fun showAndHideDrawnCardAI() {
+    private fun showAndHideDrawnCardAI() {
         timerScope.launch {
             imDrawnCardAI.visibility = View.VISIBLE
             delay(1000L)
@@ -384,11 +368,10 @@ class GameMode2Fragment : Fragment() {
         }
     }
 
-
-    fun gameDone() {
+    private fun gameDone() {
         timerScope.launch {
             withContext(Dispatchers.Main) {
-                var text = resources.getString(R.string.gameOver)//"Game over!"
+                val text = resources.getString(R.string.gameOver)
                 if(human.deck.isEmpty()) {
                     hideAIText()
                     showPlayerIconAndText()
@@ -402,60 +385,45 @@ class GameMode2Fragment : Fragment() {
                 countScore(human)
                 delay(TIMER_TEXT)
                 GameEngine.gameLevels[GameEngine.currentLevel].score = 100 - human.score + ai.score
-                (activity as GameScreen).switchFragment(null, gameDoneFragment(), false)
+                (activity as GameScreen).switchFragment(null, GameDoneFragment())
             }
         }
     }
 
-    fun countScore(player: Player) {
+    private fun countScore(player: Player) {
         var countScore = 0
         for (card in player.deck) {
             countScore += card.number
         }
         player.score = countScore
-        Log.d("!!!", "Playerscore: " + player.score.toString())
     }
 
-    fun removeCardFromHand(card: Card, player: Player, position: Int) {
+    private fun removeCardFromHand(card: Card, player: Player) {
         player.deck.remove(card)
+        updateHandView()
         if (player.deck.isEmpty()) {
             gameDone()
             return
         }
-        //adapterHumanCards.notifyItemRemoved(position)
-        updateHandView()
-
     }
 
-    fun addCardToPile(card: Card, player: Player) {
-        //selectedSuite = card.suite
+    private fun addCardToPile(card: Card) {
         pileDeck.add(card)
         updatePileCard(card)
-        printHand()
-
+        currentNumbersOfPasses = 0
     }
 
-    fun sortHand(player: Player) {
+    private fun sortHand(player: Player) {
         player.deck.sortBy { it.number }
         player.deck.sortBy { it.suite }
         updateHandView()
     }
 
-    fun printHand() {
-        for (card in human.deck) {
-            Log.d("!!!", "H: " + card.suite + " " + card.number.toString())
-        }
-        for (card in ai.deck) {
-            Log.d("!!!", "AI: " + card.suite + " " + card.number.toString())
-        }
-        Log.d("!!!", "--------------")
-        for (card in pileDeck) {
-            Log.d("!!!", "Piledeck: " + card.suite + " " + card.number.toString())
-        }
-    }
 
-    fun passTo(player: Player) {
-        if (player == ai) {
+    private fun passTo(player: Player) {
+        if(deckOfCard.isEmpty() && currentNumbersOfPasses >= 2) {
+            gameDone()
+        } else if (player == ai) {
             aiTurn = true
             aiTurnSequence()
         } else {
@@ -464,64 +432,56 @@ class GameMode2Fragment : Fragment() {
         }
     }
 
-    fun showPassIcon() {
+    private fun showPassIcon() {
         tvPassText.visibility = View.VISIBLE
         imPassIcon.visibility = View.VISIBLE
     }
 
-    fun hidePassIcon() {
+    private fun hidePassIcon() {
         tvPassText.visibility = View.INVISIBLE
         imPassIcon.visibility = View.INVISIBLE
     }
 
-    fun showSuitesList() {
+    private fun showSuitesList() {
         clSuites.visibility = View.VISIBLE
     }
 
-    fun hideSuitesList() {
+    private fun hideSuitesList() {
         clSuites.visibility = View.INVISIBLE
     }
 
-    fun showPlayerIconAndText() {
+    private fun showPlayerIconAndText() {
         imPlayerIcon.visibility = View.VISIBLE
         imPlayerTextImage.visibility = View.VISIBLE
         tvPlayerText.visibility = View.VISIBLE
     }
 
-    fun hidePlayerIconAndText() {
+    private fun hidePlayerIconAndText() {
         imPlayerIcon.visibility = View.INVISIBLE
         imPlayerTextImage.visibility = View.INVISIBLE
         tvPlayerText.visibility = View.INVISIBLE
     }
 
-    fun hideAIText() {
+    private fun hideAIText() {
         imAIText.visibility = View.INVISIBLE
         tvAIText.visibility = View.INVISIBLE
     }
 
-    fun showAIText() {
+    private fun showAIText() {
         imAIText.visibility = View.VISIBLE
         tvAIText.visibility = View.VISIBLE
     }
 
-    fun showCardDrawn() {
-//        clCardDrawn.visibility = View.VISIBLE
-    }
-
-    fun hideCardDrawn() {
-//        clCardDrawn.visibility = View.INVISIBLE
-    }
-
-    fun showSuiteAI(card: Card) {
+    private fun showSuiteAI(card: Card) {
         imSuiteAI.setImageResource(card.showSuiteOnCard(card.suite))
         imSuiteAI.visibility = View.VISIBLE
     }
 
-    fun hideSuiteAI() {
+    private fun hideSuiteAI() {
         imSuiteAI.visibility = View.INVISIBLE
     }
 
-    fun textSizeAndShowText(text: String, player: Player) {
+    private fun textSizeAndShowText(text: String, player: Player) {
         if (player == ai) {
             when {
                 text.length > 22 -> {

@@ -63,6 +63,7 @@
     <string name="AIchangedSuite">Jag bytte färgen till      </string>
     <string name="gameOver">Game Over</string>
     <string name="pass">Passa</string>
+    <string name="iPass">Jag passar.</string>
 
     <string name="rulesForGame">"Rules for game %1$s: \n %2$s"</string>
 

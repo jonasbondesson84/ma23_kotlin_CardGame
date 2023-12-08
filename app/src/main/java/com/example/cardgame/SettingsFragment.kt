@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
@@ -31,14 +30,15 @@ class SettingsFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var language: String = "en"
-    private var name: String = ""
-    private var icon = 0
+//    private var name: String = ""
+//    private var icon = 0
     private var iconList = mutableListOf<Int>()
 
     private lateinit var rvIcons: RecyclerView
-    private lateinit var etvName: EditText
     private lateinit var imIconSelected: ImageView
     private lateinit var swResetData: Switch
+    private lateinit var imBritish: ImageView
+    private lateinit var imSwedish: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,64 +55,46 @@ class SettingsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
-        val imCancel = view.findViewById<ImageView>(R.id.imCancel)
-        val imSave = view.findViewById<ImageView>(R.id.imSave)
-        val imBritish = view.findViewById<ImageView>(R.id.imBritish)
-        val imSwedish = view.findViewById<ImageView>(R.id.imSwedish)
-        etvName = view.findViewById(R.id.etvName)
+        val imCancel: ImageView = view.findViewById(R.id.imCancel)
+        val imSave: ImageView = view.findViewById(R.id.imSave)
+         imBritish = view.findViewById(R.id.imBritish)
+         imSwedish = view.findViewById(R.id.imSwedish)
         imIconSelected = view.findViewById(R.id.imChosenIcon)
         swResetData = view.findViewById(R.id.swResetData)
-        createIconList()
         rvIcons = view.findViewById(R.id.rvIconSelecter)
         rvIcons.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
         val adapterIcons = IconAdapter(view.context, iconList)
         rvIcons.adapter = adapterIcons
 
-        name = SaveData.name
         language = SaveData.language
-        icon = SaveData.icon
-       // if(icon == 0 or icon == null) {
-       //     icon = R.drawable.characters_0001
-      //  }
-        etvName.setText(name)
+        var icon = SaveData.icon
         imIconSelected.setImageResource(icon)
 
-        if (language == "en") {
-            imBritish.setImageResource(R.drawable.flag_brittish2)
-            imSwedish.setImageResource(R.drawable.flag_swedish_inactive)
-        } else if (language == "sv"){
-            imBritish.setImageResource(R.drawable.flag_british_inactive)
-            imSwedish.setImageResource(R.drawable.flag_swedish2)
-        } else {
-            Log.d("!!!", "Fel på språk")
-        }
+        createIconList()
+        setLanguageIcon(language)
 
-        adapterIcons?.onIconClick = { icon = it
+        adapterIcons.onIconClick = { icon = it
             imIconSelected.setImageResource(icon)
 
         }
 
-
-
-        imSave.setOnClickListener() {
-
-            saveData()
-            restartActivity()
+        imSave.setOnClickListener {
+            Log.d("!!!", language)
+            saveData(language, icon)
             goToMainMenu()
         }
 
-        imCancel.setOnClickListener() {
+        imCancel.setOnClickListener {
             goToMainMenu()
         }
 
         imBritish.setOnClickListener {
-
             setLocationForLanguage("en")
             imBritish.setImageResource(R.drawable.flag_brittish2)
             imSwedish.setImageResource(R.drawable.flag_swedish_inactive)
         }
-        imSwedish.setOnClickListener {
 
+        imSwedish.setOnClickListener {
             setLocationForLanguage("sv")
             imBritish.setImageResource(R.drawable.flag_british_inactive)
             imSwedish.setImageResource(R.drawable.flag_swedish2)
@@ -122,7 +104,20 @@ class SettingsFragment : Fragment() {
         return view
     }
 
-    fun createIconList() {
+    private fun setLanguageIcon(language: String) {
+        when(language) {
+            "sv" -> {
+                imBritish.setImageResource(R.drawable.flag_british_inactive)
+                imSwedish.setImageResource(R.drawable.flag_swedish2)
+            }
+            else -> {
+                imBritish.setImageResource(R.drawable.flag_brittish2)
+                imSwedish.setImageResource(R.drawable.flag_swedish_inactive)
+            }
+        }
+    }
+
+    private fun createIconList() {
         iconList.clear()
         iconList.add(R.drawable.characters_0001)
         iconList.add(R.drawable.characters_0002)
@@ -134,23 +129,22 @@ class SettingsFragment : Fragment() {
 
     }
 
-    fun goToMainMenu() {
+    private fun goToMainMenu() {
         (activity as? MainActivity)?.switchFragment(view, MainMenyFragment())
     }
 
-    fun saveData() {
+    private fun saveData(language: String, icon: Int) {
         val savedData = (activity as MainActivity).getSharedPreferences(
             SAVED_DATA,
             AppCompatActivity.MODE_PRIVATE
         )
         val saveDataEditor = savedData.edit()
-        saveDataEditor.putString("name", etvName.text.toString() ?: "unknown")
+        saveDataEditor.putString("name", "unknown")  //Keeps name for future, if you should be able to switch players.
         saveDataEditor.putString("language", language)
         saveDataEditor.putInt("icon", icon)
         if (swResetData.isChecked) {
             saveDataEditor.putString("gameProgress", resetGameProgress())
         }
-        Log.d("!!!", "" + icon + " " + R.drawable.characters_0002)
         saveDataEditor.apply()
         loadSavedSettings()
     }
@@ -164,26 +158,20 @@ class SettingsFragment : Fragment() {
         resources?.updateConfiguration(config, resources.displayMetrics)
     }
 
-    fun restartActivity() {
-        val intent = requireActivity().intent
-        requireActivity().finish()
-        startActivity(intent)
-    }
 
-    fun resetGameProgress(): String {
+    private fun resetGameProgress(): String {
         SaveData.resetData()
         val gson = Gson()
         val json = gson.toJson(SaveData.saveDataList)
-        Log.d("!!!", "String to save" + json)
         return json
     }
 
-    fun loadSavedSettings() {
+    private fun loadSavedSettings() {
         val getData = (activity as MainActivity).getSharedPreferences(SAVED_DATA, 0)
         SaveData.name = getData.getString("name", "") ?: ""
         SaveData.language = getData.getString("language", "en") ?: "en"
         SaveData.icon = getData.getInt("icon", R.drawable.characters_0001)
-        SaveData.saveDataList = (activity as MainActivity).loadGameProgress("SaveData")
+        SaveData.saveDataList = (activity as MainActivity).loadGameProgress()
     }
 
     companion object {

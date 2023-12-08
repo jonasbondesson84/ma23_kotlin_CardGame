@@ -1,13 +1,11 @@
 package com.example.cardgame
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +23,10 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 private const val TIMER_TEXT = 1000L
 private const val TIMER_ACTION = 1000L
+private const val TEXTSIZE_SHORT = 24F
+private const val TEXTSIZE_MEDIUMSHORT = 18F
+private const val TEXTSIZE_MEDIUMLONG = 16F
+private const val TEXTSIZE_LONG = 12F
 
 /**
  * A simple [Fragment] subclass.
@@ -38,7 +40,6 @@ class GameMode1Fragment : Fragment() {
     private lateinit var rvAICards: RecyclerView
     private lateinit var rvHumanCards: RecyclerView
     private lateinit var tvAIText: TextView
-    private lateinit var clDeck: ConstraintLayout
     private lateinit var imGoFishButton: ImageView
     private lateinit var tvGoFishButton: TextView
     private lateinit var tvPlayerText: TextView
@@ -52,29 +53,15 @@ class GameMode1Fragment : Fragment() {
     private lateinit var imCardDrawnAI: ImageView
     private lateinit var imDeckOfCard: ImageView
 
-    private var deckOfCard = deckOfCard().deckOfCard
-    private var firstCard = deckOfCard.first()
+    private var deckOfCard = DeckOfCard().deckOfCard
     private val timerScope = CoroutineScope(Dispatchers.Default)
-    private var waitForDrawCard = false
-    private var aiTurnWaitForCard = false
     private var aiTurn = false
-    private var timerClickDeck = false
-    private var timerClickHandPick = false
-    private var timerClickHandAnswer = false
-    private var TEXTSIZE_SHORT = 24F
-    private var TEXTSIZE_MEDIUMSHORT = 18F
-    private var TEXTSIZE_MEDIUMLONG = 16F
-    private var TEXTSIZE_LONG = 12F
     private var playerCanDrawCard = false
     private var waitForPlayerToGiveCard = false
     private var aiAskedCardNumber = 0
-    private var waitToDrawCard = false
 
-
-    private var randomCardNumber = 0
-
-    private val human = Player("human", mutableListOf(), TreeMap(), 0, 0)
-    private val ai = Player("computer", mutableListOf(), TreeMap(), 0, 0)
+    private val human = Player("human", mutableListOf(), TreeMap(), 0, 0, false)
+    private val ai = Player("computer", mutableListOf(), TreeMap(), 0, 0, true)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,7 +109,6 @@ class GameMode1Fragment : Fragment() {
         rvAIPairs.adapter = adapterAIPairs
 
         tvAIText = view.findViewById(R.id.tvAITextGameMode1)
-        //clDeck = view.findViewById(R.id.clDeck)
         imGoFishButton = view.findViewById(R.id.imGoFishButton)
         tvGoFishButton = view.findViewById(R.id.tvGoFishButton)
         tvPlayerText = view.findViewById(R.id.tvPlayerTextGameMode1)
@@ -131,18 +117,18 @@ class GameMode1Fragment : Fragment() {
         imPLayerIcon = view.findViewById(R.id.imPLayerIconGameMode1)
         imCardDrawnAI = view.findViewById(R.id.imCardDrawnAI)
         imDeckOfCard = view.findViewById(R.id.imDeck)
-        Log.d("!!!", SaveData.icon.toString())
+
         imPLayerIcon.setImageResource(SaveData.icon)
-        imCardDrawnAI.visibility = View.INVISIBLE
+
+        hideAIDrawnCard()
+        hidePlayerText()
         hideGoFish()
-        imPLayerIcon.visibility = View.INVISIBLE
         createHands()
 
         val text = resources.getString(R.string.yourTurn)
         textSizeAndShowText(text, ai)
-        hidePlayerText()
 
-        imDeckOfCard.setOnClickListener() {
+        imDeckOfCard.setOnClickListener {
             timerScope.launch {
                 withContext(Dispatchers.Main) {
                     if (playerCanDrawCard) {
@@ -151,10 +137,9 @@ class GameMode1Fragment : Fragment() {
                         delay(TIMER_ACTION)
                         if (checkForPairs(human)) {
                             showPlayerText()
-                            var text = resources.getString(R.string.gotPair)//"I've got a pair!"
+                            val text = resources.getString(R.string.gotPair)
                             textSizeAndShowText(text, human)
                             adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
-
                         }
                         delay(TIMER_TEXT)
                         hidePlayerText()
@@ -164,146 +149,117 @@ class GameMode1Fragment : Fragment() {
                     }
                 }
             }
-//            if (waitForDrawCard && !timerClickDeck) {
-//                aiTurn = true
-//                timerClickDeck = true
-////                showCardWhenHumanDraws()
-//                placeDrawnCard(human)
-//                drawCardFromDeck(human.deck, human.deckMap, human)
-//
-//            }
         }
 
-        adapterHuman?.onCardClick = { cardValue, numberOfCards ->
-
+        adapterHuman.onCardClick = { cardValue, _ ->
             if (!aiTurn && !waitForPlayerToGiveCard && !playerCanDrawCard) {
-                timerScope.launch {
-                    withContext(Dispatchers.Main) {
-
-                        showPlayerText()
-                        hideAIText()
-                        var text = resources.getString(R.string.wantYour, cardValue.toString())//"I want all your ${cardValue}s"
-                        textSizeAndShowText(text, human)
-                        delay(TIMER_TEXT)
-                        hidePlayerText()
-
-                        var aiGotCard = askForCard(ai, cardValue)
-                        showAIText()
-                        if (aiGotCard) {
-                            text = resources.getString(R.string.hereYouGo)//"Here you go!"
-                            exchangeCards(ai, human, cardValue)
-                        } else {
-                            text = resources.getString(R.string.goFish)//"GO FISH!"
-                            // drawCard(human)
-                            playerCanDrawCard = true
-                        }
-                        textSizeAndShowText(text, ai)
-                        delay(TIMER_TEXT)
-                        if(aiGotCard) {
-                            text = resources.getString(R.string.youGoAgain)//"You can go again!"
-                            textSizeAndShowText(text, ai)
-                        }
-                        if(checkForPairs(human)) {
-                            showPlayerText()
-                            text = resources.getString(R.string.gotPair)//"I've got a pair!"
-                            textSizeAndShowText(text, human)
-                            adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
-
-                        }
-                        delay(TIMER_TEXT)
-                        hidePlayerText()
-
-                        updateHandView()
-                        if (human.deck.isEmpty()) {
-                            drawCard(human)
-                        }
-                    }
-                }
+                clickAskAIForCard(cardValue)
 
             } else if (aiTurn && waitForPlayerToGiveCard && cardValue == aiAskedCardNumber) {
-                waitForPlayerToGiveCard = false
-                timerScope.launch {
-                    withContext(Dispatchers.Main) {
-                        showPlayerText()
-                        var text = resources.getString(R.string.hereYouGo)//"Here you go!"
-                        textSizeAndShowText(text, human)
-                        delay(TIMER_TEXT)
-                        hidePlayerText()
-                        exchangeCards(human, ai, cardValue)
-                        if (checkForPairs(ai)) {
-                            showAIText()
-                            text = resources.getString(R.string.gotPair)//"I've got a pair"
-                            textSizeAndShowText(text, ai)
-                            adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
-                            delay(TIMER_TEXT)
-
-                            hideAIText()
-                        }
-                        aiTurn()
-                    }
-                }
-
+                clickGiveAICard(cardValue)
             }
-
         }
 
-        imGoFishButton.setOnClickListener() {
-            timerScope.launch {
-                withContext(Dispatchers.Main) {
-                    hideAIText()
-                    hideGoFish()
-                    showPlayerText()
-                    var text = resources.getString(R.string.goFish)//"GO FISH!"
-                    textSizeAndShowText(text, human)
-                    delay(500L)
-                    showAIText()
-                    text = resources.getString(R.string.darn)//"Darn' it!"
-                    textSizeAndShowText(text, ai)
-                    delay(TIMER_TEXT)
-                    hidePlayerText()
-                    hideAIText()
-
-                    drawCard(ai)
-                    if(checkForPairs(ai)) {
-                        showAIText()
-                        text = resources.getString(R.string.gotPair)//"I've got a pair!"
-                        textSizeAndShowText(text, ai)
-                        delay(TIMER_TEXT)
-                        adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
-                        hideAIText()
-                    }
-                    aiTurn = false
-                    waitForPlayerToGiveCard = false
-
-
-                }
-            }
+        imGoFishButton.setOnClickListener {
+            clickGoFish()
         }
         return view
     }
 
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment GameMode1Fragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            GameMode1Fragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun clickGoFish() {
+        timerScope.launch {
+            withContext(Dispatchers.Main) {
+                hideAIText()
+                hideGoFish()
+                showPlayerText()
+                var text = resources.getString(R.string.goFish)
+                textSizeAndShowText(text, human)
+                delay(500L)
+                showAIText()
+                text = resources.getString(R.string.darn)
+                textSizeAndShowText(text, ai)
+                delay(TIMER_TEXT)
+                hidePlayerText()
+                hideAIText()
+                drawCard(ai)
+                if(checkForPairs(ai)) {
+                    showAIText()
+                    text = resources.getString(R.string.gotPair)
+                    textSizeAndShowText(text, ai)
+                    delay(TIMER_TEXT)
+                    adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
+                    hideAIText()
                 }
+                aiTurn = false
+                waitForPlayerToGiveCard = false
             }
+        }
     }
 
-    fun createHands() {
+    private fun clickGiveAICard(cardValue: Int) {
+        waitForPlayerToGiveCard = false
+        timerScope.launch {
+            withContext(Dispatchers.Main) {
+                showPlayerText()
+                var text = resources.getString(R.string.hereYouGo)
+                textSizeAndShowText(text, human)
+                delay(TIMER_TEXT)
+                hidePlayerText()
+                exchangeCards(human, ai, cardValue)
+                if (checkForPairs(ai)) {
+                    showAIText()
+                    text = resources.getString(R.string.gotPair)
+                    textSizeAndShowText(text, ai)
+                    adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
+                    delay(TIMER_TEXT)
+                    hideAIText()
+                }
+                aiTurn()
+            }
+        }
+    }
+    private fun clickAskAIForCard(cardValue: Int) {
+        timerScope.launch {
+            withContext(Dispatchers.Main) {
+                showPlayerText()
+                hideAIText()
+                var text = resources.getString(R.string.wantYour, cardValue.toString())
+                textSizeAndShowText(text, human)
+                delay(TIMER_TEXT)
+                hidePlayerText()
+                val aiGotCard = askForCard(ai, cardValue)
+                showAIText()
+                if (aiGotCard) {
+                    text = resources.getString(R.string.hereYouGo)
+                    exchangeCards(ai, human, cardValue)
+                } else {
+                    text = resources.getString(R.string.goFish)
+                    playerCanDrawCard = true
+                }
+                textSizeAndShowText(text, ai)
+                delay(TIMER_TEXT)
+                if(aiGotCard) {
+                    text = resources.getString(R.string.youGoAgain)
+                    textSizeAndShowText(text, ai)
+                }
+                if(checkForPairs(human)) {
+                    showPlayerText()
+                    text = resources.getString(R.string.gotPair)
+                    textSizeAndShowText(text, human)
+                    adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
+                }
+                delay(TIMER_TEXT)
+                hidePlayerText()
+                updateHandView()
+                if (human.deck.isEmpty()) {
+                    drawCard(human)
+                }
+            }
+        }
+    }
+
+
+    private fun createHands() {
         for (i in 0..4) {
             ai.deck.add(deckOfCard.first())
             deckOfCard.remove(deckOfCard.first())
@@ -316,10 +272,9 @@ class GameMode1Fragment : Fragment() {
         checkForPairs(human)
         adapterHumanPairs.updateNumberOfPairs(human.numberOfPairs)
         adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
-//        updateHandView()
     }
 
-    fun recalculateMap(player: Player) {
+    private fun recalculateMap(player: Player) {
         player.deckMap.clear()
         for (card in player.deck) {
             if (player.deckMap.containsKey(card.number)) {
@@ -331,18 +286,16 @@ class GameMode1Fragment : Fragment() {
                 player.deckMap[card.number] = 1
             }
         }
-        //checkForPairs(player)
         updateHandView()
-        printMap(player)
     }
 
-    fun updateHandView() {
+    private fun updateHandView() {
         rvHumanCards.adapter?.notifyDataSetChanged()
         rvAICards.adapter?.notifyDataSetChanged()
     }
 
 
-    fun aiTurn() {
+    private fun aiTurn() {
         if (aiTurn && ai.deck.isNotEmpty()) {
             timerScope.launch {
                 withContext(Dispatchers.Main) {
@@ -350,32 +303,26 @@ class GameMode1Fragment : Fragment() {
                     hideAIText()
                     delay(500L)
                     showAIText()
-                    var text = resources.getString(R.string.wantYour, aiAskedCardNumber.toString())//"I want all your ${aiAskedCardNumber}s"
+                    val text = resources.getString(R.string.wantYour, aiAskedCardNumber.toString())
                     textSizeAndShowText(text, ai)
                     delay(TIMER_TEXT)
-
-
                     if (askForCard(human, aiAskedCardNumber)) {
                         waitForPlayerToGiveCard = true
-
                     } else {
                         waitForPlayerToGiveCard = true
                         aiTurn = false
                         showGoFish()
-
                     }
                 }
             }
         }
-
     }
 
-    fun askForCard(player: Player, cardValue: Int): Boolean {
-        //Log.d("!!!", cardValue.toString())
+    private fun askForCard(player: Player, cardValue: Int): Boolean {
         return (player.deckMap.containsKey(cardValue))
     }
 
-    fun exchangeCards(playerFrom: Player, playerTo: Player, cardValue: Int) {
+    private fun exchangeCards(playerFrom: Player, playerTo: Player, cardValue: Int) {
         playerFrom.deck.filter { it.number == cardValue }.forEach {
             playerTo.deck.add(it)
             removeCard(playerFrom, it)
@@ -384,24 +331,16 @@ class GameMode1Fragment : Fragment() {
         recalculateMap(playerTo)
         if (playerFrom.deck.isEmpty()) {
             drawCard(playerFrom)
-
         }
-
-
     }
 
-    fun removeCard(player: Player, card: Card) {
+    private fun removeCard(player: Player, card: Card) {
         player.deck.remove(card)
-        //recalculateMap(player)
-//        updateHandView()
     }
 
-    fun drawCard(player: Player) {
+    private fun drawCard(player: Player) {
         if (deckOfCard.isNotEmpty()) {
             val drawnCard = deckOfCard.first()
-            //Log.d("!!!", "card drawn: " + drawnCard.number.toString())
-
-
             timerScope.launch {
                 withContext(Dispatchers.Main) {
                     deckOfCard.remove(drawnCard)
@@ -419,26 +358,32 @@ class GameMode1Fragment : Fragment() {
                         delay(TIMER_ACTION)
                         hideAIDrawnCard()
                     }
-
                 }
             }
-            if(deckOfCard.size == 1) {
-                imDeckOfCard.setImageResource(R.drawable.card_backside)
-            }
-        } else {
-            imDeckOfCard.visibility = View.INVISIBLE
+                setDeckImage(deckOfCard.size)
         }
-        //updateHandView()
     }
 
-    fun checkForPairs(player: Player): Boolean {
+    private fun setDeckImage(deckSize: Int) {
+        when (deckSize) {
+            1 -> {
+                imDeckOfCard.setImageResource(R.drawable.card_backside)
+            }
+            0 -> {
+                imDeckOfCard.visibility = View.INVISIBLE
+            }
+            else -> {
+                imDeckOfCard.setImageResource(R.drawable.backside_pile)
+            }
+        }
+    }
+
+    private fun checkForPairs(player: Player): Boolean {
 
         for ((key, value) in player.deckMap) {
-            //Log.d("!!!", key.toString() + " " + value.toString())
             if (value == 4) {
                 player.numberOfPairs++
                 player.deckMap.remove(key)
-
                 player.deck.filter { it.number == key }.forEach {
                     removeCard(player, it)
                 }
@@ -446,8 +391,6 @@ class GameMode1Fragment : Fragment() {
                     drawCard(player)
                 }
                 recalculateMap(player)
-                Log.d("!!!", "I've got a pair!")
-//                updateHandView()
                 if (ai.deck.isEmpty() && human.deck.isEmpty()) {
                     endGame()
                 }
@@ -458,30 +401,18 @@ class GameMode1Fragment : Fragment() {
 
     }
 
-    fun addPairsToList() {
-
-    }
-
-    fun endGame() {
+    private fun endGame() {
         calculateScore()
-        (activity as GameScreen).switchFragment(null, gameDoneFragment(), false)
+        (activity as GameScreen).switchFragment(null, GameDoneFragment())
     }
 
-    fun calculateScore() {
+    private fun calculateScore() {
         GameEngine.gameLevels[GameEngine.currentLevel].score =
             (human.numberOfPairs * 100) - (ai.numberOfPairs * 100)
-
     }
 
-    fun printMap(player: Player) {
-        for((key, value) in player.deckMap) {
-            Log.d("!!!", player.name + ": " +key.toString() + " " + value.toString() )
 
-        }
-        Log.d("!!!","-------------")
-    }
-
-    fun textSizeAndShowText(text: String, player: Player) {
+    private fun textSizeAndShowText(text: String, player: Player) {
         if (player == ai) {
             when {
                 text.length > 22 -> {
@@ -525,54 +456,74 @@ class GameMode1Fragment : Fragment() {
         }
     }
 
-    fun hidePlayerText() {
+    private fun hidePlayerText() {
 
         imPLayerIcon.visibility = View.INVISIBLE
         imPlayerText.visibility = View.INVISIBLE
         tvPlayerText.visibility = View.INVISIBLE
     }
 
-    fun showPlayerText() {
+    private fun showPlayerText() {
 
         imPLayerIcon.visibility = View.VISIBLE
         imPlayerText.visibility = View.VISIBLE
         tvPlayerText.visibility = View.VISIBLE
     }
 
-    fun hideAIText() {
+    private fun hideAIText() {
         imAIText.visibility = View.INVISIBLE
         tvAIText.visibility = View.INVISIBLE
 
     }
 
-    fun showAIText() {
+    private fun showAIText() {
         imAIText.visibility = View.VISIBLE
         tvAIText.visibility = View.VISIBLE
     }
 
-    fun showPlayerDrawnCard(card: Card) {
+    private fun showPlayerDrawnCard(card: Card) {
         (activity as GameScreen).showDrawnCard(null, CardFragment.newInstance(card.suite, card.number), R.id.flDrawnCardGameMode1)
     }
 
-    fun hidePlayerDrawnCard() {
+    private fun hidePlayerDrawnCard() {
         (activity as GameScreen).hideDrawnCard(null)
     }
 
-    fun showAIDrawnCard() {
+    private fun showAIDrawnCard() {
         imCardDrawnAI.visibility = View.VISIBLE
     }
-    fun hideAIDrawnCard() {
+    private fun hideAIDrawnCard() {
         imCardDrawnAI.visibility = View.INVISIBLE
 
     }
 
-    fun showGoFish() {
+    private fun showGoFish() {
         imGoFishButton.visibility = View.VISIBLE
         tvGoFishButton.visibility = View.VISIBLE
     }
-    fun hideGoFish() {
+    private fun hideGoFish() {
         imGoFishButton.visibility = View.INVISIBLE
         tvGoFishButton.visibility = View.INVISIBLE
+    }
+
+    companion object {
+        /**
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
+         *
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment GameMode1Fragment.
+         */
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            GameMode1Fragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
     }
 
 //

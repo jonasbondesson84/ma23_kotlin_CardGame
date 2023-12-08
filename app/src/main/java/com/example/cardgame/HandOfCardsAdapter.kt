@@ -8,20 +8,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class HandOfCardsAdapter(val context: Context, val player: Player /*val handOfCards: List<Card>*/): RecyclerView.Adapter<HandOfCardsAdapter.ViewHolder>() {
+class HandOfCardsAdapter(val context: Context, private val player: Player /*val handOfCards: List<Card>*/): RecyclerView.Adapter<HandOfCardsAdapter.ViewHolder>() {
 
-    var layoutInflater = LayoutInflater.from(context)
+    private var layoutInflater = LayoutInflater.from(context)
     var onCardClick: ((Card, Int) -> Unit)? = null
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var tvCardTopLeft = itemView.findViewById<TextView>(R.id.tvCardTopLeftHandAdapter)
-        var tvCardBottomRight = itemView.findViewById<TextView>(R.id.tvCardBottomRightHandAdapter)
-        var imCardCenter = itemView.findViewById<ImageView>(R.id.imCardCenterHandAdapter)
-        var imCardTopLeft = itemView.findViewById<ImageView>(R.id.imCardTopLeftHandAdapter)
-        var imCardBottomRight = itemView.findViewById<ImageView>(R.id.imCardBottomRightHandAdapter)
-        var imCard = itemView.findViewById<ImageView>(R.id.imCardHandAdapter)
-        var cardPosition = 0
-
+        var tvCardTopLeft: TextView = itemView.findViewById(R.id.tvCardTopLeftHandAdapter)
+        var tvCardBottomRight: TextView = itemView.findViewById(R.id.tvCardBottomRightHandAdapter)
+        var imCardCenter: ImageView = itemView.findViewById(R.id.imCardCenterHandAdapter)
+        var imCardTopLeft: ImageView = itemView.findViewById(R.id.imCardTopLeftHandAdapter)
+        var imCardBottomRight: ImageView = itemView.findViewById(R.id.imCardBottomRightHandAdapter)
+        var imCard: ImageView = itemView.findViewById(R.id.imCardHandAdapter)
 
     }
 
@@ -37,7 +35,7 @@ class HandOfCardsAdapter(val context: Context, val player: Player /*val handOfCa
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val card = player.deck[position]
-        if(player.name == "computer") {  //Needs fixing, cant use name that you can change!
+        if(player.computer) {
             hideAISymbolsOnCards(holder)
         } else {
             holder.tvCardTopLeft.text = card.showNumberOnCard(card.number)
@@ -46,16 +44,13 @@ class HandOfCardsAdapter(val context: Context, val player: Player /*val handOfCa
             holder.imCardBottomRight.setImageResource(card.showSuiteOnCard(card.suite))
             holder.imCardTopLeft.setImageResource(card.showSuiteOnCard(card.suite))
 
-            holder.cardPosition = position
-            holder.itemView.setOnClickListener() {
+            holder.itemView.setOnClickListener {
                 onCardClick?.invoke(card, position)
             }
         }
-
-
     }
 
-    fun hideAISymbolsOnCards(holder: ViewHolder) {
+    private fun hideAISymbolsOnCards(holder: ViewHolder) {
         holder.imCardCenter.visibility = View.INVISIBLE
         holder.imCardTopLeft.visibility = View.INVISIBLE
         holder.imCardBottomRight.visibility = View.INVISIBLE

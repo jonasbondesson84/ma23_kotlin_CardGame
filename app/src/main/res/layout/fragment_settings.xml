@@ -12,20 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/etvName"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:ems="10"
-            android:fontFamily="@font/zen_dots"
-            android:hint="@string/name"
-            android:inputType="text"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/imChosenIcon"
             android:layout_width="100sp"
@@ -38,13 +24,15 @@
             android:id="@+id/tvIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/zen_dots"
             android:text="@string/icon"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/etvName"
-            app:layout_constraintTop_toBottomOf="@+id/etvName" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="24dp"
+            tools:layout_editor_absoluteX="8dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvIconSelecter"

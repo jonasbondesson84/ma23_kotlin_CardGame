@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-class IconAdapter(val context: Context, val iconList: MutableList<Int>): RecyclerView.Adapter<IconAdapter.ViewHolder>() {
+class IconAdapter(val context: Context, private val iconList: MutableList<Int>): RecyclerView.Adapter<IconAdapter.ViewHolder>() {
 
-    var layoutInflater = LayoutInflater.from(context)
+    private var layoutInflater = LayoutInflater.from(context)
     var onIconClick: ((Int) -> Unit)? = null
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var imIcon = itemView.findViewById<ImageView>(R.id.imIconSelector)
+        var imIcon: ImageView = itemView.findViewById(R.id.imIconSelector)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
