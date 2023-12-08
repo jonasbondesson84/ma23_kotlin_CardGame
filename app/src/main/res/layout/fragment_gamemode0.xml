@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageButton
+        <ImageView
             android:id="@+id/imHigherGamoeMode0"
             android:layout_width="160dp"
             android:layout_height="56dp"
@@ -22,7 +22,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/imStartGame"
             android:layout_width="160dp"
             android:layout_height="56dp"

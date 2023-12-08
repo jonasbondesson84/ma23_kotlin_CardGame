@@ -21,10 +21,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [gameDoneFragment.newInstance] factory method to
+ * Use the [GameDoneFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class gameDoneFragment : Fragment() {
+class GameDoneFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: Int? = null
     private var param2: String? = null
@@ -68,27 +68,13 @@ class gameDoneFragment : Fragment() {
         tvNextGame = view.findViewById(R.id.tvNextGame)
         val imReplayGame = view.findViewById<ImageView>(R.id.imReplayGame)
 
-        var levelScore : Int
-        if(param2 != null) {
-            levelScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
-            setStars(levelScore)
 
+        val levelScore = getScore()
+        val bestScore = setBestScore(levelScore)
 
-            tvScore.text = levelScore.toString()
-
-        } else {
-            levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
-            animateScore(levelScore)
-        }
-
-
-        setBestScore(levelScore)
-        val bestScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
         tvBestScore.text = getString(R.string.bestScore, bestScore.toString())
-
         hideNextButton(bestScore)
         (activity as GameScreen).saveData()
-        (activity as GameScreen).loadGameProgress()
 
         imNextGame.setOnClickListener {
             GameEngine.currentLevel++
@@ -99,32 +85,43 @@ class gameDoneFragment : Fragment() {
             goToNextGame()
         }
 
-
-
         return view
     }
 
-    fun animateScore(levelScore: Int) {
+    private fun getScore():Int {
+        val levelScore: Int
+        if(param2 != null) {
+            levelScore = SaveData.saveDataList[GameEngine.currentLevel].bestScore
+            setStars(levelScore)
+            tvScore.text = levelScore.toString()
+        } else {
+            levelScore = GameEngine.gameLevels[GameEngine.currentLevel].score
+            animateScore(levelScore)
+        }
+        return levelScore
+    }
+
+    private fun animateScore(levelScore: Int) {
         timerScope.launch {
             withContext(Dispatchers.Main) {
                 for(i in 0 .. levelScore) {
                     tvScore.text = i.toString()
                     setStars(i)
                     delay(1L)
-
                 }
             }
         }
     }
 
-    fun setBestScore(levelScore: Int) {
+    private fun setBestScore(levelScore: Int): Int {
         if(levelScore > SaveData.saveDataList[GameEngine.currentLevel].bestScore) {
             SaveData.saveDataList[GameEngine.currentLevel].bestScore = levelScore
         }
+        return SaveData.saveDataList[GameEngine.currentLevel].bestScore
 
     }
 
-    fun hideNextButton(bestScore: Int) {
+    private fun hideNextButton(bestScore: Int) {
         if(bestScore < GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded) {
             tvNextGame.visibility = View.INVISIBLE
             imNextGame.visibility = View.INVISIBLE
@@ -133,24 +130,24 @@ class gameDoneFragment : Fragment() {
         }
     }
 
-    fun setStars(levelScore: Int) {
+    private fun setStars(levelScore: Int) {
         imStar1.setImageResource(getStarsImages(levelScore, GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded))
         imStar2.setImageResource(getStarsImages(levelScore, (GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded * 1.5).toInt()))
         imStar3.setImageResource(getStarsImages(levelScore, (GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded * 2)))
     }
 
-    fun getStarsImages(levelScore: Int, scoreForStar: Int): Int {
-        if(levelScore >= scoreForStar) {
-            return R.drawable.icon_large_star_whiteoutline
+    private fun getStarsImages(levelScore: Int, scoreForStar: Int): Int {
+        return if(levelScore >= scoreForStar) {
+            R.drawable.icon_large_star_whiteoutline
         } else {
-            return R.drawable.icon_large_starsrey_seethroughoutline
+            R.drawable.icon_large_starsrey_seethroughoutline
         }
     }
-    fun goToNextGame() {
-        (activity as? GameScreen)?.switchFragment(null, gameIntroFragment(), false)
+    private fun goToNextGame() {
+        (activity as? GameScreen)?.switchFragment(null, GameIntroFragment())
     }
-    fun goToProgressTree() {
-        (activity as GameScreen).switchFragment(null, ProgressFragment(), false)
+    private fun goToProgressTree() {
+        (activity as GameScreen).switchFragment(null, ProgressFragment())
     }
 
     companion object {
@@ -165,7 +162,7 @@ class gameDoneFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(score: Int, param2: String) =
-            gameDoneFragment().apply {
+            GameDoneFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_PARAM1, score)
                     putString(ARG_PARAM2, param2)

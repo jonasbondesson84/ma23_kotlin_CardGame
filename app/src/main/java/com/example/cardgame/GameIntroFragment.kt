@@ -17,10 +17,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [gameIntroFragment.newInstance] factory method to
+ * Use the [GameIntroFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class gameIntroFragment : Fragment() {
+class GameIntroFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -51,13 +51,12 @@ class gameIntroFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_game_intro, container, false)
         val btnNext: ImageButton = view.findViewById(R.id.imStartGame)
-        val gameLevels = GameEngine.gameLevels
 
         val rules = resources.getStringArray(R.array.Rules)
-        var rulesText = ""
-        var gameNameList = resources.getStringArray(R.array.gameName)
-        var gameName = ""
-        var currentGame = GameEngine.gameLevels[GameEngine.currentLevel]
+        val rulesText: String
+        val gameNameList = resources.getStringArray(R.array.gameName)
+        val gameName: String
+        val currentGame = GameEngine.gameLevels[GameEngine.currentLevel]
 
         tvRules = view.findViewById(R.id.tvRules)
         tvScoreNeeded = view.findViewById(R.id.tvScoreNeeded)
@@ -80,25 +79,20 @@ class gameIntroFragment : Fragment() {
             }
         }
         tvRules.text = rulesText
-        tvScoreNeeded.text = resources.getString(R.string.scoreNeeded, currentGame.scoreNeeded.toString())// "Score needed to win: ${currentGame.scoreNeeded}"
-        tvRulesTop.text =  resources.getString(R.string.rulesForGame, currentGame.level.toString(), gameName)//"Rules for game ${currentGame.level}: \n${currentGame.gameName}"
+        tvScoreNeeded.text = resources.getString(R.string.scoreNeeded, currentGame.scoreNeeded.toString())
+        tvRulesTop.text =  resources.getString(R.string.rulesForGame, currentGame.level.toString(), gameName)
 
 
-
-
-
-
-        btnNext.setOnClickListener() {
-            when(gameLevels[GameEngine.currentLevel].gameMode) {
+        btnNext.setOnClickListener {
+            when(currentGame.gameMode) {
                 0 -> {
-                    (activity as GameScreen).switchFragment(view, GameMode0Fragment(), false)
+                    (activity as GameScreen).switchFragment(view, GameMode0Fragment())
                 }
-
                 1 -> {
-                    (activity as GameScreen).switchFragment(view, GameMode1Fragment(), false)
+                    (activity as GameScreen).switchFragment(view, GameMode1Fragment())
                 }
                 else -> {
-                    (activity as GameScreen).switchFragment(view, GameMode2Fragment(), false)
+                    (activity as GameScreen).switchFragment(view, GameMode2Fragment())
                 }
             }
 
@@ -118,7 +112,7 @@ class gameIntroFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            gameIntroFragment().apply {
+            GameIntroFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
