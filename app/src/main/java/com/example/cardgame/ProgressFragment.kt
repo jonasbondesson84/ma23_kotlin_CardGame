@@ -61,7 +61,7 @@ class ProgressFragment : Fragment() {
         imLevel8 = view.findViewById(R.id.imLevel8)
         imLevel9 = view.findViewById(R.id.imLevel9)
         imLevel10 = view.findViewById(R.id.imLevel10)
-        val imOk = view.findViewById<ImageView>(R.id.imOkPathScreen)
+        val imOk = view.findViewById<ImageView>(R.id.imBack)
 
         setLevelImages(view)
 

@@ -48,7 +48,7 @@ class MainMenyFragment : Fragment() {
         (activity as MainActivity).loadSavedSettings()
 
         imPlay.setOnClickListener() {
-           // SaveData.saveDataList[8].done = true
+            SaveData.saveDataList[6].done = true
             //(activity as MainActivity).switchFragment(null, ProgressFragment())
             val gameIntent = Intent(view.context, GameScreen::class.java)
             startActivity(gameIntent)

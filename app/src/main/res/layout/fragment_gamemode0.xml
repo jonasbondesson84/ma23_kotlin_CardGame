@@ -23,7 +23,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageButton
-            android:id="@+id/imLowerGamoeMode0"
+            android:id="@+id/imStartGame"
             android:layout_width="160dp"
             android:layout_height="56dp"
             android:layout_marginStart="32dp"
@@ -36,8 +36,11 @@
 
         <TextView
             android:id="@+id/tvHigher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="24sp"
+            android:gravity="center"
             android:fontFamily="@font/zen_dots"
             android:text="@string/higher"
             android:textColor="@color/black"
@@ -48,17 +51,21 @@
             app:layout_constraintTop_toTopOf="@+id/imHigherGamoeMode0" />
 
         <TextView
-            android:id="@+id/tvStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/tvStartGame"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="24sp"
             android:fontFamily="@font/zen_dots"
             android:text="@string/lower"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imLowerGamoeMode0"
-            app:layout_constraintEnd_toEndOf="@+id/imLowerGamoeMode0"
-            app:layout_constraintStart_toStartOf="@+id/imLowerGamoeMode0"
-            app:layout_constraintTop_toTopOf="@+id/imLowerGamoeMode0" />
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/imStartGame"
+            app:layout_constraintEnd_toEndOf="@+id/imStartGame"
+            app:layout_constraintStart_toStartOf="@+id/imStartGame"
+            app:layout_constraintTop_toTopOf="@+id/imStartGame" />
 
         <ProgressBar
             android:id="@+id/pbTimeLeft"
@@ -150,8 +157,9 @@
 
         <TextView
             android:id="@+id/tvAITextGameMode0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
             android:layout_marginBottom="12dp"
             android:fontFamily="@font/zen_dots"
             android:text="@string/letsgo"

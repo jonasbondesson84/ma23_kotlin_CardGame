@@ -32,8 +32,11 @@
 
             <TextView
                 android:id="@+id/tvPlay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="24sp"
                 android:fontFamily="@font/zen_dots"
                 android:text="@string/play"
                 android:textColor="@color/black"
@@ -55,8 +58,11 @@
 
             <TextView
                 android:id="@+id/tvSettings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMaxTextSize="24sp"
                 android:fontFamily="@font/zen_dots"
                 android:text="@string/settings"
                 android:textColor="@color/black"

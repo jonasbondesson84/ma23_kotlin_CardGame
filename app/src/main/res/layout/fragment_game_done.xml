@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/imContainer"
             android:layout_width="270dp"
             android:layout_height="285dp"
             android:scaleType="fitXY"
@@ -39,17 +39,17 @@
             android:layout_marginBottom="-32dp"
             android:scaleType="fitXY"
             android:src="@drawable/banner_orange"
-            app:layout_constraintBottom_toTopOf="@+id/imageView6"
-            app:layout_constraintEnd_toEndOf="@+id/imageView6"
-            app:layout_constraintStart_toStartOf="@+id/imageView6" />
+            app:layout_constraintBottom_toTopOf="@+id/imContainer"
+            app:layout_constraintEnd_toEndOf="@+id/imContainer"
+            app:layout_constraintStart_toStartOf="@+id/imContainer" />
 
         <ImageView
             android:id="@+id/imStar2"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/icon_large_starsrey_seethroughoutline"
-            app:layout_constraintEnd_toEndOf="@+id/imageView6"
-            app:layout_constraintStart_toStartOf="@+id/imageView6"
+            app:layout_constraintEnd_toEndOf="@+id/imContainer"
+            app:layout_constraintStart_toStartOf="@+id/imContainer"
             app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
         <ImageView
@@ -64,38 +64,40 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:id="@+id/tvLevelDone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:fontFamily="@font/zendots"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
             android:text="@string/levelDone"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView7"
             app:layout_constraintEnd_toEndOf="@+id/imageView7"
             app:layout_constraintStart_toStartOf="@+id/imageView7"
             app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
         <ImageView
-            android:id="@+id/imageView11"
+            android:id="@+id/imScoreView"
             android:layout_width="203dp"
             android:layout_height="49dp"
             android:layout_marginTop="32dp"
             android:scaleType="fitXY"
             android:src="@drawable/buttontext_orange_onoffbackground"
-            app:layout_constraintEnd_toEndOf="@+id/imageView6"
-            app:layout_constraintStart_toStartOf="@+id/imageView6"
+            app:layout_constraintEnd_toEndOf="@+id/imContainer"
+            app:layout_constraintStart_toStartOf="@+id/imContainer"
             app:layout_constraintTop_toBottomOf="@+id/imStar2" />
 
         <ImageView
-            android:id="@+id/imageView12"
+            android:id="@+id/imScoreIcon"
             android:layout_width="54dp"
             android:layout_height="54dp"
             android:rotation="-15"
             android:src="@drawable/icon_small_diamond"
-            app:layout_constraintStart_toStartOf="@+id/imageView11"
-            app:layout_constraintTop_toTopOf="@+id/imageView11" />
+            app:layout_constraintStart_toStartOf="@+id/imScoreView"
+            app:layout_constraintTop_toTopOf="@+id/imScoreView" />
 
         <TextView
             android:id="@+id/tvScoreDone"
@@ -106,9 +108,9 @@
             android:text="10"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView11"
-            app:layout_constraintStart_toEndOf="@+id/imageView12"
-            app:layout_constraintTop_toTopOf="@+id/imageView11" />
+            app:layout_constraintBottom_toBottomOf="@+id/imScoreView"
+            app:layout_constraintStart_toEndOf="@+id/imScoreIcon"
+            app:layout_constraintTop_toTopOf="@+id/imScoreView" />
 
         <ImageView
             android:id="@+id/imReplayGame"
@@ -116,14 +118,17 @@
             android:layout_height="51dp"
             android:layout_marginBottom="16dp"
             android:src="@drawable/buttontext_large_orange_round"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView6"
-            app:layout_constraintEnd_toEndOf="@+id/imageView6"
-            app:layout_constraintStart_toStartOf="@+id/imageView6" />
+            app:layout_constraintBottom_toBottomOf="@+id/imContainer"
+            app:layout_constraintEnd_toEndOf="@+id/imContainer"
+            app:layout_constraintStart_toStartOf="@+id/imContainer" />
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="24sp"
             android:fontFamily="@font/zendots"
             android:text="@string/replay"
             android:textColor="@color/black"
@@ -145,8 +150,11 @@
 
         <TextView
             android:id="@+id/tvNextGame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="24sp"
+            android:gravity="center"
             android:fontFamily="@font/zendots"
             android:text="@string/next"
             android:textColor="@color/black"
@@ -165,9 +173,9 @@
             android:text="Best score:"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/imageView11"
-            app:layout_constraintStart_toStartOf="@+id/imageView11"
-            app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+            app:layout_constraintEnd_toEndOf="@+id/imScoreView"
+            app:layout_constraintStart_toStartOf="@+id/imScoreView"
+            app:layout_constraintTop_toBottomOf="@+id/imScoreView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
