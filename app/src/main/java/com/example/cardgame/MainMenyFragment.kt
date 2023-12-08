@@ -46,7 +46,7 @@ class MainMenyFragment : Fragment() {
         (activity as MainActivity).loadSavedSettings()
 
         imPlay.setOnClickListener() {
-            //SaveData.saveDataList[6].done = true //Just to open up all gameModes for play testing.
+            SaveData.saveDataList[6].done = true //Just to open up all gameModes for play testing.
 
             val gameIntent = Intent(view.context, GameScreen::class.java)
             startActivity(gameIntent)

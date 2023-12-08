@@ -23,7 +23,7 @@ import java.util.TreeMap
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-private const val CRAZY_EIGHT = 2
+private const val CRAZY_EIGHT = 8
 private const val TIMER_TEXT = 1000L
 private const val TIMER_ACTION = 1000L
 private const val TEXTSIZE_SHORT = 24F

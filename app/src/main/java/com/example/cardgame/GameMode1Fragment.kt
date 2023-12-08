@@ -189,9 +189,12 @@ class GameMode1Fragment : Fragment() {
                     delay(TIMER_TEXT)
                     adapterAIPairs.updateNumberOfPairs(ai.numberOfPairs)
                     hideAIText()
+                    aiTurn = false
+                    waitForPlayerToGiveCard = false
+                } else {
+                    aiTurn = false
+                    waitForPlayerToGiveCard = false
                 }
-                aiTurn = false
-                waitForPlayerToGiveCard = false
             }
         }
     }

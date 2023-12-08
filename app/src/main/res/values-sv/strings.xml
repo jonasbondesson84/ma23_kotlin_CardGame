@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">FoodTopia</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="aCardGame">ett kortspel</string>
+    <string name="aCardGame">en kortspelssaga</string>
     <string name="play">Spela</string>
     <string name="settings">Inställningar</string>
 
