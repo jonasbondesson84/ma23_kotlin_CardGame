@@ -4,7 +4,7 @@ object SaveData {
     class SaveDataLevels(var bestScore: Int, var done: Boolean)
     var name = ""
      var language: String = "en"
-     var icon: Int = 0
+     var icon: Int = R.drawable.characters_0003
     var saveDataList = mutableListOf<SaveDataLevels>()
     var levelList = listOf(
         R.id.imLevel1,

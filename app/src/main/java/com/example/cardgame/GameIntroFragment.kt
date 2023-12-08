@@ -5,7 +5,7 @@ import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
@@ -50,7 +50,7 @@ class GameIntroFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_game_intro, container, false)
-        val btnNext: ImageButton = view.findViewById(R.id.imStartGame)
+        val btnNext: ImageView = view.findViewById(R.id.imStartGame)
 
         val rules = resources.getStringArray(R.array.Rules)
         val rulesText: String
