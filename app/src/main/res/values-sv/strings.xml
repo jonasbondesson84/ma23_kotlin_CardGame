@@ -64,18 +64,19 @@
     <string name="gameOver">Game Over</string>
     <string name="pass">Passa</string>
 
+    <string name="rulesForGame">"Rules for game %1$s: \n %2$s"</string>
+
+    <string-array name="gameName">
+        <item>Högt - Lågt</item>
+        <item>Finns i sjön</item>
+        <item>Vändåtta</item>
+    </string-array>
 
     <string-array name="Rules">
-        <item>rules 1</item>
-        <item>rules 2</item>
-        <item>rules 3</item>
-        <item>rules 4</item>
-        <item>rules 5</item>
-        <item>rules 6</item>
-        <item>rules 7</item>
-        <item>rules 8</item>
-        <item>rules 9</item>
-        <item>rules 10</item>
+        <item>Målet med spelet är att gissa ifall det nästa kortet som kommer upp är högre eller lägre än föregående kort. Om du svarar rätt ett antal gånger i rad får du också bonuspoäng.</item>
+        <item>Målet med spelet är att samla så många par som möjligt. Ett par är 4 kort med samma valör. På din tur frågar du motsåndaren efter ett kort, ifall hen har det måste hen ge det till dig och det är din tur igen, annars säger hen FINNS I SJÖN och du får ta ett kort från högen. Sedan är det nästa spelares tur. Har man inga kort på hand drar man ett kort. Slutpoängen baseras på hur många par du och din motståndare har.</item>
+        <item>Målet med spelet är att bli av med sina kort. På din tur får du lägga ett kort som är antingen av samma färg eller valör. 8:or är vilda och byter färg som du väljer. Kan du inte får du dra ett kort tills du kan. Poängen baseras på vilka kort du och din motståndare har vid spelets slut.</item>
+
 
 
     </string-array>
