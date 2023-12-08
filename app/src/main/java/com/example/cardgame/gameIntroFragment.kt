@@ -53,16 +53,35 @@ class gameIntroFragment : Fragment() {
         val btnNext: ImageButton = view.findViewById(R.id.imStartGame)
         val gameLevels = GameEngine.gameLevels
 
-        val rules = gameLevels[GameEngine.currentLevel].rules
+        val rules = resources.getStringArray(R.array.Rules)
+        var rulesText = ""
+        var gameNameList = resources.getStringArray(R.array.gameName)
+        var gameName = ""
+        var currentGame = GameEngine.gameLevels[GameEngine.currentLevel]
 
         tvRules = view.findViewById(R.id.tvRules)
         tvScoreNeeded = view.findViewById(R.id.tvScoreNeeded)
         tvRulesTop = view.findViewById(R.id.tvRulesTop)
 
-        tvRules.text = rules
+
         tvRules.movementMethod = ScrollingMovementMethod()
-        tvScoreNeeded.text = "Score needed to win: ${GameEngine.gameLevels[GameEngine.currentLevel].scoreNeeded}"
-        tvRulesTop.text = "Rules for game ${GameEngine.gameLevels[GameEngine.currentLevel].level}: \n${GameEngine.gameLevels[GameEngine.currentLevel].gameName}"
+        when(currentGame.level) {
+            1,2,3,4 -> {
+                gameName = gameNameList[0]
+                rulesText = rules[0]
+            }
+            5,6,7 -> {
+                gameName = gameNameList[1]
+                rulesText = rules[1]
+            }
+            else -> {
+                gameName = gameNameList[2]
+                rulesText = rules[2]
+            }
+        }
+        tvRules.text = rulesText
+        tvScoreNeeded.text = resources.getString(R.string.scoreNeeded, currentGame.scoreNeeded.toString())// "Score needed to win: ${currentGame.scoreNeeded}"
+        tvRulesTop.text =  resources.getString(R.string.rulesForGame, currentGame.level.toString(), gameName)//"Rules for game ${currentGame.level}: \n${currentGame.gameName}"
 
 
 
