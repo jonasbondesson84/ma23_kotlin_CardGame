@@ -153,6 +153,13 @@ class GameMode2Fragment : Fragment() {
 
         imDeck.setOnClickListener() {
             drawCardFromDeck(human)
+            if(deckOfCard.size == 1) {
+                imDeck.scaleX = 0.8f
+                imDeck.scaleY = 0.8f
+                imDeck.setImageResource(R.drawable.card_backside)
+            } else if( deckOfCard.isEmpty()) {
+                imDeck.visibility = View.INVISIBLE
+            }
 
         }
 

@@ -11,15 +11,6 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imDeckGAMEMODE2"
-            android:layout_width="120dp"
-            android:layout_height="190dp"
-            android:src="@drawable/backside_pile"
-            app:layout_constraintBottom_toBottomOf="@id/clDeckGAMEMODE2"
-            app:layout_constraintStart_toStartOf="@id/clDeckGAMEMODE2"
-            app:layout_constraintTop_toTopOf="@id/clDeckGAMEMODE2" />
-
-        <ImageView
             android:id="@+id/imPlayerTextGAMEMODE2"
             android:layout_width="250dp"
             android:layout_height="80dp"
@@ -90,7 +81,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/imDeckShownGAMEMODE2"
+                android:id="@+id/imDeckGAMEMODE2"
                 android:layout_width="120dp"
                 android:layout_height="190dp"
                 android:src="@drawable/backside_pile"
@@ -106,8 +97,10 @@
 
                 android:scaleX="0.8"
                 android:scaleY="0.8"
+                android:layout_marginStart="12dp"
+                app:layout_constraintStart_toEndOf="@id/imDeckGAMEMODE2"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imDeckShownGAMEMODE2">
+                tools:layout_editor_absoluteX="120dp">
 
             </FrameLayout>
 
@@ -147,8 +140,8 @@
             android:scaleX="0.8"
             android:scaleY="0.8"
             app:layout_constraintEnd_toEndOf="@+id/clDeckGAMEMODE2"
-            app:layout_constraintStart_toStartOf="@+id/imDeckGAMEMODE2"
-            app:layout_constraintTop_toBottomOf="@+id/imDeckGAMEMODE2">
+            app:layout_constraintStart_toStartOf="@+id/clDeckGAMEMODE2"
+            app:layout_constraintTop_toBottomOf="@+id/clDeckGAMEMODE2">
 
         </FrameLayout>
 

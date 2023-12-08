@@ -148,6 +148,7 @@ class GameMode1Fragment : Fragment() {
                     if (playerCanDrawCard) {
                         playerCanDrawCard = false
                         drawCard(human)
+                        delay(TIMER_ACTION)
                         if (checkForPairs(human)) {
                             showPlayerText()
                             var text = resources.getString(R.string.gotPair)//"I've got a pair!"
@@ -158,6 +159,7 @@ class GameMode1Fragment : Fragment() {
                         delay(TIMER_TEXT)
                         hidePlayerText()
                         aiTurn = true
+                        updateHandView()
                         aiTurn()
                     }
                 }
@@ -398,12 +400,13 @@ class GameMode1Fragment : Fragment() {
         if (deckOfCard.isNotEmpty()) {
             val drawnCard = deckOfCard.first()
             //Log.d("!!!", "card drawn: " + drawnCard.number.toString())
-            deckOfCard.remove(drawnCard)
-            player.deck.add(drawnCard)
-            recalculateMap(player)
+
 
             timerScope.launch {
                 withContext(Dispatchers.Main) {
+                    deckOfCard.remove(drawnCard)
+                    player.deck.add(drawnCard)
+                    recalculateMap(player)
                     if (player == human) {
                         showPlayerDrawnCard(drawnCard)
                         delay(TIMER_ACTION)
@@ -416,6 +419,7 @@ class GameMode1Fragment : Fragment() {
                         delay(TIMER_ACTION)
                         hideAIDrawnCard()
                     }
+
                 }
             }
             if(deckOfCard.size == 1) {
