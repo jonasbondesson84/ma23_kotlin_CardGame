@@ -143,7 +143,7 @@ class GameMode2Fragment : Fragment() {
         imDrawnCardAI.visibility = View.INVISIBLE
 
         imDeck.setOnClickListener {
-            if(!aiTurn) {
+            if (!aiTurn) {
                 drawCardFromDeck(human)
             }
         }
@@ -185,7 +185,7 @@ class GameMode2Fragment : Fragment() {
         }
 
         imPassIcon.setOnClickListener {
-            if(!aiTurn) {
+            if (!aiTurn) {
                 currentNumbersOfPasses++
                 passTo(ai)
             }
@@ -200,6 +200,7 @@ class GameMode2Fragment : Fragment() {
         addCardToPile(currentCard)
         aiTurnSequence()
     }
+
     private fun crazyEightHuman(card: Card, position: Int) {
         timerScope.launch {
             withContext(Dispatchers.Main) {
@@ -218,14 +219,15 @@ class GameMode2Fragment : Fragment() {
     }
 
     private fun changeDeckImage() {
-        if(deckOfCard.size == 1) {
+        if (deckOfCard.size == 1) {
             imDeck.scaleX = 0.8f
             imDeck.scaleY = 0.8f
             imDeck.setImageResource(R.drawable.card_backside)
-        } else if( deckOfCard.isEmpty()) {
+        } else if (deckOfCard.isEmpty()) {
             imDeck.visibility = View.INVISIBLE
         }
     }
+
     private fun createHands() {
         pileDeck
         for (i in 0..4) {
@@ -278,32 +280,33 @@ class GameMode2Fragment : Fragment() {
                     }
                 }
 
-                    drawCardFromDeck(ai)
-                    if (aiTurn) {
-                        delay(TIMER_ACTION)
-                        aiTurnSequence()
-                    }
+                drawCardFromDeck(ai)
+                if (aiTurn) {
+                    delay(TIMER_ACTION)
+                    aiTurnSequence()
+                }
 
             }
         }
     }
 
     private fun crazyEightAI(crazyEight: Card) {
-        timerScope.launch { withContext(Dispatchers.Main){
-        var text = resources.getString(R.string.AIchangedSuite)
-        textSizeAndShowText(text, ai)
-        removeCardFromHand(crazyEight, ai)
-        countSuitsForAI(ai)?.let {
-            crazyEight.suite = it
-        }
-        showSuiteAI(crazyEight)
-        delay(TIMER_TEXT)
-        addCardToPile(crazyEight)
-        text = resources.getString(R.string.yourTurn)
-        textSizeAndShowText(text, ai)
-        hideSuiteAI()
-        aiTurn = false
-        }
+        timerScope.launch {
+            withContext(Dispatchers.Main) {
+                var text = resources.getString(R.string.AIchangedSuite)
+                textSizeAndShowText(text, ai)
+                removeCardFromHand(crazyEight, ai)
+                countSuitsForAI(ai)?.let {
+                    crazyEight.suite = it
+                }
+                showSuiteAI(crazyEight)
+                delay(TIMER_TEXT)
+                addCardToPile(crazyEight)
+                text = resources.getString(R.string.yourTurn)
+                textSizeAndShowText(text, ai)
+                hideSuiteAI()
+                aiTurn = false
+            }
         }
         return
     }
@@ -334,14 +337,14 @@ class GameMode2Fragment : Fragment() {
             timerScope.launch {
                 withContext(Dispatchers.Main) {
 
-            val text = resources.getString(R.string.iPass)
+                    val text = resources.getString(R.string.iPass)
                     showAIText()
-            textSizeAndShowText(text, ai)
+                    textSizeAndShowText(text, ai)
                     currentNumbersOfPasses++
                     delay(TIMER_TEXT)
-            passTo(human)
-        }
-    }
+                    passTo(human)
+                }
+            }
         } else {
             showPassIcon()
         }
@@ -372,7 +375,7 @@ class GameMode2Fragment : Fragment() {
         timerScope.launch {
             withContext(Dispatchers.Main) {
                 val text = resources.getString(R.string.gameOver)
-                if(human.deck.isEmpty()) {
+                if (human.deck.isEmpty()) {
                     hideAIText()
                     showPlayerIconAndText()
                     textSizeAndShowText(text, human)
@@ -421,7 +424,7 @@ class GameMode2Fragment : Fragment() {
 
 
     private fun passTo(player: Player) {
-        if(deckOfCard.isEmpty() && currentNumbersOfPasses >= 2) {
+        if (deckOfCard.isEmpty() && currentNumbersOfPasses >= 2) {
             gameDone()
         } else if (player == ai) {
             aiTurn = true
