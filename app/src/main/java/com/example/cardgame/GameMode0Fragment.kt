@@ -99,7 +99,7 @@ class GameMode0Fragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_gamemode0, container, false)
 
         val btnHigher: ImageButton = view.findViewById(R.id.imHigherGamoeMode0)
-        val btnLower: ImageButton = view.findViewById(R.id.imLowerGamoeMode0)
+        val btnLower: ImageButton = view.findViewById(R.id.imStartGame)
 //        tvCard = view.findViewById(R.id.tvNextCardGameMode0)
 //        tvCardTopLeft = view.findViewById(R.id.tvCardTopLeftGameMode0)
 //        tvCardBottomRight = view.findViewById(R.id.tvCardBottomRightGameMode0)

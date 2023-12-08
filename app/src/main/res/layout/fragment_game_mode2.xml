@@ -65,8 +65,11 @@
 
         <TextView
             android:id="@+id/tvAITextGAMEMODE2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="22sp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/zen_dots"
             android:text="Crazy 8!"
@@ -122,8 +125,11 @@
 
         <TextView
             android:id="@+id/tvPlayerTextGAMEMODE2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="24sp"
             android:fontFamily="@font/zen_dots"
             android:text="Crazy 8"
             android:textSize="24sp"
@@ -212,8 +218,9 @@
 
         <TextView
             android:id="@+id/tvPass"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
             android:fontFamily="@font/zen_dots"
             android:text="@string/pass"
             android:textColor="@color/black"
@@ -240,10 +247,10 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_marginEnd="2dp"
+            android:layout_marginBottom="5dp"
             android:src="@drawable/characters_0001"
             app:layout_constraintBottom_toBottomOf="@+id/tvAITextGAMEMODE2"
-            app:layout_constraintEnd_toEndOf="@+id/imAITextGAMEMODE2"
-            app:layout_constraintTop_toTopOf="@+id/tvAITextGAMEMODE2" />
+            app:layout_constraintEnd_toEndOf="@+id/imAITextGAMEMODE2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
